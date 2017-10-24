@@ -3,9 +3,9 @@ package ru.vmsystems.template.domain.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "order_order", schema = "main", catalog = "")
+@Table(name = "order_order", schema = "main")
 public class OrderOrderEntity {
-    private Short id;
+    private Long id;
     private String number;
     private String desc;
     private String accountNumber;
@@ -19,14 +19,16 @@ public class OrderOrderEntity {
     private Short receptionOfOrderId;
     private Short clientTypeId;
 
+//    private List<OrderItemEntity> items;
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Short getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Short id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -149,6 +151,15 @@ public class OrderOrderEntity {
     public void setClientTypeId(Short clientTypeId) {
         this.clientTypeId = clientTypeId;
     }
+
+//    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+//    public List<OrderItemEntity> getItems() {
+//        return items;
+//    }
+//
+//    public void setItems(List<OrderItemEntity> items) {
+//        this.items = items;
+//    }
 
     @Override
     public boolean equals(Object o) {

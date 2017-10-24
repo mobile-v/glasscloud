@@ -7,12 +7,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ru.vmsystems.template.domain.model.OrderOrderEntity;
+import ru.vmsystems.template.domain.shared.OrderTransformer;
+import ru.vmsystems.template.infrastructure.persistence.OrderItemRepository;
 import ru.vmsystems.template.infrastructure.persistence.OrderRepository;
+import ru.vmsystems.template.interfaces.dto.OrderItemDto;
+import ru.vmsystems.template.interfaces.dto.OrderDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,13 +29,31 @@ public final class OrderController {
     @NotNull
     @Autowired
     private OrderRepository orderRepository;
-
-    //http://localhost:8080/order/
     @NotNull
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity<List<OrderOrderEntity>> getProducts() {
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
-        List<OrderOrderEntity> result = Lists.newArrayList(orderRepository.findAll());
+    //http://localhost:8080/api/order
+    @NotNull
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<OrderDto>> getOrders() {
+
+        List<OrderDto> result = new ArrayList<>();
+        orderRepository.findAll()
+                .forEach(order -> result.add(OrderTransformer.toDto(order)));
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    //http://localhost:8080/api/order/1/items
+    @NotNull
+    @RequestMapping(value = "/{orderId}/items", method = RequestMethod.GET)
+    public ResponseEntity<List<OrderItemDto>> getOrderItems(
+            @PathVariable(value = "orderId") Long orderId) {
+
+        List<OrderItemDto> result = Lists.newArrayList();
+        orderItemRepository.getByOrderId(orderId)
+        .forEach(item -> result.add(OrderTransformer.toDto(item)));
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

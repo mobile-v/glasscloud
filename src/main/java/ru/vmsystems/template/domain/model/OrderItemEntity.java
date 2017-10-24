@@ -3,9 +3,9 @@ package ru.vmsystems.template.domain.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "order_item", schema = "main", catalog = "")
+@Table(name = "order_item", schema = "main")
 public class OrderItemEntity {
-    private Short id;
+    private Long id;
     private String desc;
     private String number;
     private Double length;
@@ -15,17 +15,17 @@ public class OrderItemEntity {
     private Double perimeter;
     private String processSum;
     private String summa;
-    private Short orderId;
-    private Short materialId;
+    private OrderOrderEntity order;
+    private Long materialId;
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Short getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Short id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -119,23 +119,22 @@ public class OrderItemEntity {
         this.summa = summa;
     }
 
-    @Basic
-    @Column(name = "order_id")
-    public Short getOrderId() {
-        return orderId;
+    @ManyToOne
+    public OrderOrderEntity getOrder() {
+        return order;
     }
 
-    public void setOrderId(Short orderId) {
-        this.orderId = orderId;
+    public void setOrder(OrderOrderEntity orderId) {
+        this.order = orderId;
     }
 
     @Basic
     @Column(name = "material_id")
-    public Short getMaterialId() {
+    public Long getMaterialId() {
         return materialId;
     }
 
-    public void setMaterialId(Short materialId) {
+    public void setMaterialId(Long materialId) {
         this.materialId = materialId;
     }
 
@@ -156,7 +155,6 @@ public class OrderItemEntity {
         if (perimeter != null ? !perimeter.equals(that.perimeter) : that.perimeter != null) return false;
         if (processSum != null ? !processSum.equals(that.processSum) : that.processSum != null) return false;
         if (summa != null ? !summa.equals(that.summa) : that.summa != null) return false;
-        if (orderId != null ? !orderId.equals(that.orderId) : that.orderId != null) return false;
         if (materialId != null ? !materialId.equals(that.materialId) : that.materialId != null) return false;
 
         return true;
@@ -174,7 +172,6 @@ public class OrderItemEntity {
         result = 31 * result + (perimeter != null ? perimeter.hashCode() : 0);
         result = 31 * result + (processSum != null ? processSum.hashCode() : 0);
         result = 31 * result + (summa != null ? summa.hashCode() : 0);
-        result = 31 * result + (orderId != null ? orderId.hashCode() : 0);
         result = 31 * result + (materialId != null ? materialId.hashCode() : 0);
         return result;
     }
