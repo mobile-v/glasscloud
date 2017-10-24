@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin</title>
+
+    <link rel="stylesheet" href="../../static/css/menu.css"/>
+    <link rel="stylesheet" href="../../static/css/admin.css"/>
+    <script src="/static/js/admin.js"></script>
+</head>
+<body>
+
+<form>
+    <div class="menu-wrap">
+        <ul>
+            <li><a>Меню</a>
+                <ul>
+                    <li><a th:href="@{/logout}">Выход</a></li>
+                </ul>
+            </li>
+            <li><a>Настройки</a>
+                <ul>
+                    <!--<li><a id="btnNewUserLink">Ссылка для нового пользователя</a></li>-->
+                </ul>
+            </li>
+            <!--<li><input type="button" id="btnReset" value="Сброс карт"/></li>-->
+            <li><a id="serverAvailable"></a></li>
+            <!--<li><a href="contact.html">Contact</a>-->
+            <!--<ul>-->
+            <!--<li><a href="address.html">Address</a></li>-->
+            <!--<li><a href="policy.html">Policy</a></li>-->
+            <!--</ul>-->
+            <!--</li>-->
+        </ul>
+    </div>
+</form>
+
+<div>
+    <a href="newuser">Добавить нового пользователя</a>
+</div>
+
+<h1>Список пользователей</h1>
+
+<table>
+    <tr>
+        <th>Имя</th>
+        <th>Логин</th>
+        <th>Роль</th>
+        <th>Активен</th>
+        <th>Блокировка</th>
+    </tr>
+    <tr th:each="users : ${users}">
+        <td width="200">
+            <a th:href="@{/admin/user(id=${users.id})}" th:text="${users.name}"></a>
+        </td>
+        <td width="200">
+            <a th:href="@{/admin/user(id=${users.id})}" th:text="${users.login}"></a>
+        </td>
+        <td width="150" th:text="${users.role.comment}"></td>
+        <!--<td th:text="${users.login}" width="200"></td>-->
+        <td class="center" th:if="${users.enabled == true}" width="100" style="color: green">Активен</td>
+        <td class="center" th:if="${users.enabled == false}" width="100" style="color: red">Заблокирован</td>
+        <td th:width="120" class="center">
+
+            <a th:href="@{/api/admin/checked/user(id=${users.id}, checked=false)}"
+               th:if="${users.enabled == true}" onmouseup="reloadPage()">Заблокировать</a>
+            <a th:href="@{/api/admin/checked/user(id=${users.id}, checked=true)}"
+               th:if="${users.enabled == false}" onmouseup="reloadPage()">Разблокировать</a>
+        </td>
+    </tr>
+</table>
+
+
+
+</body>
+</html>

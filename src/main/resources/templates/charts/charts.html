@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="../../static/jquery.min.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+
+    <script src="../../static/bootstrap/popper.min.js"></script>
+    <script src="../../static/bootstrap/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../../static/bootstrap/bootstrap.min.css">
+
+    <script src="../../static/amcharts/amcharts.js"></script>
+    <script src="../../static/amcharts/serial.js"></script>
+    <script src="../../static/amcharts/plugins/export/export.min.js"></script>
+    <link rel="stylesheet" href="../../static/amcharts/plugins/export/export.css" type="text/css" media="all"/>
+    <script src="../../static/amcharts/themes/light.js"></script>
+
+
+    <link rel="stylesheet" href="../../static/css/charts.css" type="text/css" media="all"/>
+</head>
+<body>
+<br>
+<div class="row">
+    <div class="col-lg-3">
+        <span class="input-group-btn">
+            <button onclick="trigTimer()" id="onlineBtn" type="button" class="btn btn-primary" data-toggle="button"
+                    aria-pressed="false" autocomplete="off">Режим реального времени выключен</button>
+        </span>
+    </div>
+</div>
+
+<div id="chartdiv"></div>
+
+<div class="row">
+    <div class="col-lg-3">
+        <div class="input-group input-group-sm">
+          <span class="input-group-btn">
+            <button onclick="prev()" class="btn btn-secondary" type="button">Назад</button>
+          </span>
+            <input id="numPage" value="0" type="text" class="form-control" placeholder="Page num..."
+                   aria-label="Search for...">
+            <span class="input-group-btn">
+            <button onclick="next()" class="btn btn-secondary" type="button">Вперед</button>
+          </span>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="input-group">
+            <span class="input-group-addon">Кол-во точек в онлайне</span>
+            <input id="numPoints" value="500" type="text" class="form-control"
+                   aria-label="Amount (to the nearest dollar)">
+            <!--<span class="input-group-addon">.00</span>-->
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="input-group">
+            <span class="input-group-addon">Кол-во точек в истории</span>
+            <input id="allPoints" value="4000" type="text" class="form-control"
+                   aria-label="Amount (to the nearest dollar)">
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="input-group">
+            <button onclick="updatePage()" class="btn btn-outline-primary">Обновить</button>
+        </div>
+    </div>
+</div>
+
+
+<script src="../../static/js/charts.js"></script>
+</body>
+</html>
