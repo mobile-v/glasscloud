@@ -52,9 +52,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/examples/**").hasAnyAuthority(Role.ROLE_ADMIN.toString())
 
                 //FIXME убрать разрешение ддля всех (пока для наладки)
-                .antMatchers("/search/**").permitAll()
-                .antMatchers("/charts/**").permitAll()
-                .antMatchers("/api/**").hasAnyAuthority(Role.ROLE_ADMIN.toString(), Role.ROLE_DEVICE.toString())
+//                .antMatchers("/api/**").hasAnyAuthority(Role.ROLE_ADMIN.toString(), Role.ROLE_DEVICE.toString())
+                .antMatchers("/api/**").permitAll()
 
                 .antMatchers("/ws/**").hasAnyAuthority(Role.ROLE_ADMIN.toString())
                 .antMatchers("/").hasAnyAuthority(Role.ROLE_ADMIN.toString())

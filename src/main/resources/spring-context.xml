@@ -22,11 +22,6 @@
         <task:scheduler id="taskScheduler" pool-size="10"/>
         <task:executor id="executor" pool-size="10"/>
 
-        <beans:bean id="modbusTCPMaster" class="ru.vmsystems.template.domain.service.modbus.lib.ModbusTCPMaster">
-            <beans:constructor-arg index="0" value="${modbus.ip}"/>
-            <beans:constructor-arg index="1" value="${modbus.port}"/>
-        </beans:bean>
-
     </beans:beans>
 
 </beans:beans>
