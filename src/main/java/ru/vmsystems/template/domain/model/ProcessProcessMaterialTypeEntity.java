@@ -11,6 +11,7 @@ public class ProcessProcessMaterialTypeEntity {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Short getId() {
         return id;
     }

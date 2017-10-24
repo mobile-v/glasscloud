@@ -20,6 +20,7 @@ public class OrderItemEntity {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Short getId() {
         return id;
     }

@@ -21,6 +21,7 @@ public class OrderOrderEntity {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Short getId() {
         return id;
     }

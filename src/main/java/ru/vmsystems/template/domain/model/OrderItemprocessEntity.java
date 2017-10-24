@@ -13,6 +13,7 @@ public class OrderItemprocessEntity {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Short getId() {
         return id;
     }

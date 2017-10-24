@@ -16,6 +16,7 @@ public class ClientClientEntity {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public short getId() {
         return id;
     }
