@@ -13,9 +13,8 @@ public class OrderDto {
     private String summa;
     private Double area;
     private Double perimeter;
-    private Short clientId;
-    private Short receptionOfOrderId;
-    private Short clientTypeId;
+    private ClientDto client;
+    private ReceptionOfOrderDto receptionOfOrder;
     private String creationDate;
     private String updateDate;
 
@@ -101,28 +100,20 @@ public class OrderDto {
         this.perimeter = perimeter;
     }
 
-    public Short getClientId() {
-        return clientId;
+    public ClientDto getClient() {
+        return client;
     }
 
-    public void setClientId(Short clientId) {
-        this.clientId = clientId;
+    public void setClient(ClientDto client) {
+        this.client = client;
     }
 
-    public Short getReceptionOfOrderId() {
-        return receptionOfOrderId;
+    public ReceptionOfOrderDto getReceptionOfOrder() {
+        return receptionOfOrder;
     }
 
-    public void setReceptionOfOrderId(Short receptionOfOrderId) {
-        this.receptionOfOrderId = receptionOfOrderId;
-    }
-
-    public Short getClientTypeId() {
-        return clientTypeId;
-    }
-
-    public void setClientTypeId(Short clientTypeId) {
-        this.clientTypeId = clientTypeId;
+    public void setReceptionOfOrder(ReceptionOfOrderDto receptionOfOrder) {
+        this.receptionOfOrder = receptionOfOrder;
     }
 
     public List<OrderItemDto> getItems() {

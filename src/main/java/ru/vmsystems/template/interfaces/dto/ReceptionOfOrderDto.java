@@ -1,10 +1,6 @@
-package ru.vmsystems.template.domain.model;
+package ru.vmsystems.template.interfaces.dto;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "company_receptionoforder", schema = "main", catalog = "")
-public class CompanyReceptionoforderEntity {
+public class ReceptionOfOrderDto {
     private Long id;
     private String name;
     private String orderNumPrefix;
@@ -13,9 +9,6 @@ public class CompanyReceptionoforderEntity {
     private Short companyId;
     private String phone;
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -24,8 +17,6 @@ public class CompanyReceptionoforderEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -34,8 +25,6 @@ public class CompanyReceptionoforderEntity {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "order_num_prefix")
     public String getOrderNumPrefix() {
         return orderNumPrefix;
     }
@@ -44,8 +33,6 @@ public class CompanyReceptionoforderEntity {
         this.orderNumPrefix = orderNumPrefix;
     }
 
-    @Basic
-    @Column(name = "desc")
     public String getDesc() {
         return desc;
     }
@@ -54,8 +41,6 @@ public class CompanyReceptionoforderEntity {
         this.desc = desc;
     }
 
-    @Basic
-    @Column(name = "address")
     public String getAddress() {
         return address;
     }
@@ -64,8 +49,6 @@ public class CompanyReceptionoforderEntity {
         this.address = address;
     }
 
-    @Basic
-    @Column(name = "company_id")
     public Short getCompanyId() {
         return companyId;
     }
@@ -74,8 +57,6 @@ public class CompanyReceptionoforderEntity {
         this.companyId = companyId;
     }
 
-    @Basic
-    @Column(name = "phone")
     public String getPhone() {
         return phone;
     }

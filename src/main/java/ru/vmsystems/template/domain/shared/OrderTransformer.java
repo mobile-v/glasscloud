@@ -2,6 +2,7 @@ package ru.vmsystems.template.domain.shared;
 
 import ru.vmsystems.template.domain.model.OrderItemEntity;
 import ru.vmsystems.template.domain.model.OrderOrderEntity;
+import ru.vmsystems.template.interfaces.dto.ClientDto;
 import ru.vmsystems.template.interfaces.dto.OrderDto;
 import ru.vmsystems.template.interfaces.dto.OrderItemDto;
 
@@ -40,12 +41,12 @@ public class OrderTransformer {
         dto.setSumma(order.getSumma());
         dto.setArea(order.getArea());
         dto.setPerimeter(order.getPerimeter());
-        dto.setClientId(order.getClientId());
-        dto.setReceptionOfOrderId(order.getReceptionOfOrderId());
-        dto.setClientTypeId(order.getClientTypeId());
 
         dto.setCreationDate(formatter.format(new Date(order.getCreationDate().getTime())));
         dto.setUpdateDate(formatter.format(new Date(order.getUpdateDate().getTime())));
+
+        ClientDto clientDto = ClientTransformer.toDto(order.getClient());
+        dto.setClient(clientDto);
 
         return dto;
     }

@@ -16,9 +16,8 @@ public class OrderOrderEntity {
     private String summa;
     private Double area;
     private Double perimeter;
-    private Short clientId;
-    private Short receptionOfOrderId;
-    private Short clientTypeId;
+    private ClientClientEntity client;
+    private CompanyReceptionoforderEntity receptionOfOrder;
     private Timestamp creationDate;
     private Timestamp updateDate;
 
@@ -125,34 +124,22 @@ public class OrderOrderEntity {
         this.perimeter = perimeter;
     }
 
-    @Basic
-    @Column(name = "client_id")
-    public Short getClientId() {
-        return clientId;
+    @ManyToOne
+    public ClientClientEntity getClient() {
+        return client;
     }
 
-    public void setClientId(Short clientId) {
-        this.clientId = clientId;
+    public void setClient(ClientClientEntity client) {
+        this.client = client;
     }
 
-    @Basic
-    @Column(name = "receptionOfOrder_id")
-    public Short getReceptionOfOrderId() {
-        return receptionOfOrderId;
+    @ManyToOne
+    public CompanyReceptionoforderEntity getReceptionOfOrder() {
+        return receptionOfOrder;
     }
 
-    public void setReceptionOfOrderId(Short receptionOfOrderId) {
-        this.receptionOfOrderId = receptionOfOrderId;
-    }
-
-    @Basic
-    @Column(name = "client_type_id")
-    public Short getClientTypeId() {
-        return clientTypeId;
-    }
-
-    public void setClientTypeId(Short clientTypeId) {
-        this.clientTypeId = clientTypeId;
+    public void setReceptionOfOrder(CompanyReceptionoforderEntity receptionOfOrder) {
+        this.receptionOfOrder = receptionOfOrder;
     }
 
     @Basic

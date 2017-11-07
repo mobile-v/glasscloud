@@ -1,10 +1,6 @@
-package ru.vmsystems.template.domain.model;
+package ru.vmsystems.template.interfaces.dto;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "client_client", schema = "main", catalog = "")
-public class ClientClientEntity {
+public class ClientDto {
     private Long id;
     private String name;
     private Short inn;
@@ -13,11 +9,8 @@ public class ClientClientEntity {
     private String email;
     private String desc;
     private String discount;
-    private ClientClienttypeEntity clientType;
+    private String type;
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -26,8 +19,6 @@ public class ClientClientEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -36,8 +27,6 @@ public class ClientClientEntity {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "inn")
     public Short getInn() {
         return inn;
     }
@@ -46,8 +35,6 @@ public class ClientClientEntity {
         this.inn = inn;
     }
 
-    @Basic
-    @Column(name = "account")
     public String getAccount() {
         return account;
     }
@@ -56,8 +43,6 @@ public class ClientClientEntity {
         this.account = account;
     }
 
-    @Basic
-    @Column(name = "phone")
     public String getPhone() {
         return phone;
     }
@@ -66,8 +51,6 @@ public class ClientClientEntity {
         this.phone = phone;
     }
 
-    @Basic
-    @Column(name = "email")
     public String getEmail() {
         return email;
     }
@@ -76,8 +59,6 @@ public class ClientClientEntity {
         this.email = email;
     }
 
-    @Basic
-    @Column(name = "desc")
     public String getDesc() {
         return desc;
     }
@@ -86,8 +67,6 @@ public class ClientClientEntity {
         this.desc = desc;
     }
 
-    @Basic
-    @Column(name = "discount")
     public String getDiscount() {
         return discount;
     }
@@ -96,13 +75,11 @@ public class ClientClientEntity {
         this.discount = discount;
     }
 
-    @ManyToOne
-    @JoinColumn(name="client_type_id")
-    public ClientClienttypeEntity getClientType() {
-        return clientType;
+    public String getType() {
+        return type;
     }
 
-    public void setClientType(ClientClienttypeEntity clientType) {
-        this.clientType = clientType;
+    public void setType(String type) {
+        this.type = type;
     }
 }
