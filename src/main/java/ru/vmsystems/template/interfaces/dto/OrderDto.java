@@ -16,6 +16,8 @@ public class OrderDto {
     private Short clientId;
     private Short receptionOfOrderId;
     private Short clientTypeId;
+    private String creationDate;
+    private String updateDate;
 
     private List<OrderItemDto> items;
 
@@ -129,5 +131,21 @@ public class OrderDto {
 
     public void setItems(List<OrderItemDto> items) {
         this.items = items;
+    }
+
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
     }
 }

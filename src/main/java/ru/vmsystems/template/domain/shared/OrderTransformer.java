@@ -2,8 +2,11 @@ package ru.vmsystems.template.domain.shared;
 
 import ru.vmsystems.template.domain.model.OrderItemEntity;
 import ru.vmsystems.template.domain.model.OrderOrderEntity;
-import ru.vmsystems.template.interfaces.dto.OrderItemDto;
 import ru.vmsystems.template.interfaces.dto.OrderDto;
+import ru.vmsystems.template.interfaces.dto.OrderItemDto;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class OrderTransformer {
 
@@ -24,6 +27,8 @@ public class OrderTransformer {
     }
 
     public static OrderDto toDto(OrderOrderEntity order) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+
         OrderDto dto = new OrderDto();
         dto.setId(order.getId());
         dto.setDesc(order.getDesc());
@@ -38,6 +43,9 @@ public class OrderTransformer {
         dto.setClientId(order.getClientId());
         dto.setReceptionOfOrderId(order.getReceptionOfOrderId());
         dto.setClientTypeId(order.getClientTypeId());
+
+        dto.setCreationDate(formatter.format(new Date(order.getCreationDate().getTime())));
+        dto.setUpdateDate(formatter.format(new Date(order.getUpdateDate().getTime())));
 
         return dto;
     }

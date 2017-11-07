@@ -1,6 +1,7 @@
 package ru.vmsystems.template.domain.model;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "order_order", schema = "main")
@@ -18,6 +19,8 @@ public class OrderOrderEntity {
     private Short clientId;
     private Short receptionOfOrderId;
     private Short clientTypeId;
+    private Timestamp creationDate;
+    private Timestamp updateDate;
 
 //    private List<OrderItemEntity> items;
 
@@ -152,7 +155,27 @@ public class OrderOrderEntity {
         this.clientTypeId = clientTypeId;
     }
 
-//    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @Basic
+    @Column(name = "creation_date")
+    public Timestamp getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Timestamp creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    @Basic
+    @Column(name = "last_updated")
+    public Timestamp getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Timestamp updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    //    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 //    public List<OrderItemEntity> getItems() {
 //        return items;
 //    }
@@ -161,47 +184,4 @@ public class OrderOrderEntity {
 //        this.items = items;
 //    }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        OrderOrderEntity that = (OrderOrderEntity) o;
-
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (number != null ? !number.equals(that.number) : that.number != null) return false;
-        if (desc != null ? !desc.equals(that.desc) : that.desc != null) return false;
-        if (accountNumber != null ? !accountNumber.equals(that.accountNumber) : that.accountNumber != null)
-            return false;
-        if (discount != null ? !discount.equals(that.discount) : that.discount != null) return false;
-        if (discountSum != null ? !discountSum.equals(that.discountSum) : that.discountSum != null) return false;
-        if (count != null ? !count.equals(that.count) : that.count != null) return false;
-        if (summa != null ? !summa.equals(that.summa) : that.summa != null) return false;
-        if (area != null ? !area.equals(that.area) : that.area != null) return false;
-        if (perimeter != null ? !perimeter.equals(that.perimeter) : that.perimeter != null) return false;
-        if (clientId != null ? !clientId.equals(that.clientId) : that.clientId != null) return false;
-        if (receptionOfOrderId != null ? !receptionOfOrderId.equals(that.receptionOfOrderId) : that.receptionOfOrderId != null)
-            return false;
-        if (clientTypeId != null ? !clientTypeId.equals(that.clientTypeId) : that.clientTypeId != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (number != null ? number.hashCode() : 0);
-        result = 31 * result + (desc != null ? desc.hashCode() : 0);
-        result = 31 * result + (accountNumber != null ? accountNumber.hashCode() : 0);
-        result = 31 * result + (discount != null ? discount.hashCode() : 0);
-        result = 31 * result + (discountSum != null ? discountSum.hashCode() : 0);
-        result = 31 * result + (count != null ? count.hashCode() : 0);
-        result = 31 * result + (summa != null ? summa.hashCode() : 0);
-        result = 31 * result + (area != null ? area.hashCode() : 0);
-        result = 31 * result + (perimeter != null ? perimeter.hashCode() : 0);
-        result = 31 * result + (clientId != null ? clientId.hashCode() : 0);
-        result = 31 * result + (receptionOfOrderId != null ? receptionOfOrderId.hashCode() : 0);
-        result = 31 * result + (clientTypeId != null ? clientTypeId.hashCode() : 0);
-        return result;
-    }
 }
