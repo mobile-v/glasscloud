@@ -2,7 +2,6 @@ package ru.vmsystems.template.domain.shared;
 
 import ru.vmsystems.template.domain.model.OrderItemEntity;
 import ru.vmsystems.template.domain.model.OrderOrderEntity;
-import ru.vmsystems.template.interfaces.dto.ClientDto;
 import ru.vmsystems.template.interfaces.dto.OrderDto;
 import ru.vmsystems.template.interfaces.dto.OrderItemDto;
 
@@ -45,8 +44,8 @@ public class OrderTransformer {
         dto.setCreationDate(formatter.format(new Date(order.getCreationDate().getTime())));
         dto.setUpdateDate(formatter.format(new Date(order.getUpdateDate().getTime())));
 
-        ClientDto clientDto = ClientTransformer.toDto(order.getClient());
-        dto.setClient(clientDto);
+        dto.setClient(ClientTransformer.toDto(order.getClient()));
+        dto.setReceptionOfOrder(CompanyTransformer.toDto(order.getReceptionOfOrder()));
 
         return dto;
     }

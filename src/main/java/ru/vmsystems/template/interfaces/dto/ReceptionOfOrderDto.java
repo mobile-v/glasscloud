@@ -6,7 +6,7 @@ public class ReceptionOfOrderDto {
     private String orderNumPrefix;
     private String desc;
     private String address;
-    private Short companyId;
+    private CompanyDto company;
     private String phone;
 
     public Long getId() {
@@ -49,12 +49,12 @@ public class ReceptionOfOrderDto {
         this.address = address;
     }
 
-    public Short getCompanyId() {
-        return companyId;
+    public CompanyDto getCompany() {
+        return company;
     }
 
-    public void setCompanyId(Short companyId) {
-        this.companyId = companyId;
+    public void setCompany(CompanyDto company) {
+        this.company = company;
     }
 
     public String getPhone() {
