@@ -1,10 +1,14 @@
 package ru.vmsystems.template.domain.shared;
 
-import ru.vmsystems.template.domain.model.OrderItemEntity;
+import org.jetbrains.annotations.NotNull;
+import ru.vmsystems.template.domain.model.ClientEntity;
 import ru.vmsystems.template.domain.model.OrderEntity;
+import ru.vmsystems.template.domain.model.OrderItemEntity;
+import ru.vmsystems.template.domain.model.ReceptionOfOrderEntity;
 import ru.vmsystems.template.interfaces.dto.OrderDto;
 import ru.vmsystems.template.interfaces.dto.OrderItemDto;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -48,5 +52,30 @@ public class OrderTransformer {
         dto.setReceptionOfOrder(CompanyTransformer.toDto(order.getReceptionOfOrder()));
 
         return dto;
+    }
+
+    public static OrderEntity toEntity(@NotNull OrderDto order,
+                                       @NotNull ClientEntity client,
+                                       @NotNull ReceptionOfOrderEntity receptionOfOrder) {
+        OrderEntity entity = new OrderEntity();
+
+        entity.setId(order.getId());
+        entity.setDesc(order.getDesc());
+        entity.setAccountNumber(order.getAccountNumber());
+        entity.setNumber(order.getNumber());
+        entity.setDiscount(order.getDiscount());
+        entity.setDiscountSum(order.getDiscountSum());
+        entity.setCount(order.getCount());
+        entity.setSumma(order.getSumma());
+        entity.setArea(order.getArea());
+        entity.setPerimeter(order.getPerimeter());
+
+        entity.setCreationDate(new Timestamp(new Date().getTime()));
+        entity.setUpdateDate(new Timestamp(new Date().getTime()));
+
+        entity.setClient(client);
+        entity.setReceptionOfOrder(receptionOfOrder);
+
+        return entity;
     }
 }

@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "company_receptionoforder", schema = "main", catalog = "")
-public class CompanyReceptionoforderEntity {
+public class ReceptionOfOrderEntity {
     private Long id;
     private String name;
     private String orderNumPrefix;

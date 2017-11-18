@@ -1,13 +1,13 @@
 package ru.vmsystems.template.domain.shared;
 
 import ru.vmsystems.template.domain.model.CompanyEntity;
-import ru.vmsystems.template.domain.model.CompanyReceptionoforderEntity;
+import ru.vmsystems.template.domain.model.ReceptionOfOrderEntity;
 import ru.vmsystems.template.interfaces.dto.CompanyDto;
 import ru.vmsystems.template.interfaces.dto.ReceptionOfOrderDto;
 
 class CompanyTransformer {
 
-    static ReceptionOfOrderDto toDto(CompanyReceptionoforderEntity entity) {
+    static ReceptionOfOrderDto toDto(ReceptionOfOrderEntity entity) {
         ReceptionOfOrderDto dto = new ReceptionOfOrderDto();
         dto.setId(entity.getId());
         dto.setDesc(entity.getDesc());

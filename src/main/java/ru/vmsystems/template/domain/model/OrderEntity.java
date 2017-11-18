@@ -17,7 +17,7 @@ public class OrderEntity {
     private Double area;
     private Double perimeter;
     private ClientEntity client;
-    private CompanyReceptionoforderEntity receptionOfOrder;
+    private ReceptionOfOrderEntity receptionOfOrder;
     private Timestamp creationDate;
     private Timestamp updateDate;
 
@@ -134,11 +134,11 @@ public class OrderEntity {
     }
 
     @ManyToOne
-    public CompanyReceptionoforderEntity getReceptionOfOrder() {
+    public ReceptionOfOrderEntity getReceptionOfOrder() {
         return receptionOfOrder;
     }
 
-    public void setReceptionOfOrder(CompanyReceptionoforderEntity receptionOfOrder) {
+    public void setReceptionOfOrder(ReceptionOfOrderEntity receptionOfOrder) {
         this.receptionOfOrder = receptionOfOrder;
     }
 

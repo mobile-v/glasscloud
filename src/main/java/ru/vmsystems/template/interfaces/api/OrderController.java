@@ -7,16 +7,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.vmsystems.template.domain.model.ClientEntity;
 import ru.vmsystems.template.domain.model.OrderEntity;
+import ru.vmsystems.template.domain.model.ReceptionOfOrderEntity;
 import ru.vmsystems.template.domain.shared.OrderTransformer;
+import ru.vmsystems.template.infrastructure.persistence.ClientRepository;
 import ru.vmsystems.template.infrastructure.persistence.OrderItemRepository;
 import ru.vmsystems.template.infrastructure.persistence.OrderRepository;
-import ru.vmsystems.template.interfaces.dto.OrderItemDto;
+import ru.vmsystems.template.infrastructure.persistence.ReceptionOfOrderRepository;
 import ru.vmsystems.template.interfaces.dto.OrderDto;
+import ru.vmsystems.template.interfaces.dto.OrderItemDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +29,24 @@ public final class OrderController {
     private static final Logger LOG = LoggerFactory.getLogger(OrderController.class);
 
     @NotNull
-    @Autowired
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
     @NotNull
+    private final OrderItemRepository orderItemRepository;
+    @NotNull
+    private final ReceptionOfOrderRepository receptionOfOrderRepository;
+    @NotNull
+    private final ClientRepository clientRepository;
+
     @Autowired
-    private OrderItemRepository orderItemRepository;
+    public OrderController(@NotNull OrderRepository orderRepository,
+                           @NotNull OrderItemRepository orderItemRepository,
+                           @NotNull ReceptionOfOrderRepository receptionOfOrderRepository,
+                           @NotNull ClientRepository clientRepository) {
+        this.orderRepository = orderRepository;
+        this.orderItemRepository = orderItemRepository;
+        this.receptionOfOrderRepository = receptionOfOrderRepository;
+        this.clientRepository = clientRepository;
+    }
 
     //http://localhost:8080/api/order
     @NotNull
@@ -49,12 +63,11 @@ public final class OrderController {
     //http://localhost:8080/api/order/1
     @NotNull
     @RequestMapping(value = "/{orderId}", method = RequestMethod.GET)
-    public ResponseEntity<OrderDto> getOrder(
-            @PathVariable(value = "orderId") Long orderId) {
+    public ResponseEntity<OrderDto> getOrder(@PathVariable(value = "orderId") Long orderId) {
 
         OrderDto result;
         OrderEntity order = orderRepository.findOne(orderId);
-        if (order == null){
+        if (order == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
@@ -66,6 +79,26 @@ public final class OrderController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    //http://localhost:8080/api/order/
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public ResponseEntity<OrderDto> saveOrder(@RequestBody OrderDto order) {
+
+        ClientEntity client = clientRepository.findOne(order.getClient().getId());
+        ReceptionOfOrderEntity receptionOfOrder = receptionOfOrderRepository.findOne(order.getReceptionOfOrder().getId());
+
+        OrderEntity entity = orderRepository.save(OrderTransformer.toEntity(order, client, receptionOfOrder));
+        order.setId(entity.getId());
+        return new ResponseEntity<>(order, HttpStatus.OK);
+    }
+
+    //http://localhost:8080/api/order/1/
+    @RequestMapping(value = "/{orderId}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteOrder(@PathVariable(value = "orderId") Long orderId) {
+
+        orderRepository.delete(orderId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     //http://localhost:8080/api/order/1/items
     @NotNull
     @RequestMapping(value = "/{orderId}/items", method = RequestMethod.GET)
@@ -74,7 +107,7 @@ public final class OrderController {
 
         List<OrderItemDto> result = Lists.newArrayList();
         orderItemRepository.getByOrderId(orderId)
-        .forEach(item -> result.add(OrderTransformer.toDto(item)));
+                .forEach(item -> result.add(OrderTransformer.toDto(item)));
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
