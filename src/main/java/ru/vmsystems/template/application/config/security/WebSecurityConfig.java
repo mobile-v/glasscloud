@@ -53,7 +53,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 //FIXME убрать разрешение ддля всех (пока для наладки)
 //                .antMatchers("/api/**").hasAnyAuthority(Role.ROLE_ADMIN.toString(), Role.ROLE_DEVICE.toString())
-                .antMatchers("/api/**").permitAll()
+//                .antMatchers("/api/**").permitAll()
+                .antMatchers("/api/**").hasAnyAuthority(Role.ROLE_ADMIN.toString())
+                .antMatchers("/v2/**").hasAnyAuthority(Role.ROLE_ADMIN.toString())
+                .antMatchers("/swagger-ui.html").hasAnyAuthority(Role.ROLE_ADMIN.toString())
 
                 .antMatchers("/ws/**").hasAnyAuthority(Role.ROLE_ADMIN.toString())
                 .antMatchers("/").hasAnyAuthority(Role.ROLE_ADMIN.toString())
