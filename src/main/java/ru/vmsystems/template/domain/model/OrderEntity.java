@@ -2,6 +2,7 @@ package ru.vmsystems.template.domain.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "order_order", schema = "main")
@@ -21,7 +22,7 @@ public class OrderEntity {
     private Timestamp creationDate;
     private Timestamp updateDate;
 
-//    private List<OrderItemEntity> items;
+    private List<OrderItemEntity> items;
 
     @Id
     @Column(name = "id")
@@ -162,13 +163,13 @@ public class OrderEntity {
         this.updateDate = updateDate;
     }
 
-    //    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-//    public List<OrderItemEntity> getItems() {
-//        return items;
-//    }
-//
-//    public void setItems(List<OrderItemEntity> items) {
-//        this.items = items;
-//    }
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    public List<OrderItemEntity> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderItemEntity> items) {
+        this.items = items;
+    }
 
 }

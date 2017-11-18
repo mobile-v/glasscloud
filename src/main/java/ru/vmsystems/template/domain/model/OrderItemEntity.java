@@ -1,6 +1,7 @@
 package ru.vmsystems.template.domain.model;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "order_item", schema = "main")
@@ -17,6 +18,8 @@ public class OrderItemEntity {
     private String summa;
     private OrderEntity order;
     private MaterialEntity material;
+    private Timestamp creationDate;
+    private Timestamp updateDate;
 
     @Id
     @Column(name = "id")
@@ -135,5 +138,25 @@ public class OrderItemEntity {
 
     public void setMaterial(MaterialEntity material) {
         this.material = material;
+    }
+
+    @Basic
+    @Column(name = "creation_date")
+    public Timestamp getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Timestamp creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    @Basic
+    @Column(name = "last_updated")
+    public Timestamp getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Timestamp updateDate) {
+        this.updateDate = updateDate;
     }
 }
