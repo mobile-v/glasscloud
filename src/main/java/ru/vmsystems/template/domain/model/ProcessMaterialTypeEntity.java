@@ -4,19 +4,19 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "process_process_material_type", schema = "main", catalog = "")
-public class ProcessProcessMaterialTypeEntity {
-    private Short id;
+public class ProcessMaterialTypeEntity {
+    private Long id;
     private Short processId;
     private Short materialtypeId;
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Short getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Short id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -45,7 +45,7 @@ public class ProcessProcessMaterialTypeEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ProcessProcessMaterialTypeEntity that = (ProcessProcessMaterialTypeEntity) o;
+        ProcessMaterialTypeEntity that = (ProcessMaterialTypeEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (processId != null ? !processId.equals(that.processId) : that.processId != null) return false;

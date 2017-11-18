@@ -4,8 +4,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "users_modulepermission", schema = "main", catalog = "")
-public class UsersModulepermissionEntity {
-    private Short id;
+public class UsersModulePermissionEntity {
+    private Long id;
     private String isView;
     private String isEdit;
     private Short moduleId;
@@ -15,11 +15,11 @@ public class UsersModulepermissionEntity {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Short getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Short id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -78,7 +78,7 @@ public class UsersModulepermissionEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UsersModulepermissionEntity that = (UsersModulepermissionEntity) o;
+        UsersModulePermissionEntity that = (UsersModulePermissionEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (isView != null ? !isView.equals(that.isView) : that.isView != null) return false;

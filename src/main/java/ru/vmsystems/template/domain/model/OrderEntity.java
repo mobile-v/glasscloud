@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "order_order", schema = "main")
-public class OrderOrderEntity {
+public class OrderEntity {
     private Long id;
     private String number;
     private String desc;
@@ -16,7 +16,7 @@ public class OrderOrderEntity {
     private String summa;
     private Double area;
     private Double perimeter;
-    private ClientClientEntity client;
+    private ClientEntity client;
     private CompanyReceptionoforderEntity receptionOfOrder;
     private Timestamp creationDate;
     private Timestamp updateDate;
@@ -125,11 +125,11 @@ public class OrderOrderEntity {
     }
 
     @ManyToOne
-    public ClientClientEntity getClient() {
+    public ClientEntity getClient() {
         return client;
     }
 
-    public void setClient(ClientClientEntity client) {
+    public void setClient(ClientEntity client) {
         this.client = client;
     }
 

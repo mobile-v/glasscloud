@@ -4,8 +4,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "process_processtype", schema = "main", catalog = "")
-public class ProcessProcesstypeEntity {
-    private Short id;
+public class ProcessTypeEntity {
+    private Long id;
     private String name;
     private String desc;
     private Short companyId;
@@ -13,11 +13,11 @@ public class ProcessProcesstypeEntity {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Short getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Short id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -56,7 +56,7 @@ public class ProcessProcesstypeEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ProcessProcesstypeEntity that = (ProcessProcesstypeEntity) o;
+        ProcessTypeEntity that = (ProcessTypeEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;

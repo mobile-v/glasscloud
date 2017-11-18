@@ -4,19 +4,19 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "material_materialtype", schema = "main", catalog = "")
-public class MaterialMaterialtypeEntity {
-    private Short id;
+public class MaterialTypeEntity {
+    private Long id;
     private String name;
     private Short companyId;
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Short getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Short id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -45,7 +45,7 @@ public class MaterialMaterialtypeEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        MaterialMaterialtypeEntity that = (MaterialMaterialtypeEntity) o;
+        MaterialTypeEntity that = (MaterialTypeEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;

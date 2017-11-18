@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "client_client", schema = "main", catalog = "")
-public class ClientClientEntity {
+public class ClientEntity {
     private Long id;
     private String name;
     private Short inn;
@@ -13,7 +13,7 @@ public class ClientClientEntity {
     private String email;
     private String desc;
     private String discount;
-    private ClientClienttypeEntity clientType;
+    private ClientTypeEntity clientType;
 
     @Id
     @Column(name = "id")
@@ -98,11 +98,11 @@ public class ClientClientEntity {
 
     @ManyToOne
     @JoinColumn(name="client_type_id")
-    public ClientClienttypeEntity getClientType() {
+    public ClientTypeEntity getClientType() {
         return clientType;
     }
 
-    public void setClientType(ClientClienttypeEntity clientType) {
+    public void setClientType(ClientTypeEntity clientType) {
         this.clientType = clientType;
     }
 }

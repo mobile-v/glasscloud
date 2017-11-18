@@ -10,7 +10,7 @@ public class CompanyReceptionoforderEntity {
     private String orderNumPrefix;
     private String desc;
     private String address;
-    private CompanyCompanyEntity company;
+    private CompanyEntity company;
     private String phone;
 
     @Id
@@ -66,11 +66,11 @@ public class CompanyReceptionoforderEntity {
 
     @ManyToOne
     @JoinColumn(name = "company_id")
-    public CompanyCompanyEntity getCompany() {
+    public CompanyEntity getCompany() {
         return company;
     }
 
-    public void setCompany(CompanyCompanyEntity company) {
+    public void setCompany(CompanyEntity company) {
         this.company = company;
     }
 

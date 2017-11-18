@@ -1,7 +1,7 @@
 package ru.vmsystems.template.domain.shared;
 
 import ru.vmsystems.template.domain.model.OrderItemEntity;
-import ru.vmsystems.template.domain.model.OrderOrderEntity;
+import ru.vmsystems.template.domain.model.OrderEntity;
 import ru.vmsystems.template.interfaces.dto.OrderDto;
 import ru.vmsystems.template.interfaces.dto.OrderItemDto;
 
@@ -21,12 +21,12 @@ public class OrderTransformer {
         dto.setPerimeter(item.getPerimeter());
         dto.setProcessSum(item.getProcessSum());
         dto.setSumma(item.getSumma());
-        dto.setMaterialId(item.getMaterialId());
+        dto.setMaterial(MaterialTransformer.toDto(item.getMaterial()));
 
         return dto;
     }
 
-    public static OrderDto toDto(OrderOrderEntity order) {
+    public static OrderDto toDto(OrderEntity order) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 
         OrderDto dto = new OrderDto();

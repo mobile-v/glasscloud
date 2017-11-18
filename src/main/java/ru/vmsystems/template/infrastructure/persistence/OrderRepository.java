@@ -2,8 +2,8 @@ package ru.vmsystems.template.infrastructure.persistence;
 
 
 import org.springframework.data.repository.CrudRepository;
-import ru.vmsystems.template.domain.model.OrderOrderEntity;
+import ru.vmsystems.template.domain.model.OrderEntity;
 
-public interface OrderRepository extends CrudRepository<OrderOrderEntity, Long> {
+public interface OrderRepository extends CrudRepository<OrderEntity, Long> {
 
 }

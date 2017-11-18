@@ -3,10 +3,10 @@ package ru.vmsystems.template.domain.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "process_process", schema = "main", catalog = "")
-public class ProcessProcessEntity {
-    private Short id;
-    private Short depth;
+@Table(name = "process_process", schema = "main")
+public class ProcessEntity {
+    private Long id;
+    private Integer depth;
     private String price;
     private String desc;
     private Short typeId;
@@ -15,21 +15,21 @@ public class ProcessProcessEntity {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Short getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Short id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     @Basic
     @Column(name = "depth")
-    public Short getDepth() {
+    public Integer getDepth() {
         return depth;
     }
 
-    public void setDepth(Short depth) {
+    public void setDepth(Integer depth) {
         this.depth = depth;
     }
 
@@ -78,7 +78,7 @@ public class ProcessProcessEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ProcessProcessEntity that = (ProcessProcessEntity) o;
+        ProcessEntity that = (ProcessEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (depth != null ? !depth.equals(that.depth) : that.depth != null) return false;

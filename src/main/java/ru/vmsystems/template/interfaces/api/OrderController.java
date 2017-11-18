@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ru.vmsystems.template.domain.model.OrderOrderEntity;
+import ru.vmsystems.template.domain.model.OrderEntity;
 import ru.vmsystems.template.domain.shared.OrderTransformer;
 import ru.vmsystems.template.infrastructure.persistence.OrderItemRepository;
 import ru.vmsystems.template.infrastructure.persistence.OrderRepository;
@@ -53,12 +53,16 @@ public final class OrderController {
             @PathVariable(value = "orderId") Long orderId) {
 
         OrderDto result;
-        OrderOrderEntity order = orderRepository.findOne(orderId);
+        OrderEntity order = orderRepository.findOne(orderId);
         if (order == null){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
         result = OrderTransformer.toDto(order);
+        List<OrderItemDto> items = Lists.newArrayList();
+        orderItemRepository.getByOrderId(orderId)
+                .forEach(item -> items.add(OrderTransformer.toDto(item)));
+        result.setItems(items);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

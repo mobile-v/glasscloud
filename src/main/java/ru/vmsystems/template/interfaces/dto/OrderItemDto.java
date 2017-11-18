@@ -11,7 +11,7 @@ public class OrderItemDto {
     private Double perimeter;
     private String processSum;
     private String summa;
-    private Long materialId;
+    private MaterialDto material;
 
     public Long getId() {
         return id;
@@ -93,11 +93,11 @@ public class OrderItemDto {
         this.summa = summa;
     }
 
-    public Long getMaterialId() {
-        return materialId;
+    public MaterialDto getMaterial() {
+        return material;
     }
 
-    public void setMaterialId(Long materialId) {
-        this.materialId = materialId;
+    public void setMaterial(MaterialDto material) {
+        this.material = material;
     }
 }

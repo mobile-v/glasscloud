@@ -4,8 +4,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "order_itemprocess", schema = "main", catalog = "")
-public class OrderItemprocessEntity {
-    private Short id;
+public class OrderItemProcessEntity {
+    private Long id;
     private String summa;
     private String desc;
     private Short itemId;
@@ -14,11 +14,11 @@ public class OrderItemprocessEntity {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Short getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Short id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -67,7 +67,7 @@ public class OrderItemprocessEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        OrderItemprocessEntity that = (OrderItemprocessEntity) o;
+        OrderItemProcessEntity that = (OrderItemProcessEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (summa != null ? !summa.equals(that.summa) : that.summa != null) return false;

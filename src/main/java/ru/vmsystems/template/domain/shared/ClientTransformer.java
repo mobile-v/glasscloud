@@ -1,11 +1,11 @@
 package ru.vmsystems.template.domain.shared;
 
-import ru.vmsystems.template.domain.model.ClientClientEntity;
+import ru.vmsystems.template.domain.model.ClientEntity;
 import ru.vmsystems.template.interfaces.dto.ClientDto;
 
 class ClientTransformer {
 
-    static ClientDto toDto(ClientClientEntity entity) {
+    static ClientDto toDto(ClientEntity entity) {
         ClientDto dto = new ClientDto();
         dto.setId(entity.getId());
         dto.setDesc(entity.getDesc());
