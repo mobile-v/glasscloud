@@ -1,6 +1,5 @@
 package ru.vmsystems.template.application.config;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -12,16 +11,13 @@ import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
 @EnableSwagger2
-@EnableAutoConfiguration
-
 public class SwaggerConfig {
     @Bean
-    public Docket productApi() {
+    public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select().apis(RequestHandlerSelectors
                         .basePackage("ru.vmsystems.template.interfaces.api"))
                 .paths(regex("/api.*"))
                 .build();
-
     }
 }
