@@ -15,9 +15,7 @@ public class ReceptionOfOrderTransformer {
         dto.setAddress(entity.getAddress());
         dto.setPhone(entity.getPhone());
 
-        if (entity.getCompany() != null) {
-            dto.setCompany(CompanyTransformer.toDto(entity.getCompany()));
-        }
+        dto.setCompany(entity.getCompany() != null ? CompanyTransformer.toDto(entity.getCompany()) : null);
 
         return dto;
     }

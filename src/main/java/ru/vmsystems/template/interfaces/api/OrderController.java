@@ -1,5 +1,6 @@
 package ru.vmsystems.template.interfaces.api;
 
+import io.swagger.annotations.ApiOperation;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,7 @@ public final class OrderController {
     }
 
     //http://localhost:8080/api/order
+    @ApiOperation(value = "Получить список всех заказов")
     @NotNull
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<OrderDto>> getOrders() {
@@ -37,6 +39,7 @@ public final class OrderController {
     }
 
     //http://localhost:8080/api/order/1
+    @ApiOperation(value = "Получить заказ по id заказа")
     @NotNull
     @RequestMapping(value = "/{orderId}", method = RequestMethod.GET)
     public ResponseEntity<OrderDto> getOrder(@PathVariable(value = "orderId") Long orderId) {
@@ -49,6 +52,7 @@ public final class OrderController {
     }
 
     //http://localhost:8080/api/order/
+    @ApiOperation(value = "Создать новый заказ")
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<OrderDto> saveOrder(@RequestBody OrderDto order) {
         orderService.saveOrder(order);
@@ -56,6 +60,7 @@ public final class OrderController {
     }
 
     //http://localhost:8080/api/order/1/
+    @ApiOperation(value = "Удалить заказ по id заказа")
     @RequestMapping(value = "/{orderId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteOrder(@PathVariable(value = "orderId") Long orderId) {
         orderService.deleteOrder(orderId);

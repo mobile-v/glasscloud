@@ -15,9 +15,7 @@ class CompanyTransformer {
         dto.setAddress(entity.getAddress());
         dto.setPhone(entity.getPhone());
 
-        if (entity.getCompany() != null) {
-            dto.setCompany(toDto(entity.getCompany()));
-        }
+        dto.setCompany(entity.getCompany() != null ? toDto(entity.getCompany()) : null);
 
         return dto;
     }

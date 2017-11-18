@@ -1,5 +1,6 @@
 package ru.vmsystems.template.interfaces.api;
 
+import io.swagger.annotations.ApiOperation;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,7 @@ public final class ClientController {
 
     //http://localhost:8080/api/client
     @NotNull
+    @ApiOperation(value = "Получить список всех клиентов")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<ClientDto>> get() {
         List<ClientDto> result = clientService.get();
@@ -37,6 +39,7 @@ public final class ClientController {
 
     //http://localhost:8080/api/client/1
     @NotNull
+    @ApiOperation(value = "Получить клиента по id клиента")
     @RequestMapping(value = "/{clientId}", method = RequestMethod.GET)
     public ResponseEntity<ClientDto> get(@PathVariable(value = "clientId") Long clientId) {
 
@@ -48,6 +51,7 @@ public final class ClientController {
     }
 
     //http://localhost:8080/api/client/
+    @ApiOperation(value = "Создать нового клиента")
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<ClientDto> save(@RequestBody ClientDto client) {
         clientService.save(client);
@@ -55,6 +59,7 @@ public final class ClientController {
     }
 
 //    //http://localhost:8080/api/client/1/
+//    @ApiOperation(value = "Удалить клиента по id клиента")
 //    @RequestMapping(value = "/{clientId}", method = RequestMethod.DELETE)
 //    public ResponseEntity<?> delete(@PathVariable(value = "clientId") Long clientId) {
 //        clientService.delete(clientId);

@@ -14,8 +14,8 @@ public class MaterialTransformer {
         dto.setLength(entity.getLength());
         dto.setWidth(entity.getWidth());
         dto.setPrice(entity.getPrice());
-        dto.setColor(entity.getColor().getName());
-        dto.setType(entity.getType().getName());
+        dto.setColor(entity.getColor() != null ? entity.getColor().getName() : null);
+        dto.setType(entity.getType() != null ? entity.getType().getName() : null);
 
         return dto;
     }

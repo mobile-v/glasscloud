@@ -17,9 +17,7 @@ public class ClientTransformer {
         dto.setEmail(entity.getEmail());
         dto.setDiscount(entity.getDiscount());
 
-        if (entity.getClientType() != null) {
-            dto.setType(entity.getClientType().getName());
-        }
+        dto.setType(entity.getClientType() != null ? entity.getClientType().getName() : null);
 
         return dto;
     }
