@@ -1,14 +1,16 @@
 package ru.vmsystems.template.domain.model;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
-@Table(name = "process_processtype", schema = "main", catalog = "")
+@Table(name = "process_processtype", schema = "main")
 public class ProcessTypeEntity {
     private Long id;
     private String name;
     private String desc;
-    private Short companyId;
+    private Timestamp lastUpdate;
+    private CompanyEntity company;
 
     @Id
     @Column(name = "id")
@@ -42,36 +44,21 @@ public class ProcessTypeEntity {
     }
 
     @Basic
-    @Column(name = "company_id")
-    public Short getCompanyId() {
-        return companyId;
+    @Column(name = "last_updated")
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
     }
 
-    public void setCompanyId(Short companyId) {
-        this.companyId = companyId;
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ProcessTypeEntity that = (ProcessTypeEntity) o;
-
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (desc != null ? !desc.equals(that.desc) : that.desc != null) return false;
-        if (companyId != null ? !companyId.equals(that.companyId) : that.companyId != null) return false;
-
-        return true;
+    @ManyToOne
+    public CompanyEntity getCompany() {
+        return company;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (desc != null ? desc.hashCode() : 0);
-        result = 31 * result + (companyId != null ? companyId.hashCode() : 0);
-        return result;
+    public void setCompany(CompanyEntity company) {
+        this.company = company;
     }
 }
