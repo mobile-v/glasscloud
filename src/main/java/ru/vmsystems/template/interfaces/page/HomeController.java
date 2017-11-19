@@ -34,7 +34,7 @@ public class HomeController {
 
     @RequestMapping({"/"})
     public String redirectToIndex() {
-        return "redirect:/search";
+        return "redirect:/glass/index.html";
     }
 
     @RequestMapping({"/admin"})
