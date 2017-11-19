@@ -2,6 +2,7 @@ package ru.vmsystems.template.domain.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "process_process", schema = "main")
@@ -13,6 +14,7 @@ public class ProcessEntity {
     private Timestamp lastUpdate;
     private ProcessTypeEntity type;
     private CompanyEntity company;
+    private List<MaterialEntity> material;
 
     @Id
     @Column(name = "id")
@@ -81,5 +83,17 @@ public class ProcessEntity {
 
     public void setCompany(CompanyEntity company) {
         this.company = company;
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "PROCESS_PROCESS_MATERIAL_TYPE",
+            joinColumns = @JoinColumn(name = "PROCESS_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "MATERIALTYPE_ID", referencedColumnName = "ID"))
+    public List<MaterialEntity> getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(List<MaterialEntity> material) {
+        this.material = material;
     }
 }
