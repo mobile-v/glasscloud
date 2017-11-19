@@ -33,6 +33,8 @@ public class SecureConfig {
 //                        collection.addPattern("/*");
                         collection.addPattern("/admin/*");
                         collection.addPattern("/api/*");
+                        collection.addPattern("/v2/*");
+                        collection.addPattern("/swagger-ui.html");
                         collection.addPattern("/login");
                         securityConstraint.addCollection(collection);
                         context.addConstraint(securityConstraint);
