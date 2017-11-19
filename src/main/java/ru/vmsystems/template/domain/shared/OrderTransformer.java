@@ -30,7 +30,7 @@ public class OrderTransformer {
         dto.setUpdateDate(formatter.format(new Date(order.getUpdateDate().getTime())));
 
         dto.setClient(ClientTransformer.toDto(order.getClient()));
-        dto.setReceptionOfOrder(CompanyTransformer.toDto(order.getReceptionOfOrder()));
+        dto.setReceptionOfOrder(ReceptionOfOrderTransformer.toDto(order.getReceptionOfOrder()));
 
         return dto;
     }

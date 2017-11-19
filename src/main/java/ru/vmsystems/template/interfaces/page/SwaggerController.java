@@ -16,6 +16,7 @@ public class SwaggerController {
     @Autowired
     private HttpServletRequest httpServletRequest;
 
+    //http://localhost:8080/swagger-ui.html
     @RequestMapping(value="/swagger-ui.html", method= RequestMethod.GET)
     public String getPageAdmin() {
         return "swagger/swagger-ui";
