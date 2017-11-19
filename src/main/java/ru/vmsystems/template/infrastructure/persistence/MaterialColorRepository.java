@@ -7,8 +7,9 @@ import ru.vmsystems.template.domain.model.MaterialColorEntity;
 
 import java.util.List;
 
-public interface ColorRepository extends CrudRepository<MaterialColorEntity, Long> {
+public interface MaterialColorRepository extends CrudRepository<MaterialColorEntity, Long> {
 
     List<MaterialColorEntity> getByCompanyId(Long companyId);
+
     List<MaterialColorEntity> getByCompany(CompanyEntity company);
 }

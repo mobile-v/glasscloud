@@ -1,6 +1,7 @@
 package ru.vmsystems.template.domain.model;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "material_material", schema = "main")
@@ -14,6 +15,7 @@ public class MaterialEntity {
     private MaterialColorEntity color;
     private MaterialTypeEntity type;
     private CompanyEntity company;
+    private Timestamp lastUpdate;
 
     @Id
     @Column(name = "id")
@@ -101,5 +103,15 @@ public class MaterialEntity {
 
     public void setCompany(CompanyEntity company) {
         this.company = company;
+    }
+
+    @Basic
+    @Column(name = "last_updated")
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 }

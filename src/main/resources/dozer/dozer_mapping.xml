@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozer.sourceforge.net
+      http://dozer.sourceforge.net/schema/beanmapping.xsd">
+    <mapping>
+        <class-a>ru.vmsystems.template.domain.model.MaterialEntity</class-a>
+        <class-b>ru.vmsystems.template.interfaces.dto.MaterialDto</class-b>
+        <field>
+            <a>type.name</a>
+            <b>type</b>
+        </field>
+        <field>
+            <a>color.name</a>
+            <b>color</b>
+        </field>
+    </mapping>
+</mappings>

@@ -1,14 +1,18 @@
-package ru.vmsystems.template.application.config.security;
+package ru.vmsystems.template.application.config;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Collections;
 
 @Configuration
 public class DozerBeanConfig {
 
     @Bean
     public DozerBeanMapper dozerBeanMapper() {
-        return new DozerBeanMapper();
+        DozerBeanMapper mapper = new DozerBeanMapper();
+        mapper.setMappingFiles(Collections.singletonList("classpath:/dozer/dozer_mapping.xml"));
+        return mapper;
     }
 }

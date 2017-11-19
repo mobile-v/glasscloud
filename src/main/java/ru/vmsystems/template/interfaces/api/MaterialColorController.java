@@ -10,10 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.vmsystems.template.domain.model.MaterialColorEntity;
 import ru.vmsystems.template.domain.model.user.UserEntity;
-import ru.vmsystems.template.infrastructure.persistence.ColorRepository;
+import ru.vmsystems.template.infrastructure.persistence.MaterialColorRepository;
 import ru.vmsystems.template.infrastructure.persistence.UserRepository;
 import ru.vmsystems.template.interfaces.dto.MaterialColorDto;
-import ru.vmsystems.template.interfaces.dto.ReceptionOfOrderDto;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -22,12 +21,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/material/color")
-public final class ColorController {
+public final class MaterialColorController {
     @NotNull
-    private static final Logger LOG = LoggerFactory.getLogger(ColorController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MaterialColorController.class);
 
     @NotNull
-    private final ColorRepository repository;
+    private final MaterialColorRepository repository;
     @NotNull
     private final DozerBeanMapper mapper;
     @NotNull
@@ -36,10 +35,10 @@ public final class ColorController {
     private final HttpServletRequest httpServletRequest;
 
     @Autowired
-    public ColorController(@NotNull ColorRepository repository,
-                           @NotNull DozerBeanMapper mapper,
-                           @NotNull UserRepository userRepository,
-                           @NotNull HttpServletRequest httpServletRequest) {
+    public MaterialColorController(@NotNull MaterialColorRepository repository,
+                                   @NotNull DozerBeanMapper mapper,
+                                   @NotNull UserRepository userRepository,
+                                   @NotNull HttpServletRequest httpServletRequest) {
         this.repository = repository;
         this.mapper = mapper;
         this.userRepository = userRepository;
@@ -65,7 +64,7 @@ public final class ColorController {
     public ResponseEntity<MaterialColorDto> get(@PathVariable(value = "colorId") Long colorId) {
 
         MaterialColorDto color = mapper.map(repository.findOne(colorId), MaterialColorDto.class);
-        return new ResponseEntity<>(color, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(color, HttpStatus.OK);
     }
 
     //http://localhost:8080/api/material/color/
