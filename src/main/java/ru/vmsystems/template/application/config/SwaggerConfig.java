@@ -17,6 +17,7 @@ import java.util.List;
 import static springfox.documentation.builders.PathSelectors.regex;
 
 //http://localhost:8080/swagger-ui.html
+//http://82.202.226.239:8080/swagger-ui.html
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
