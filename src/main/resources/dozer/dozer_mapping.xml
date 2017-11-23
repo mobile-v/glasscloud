@@ -15,4 +15,24 @@
             <b>color</b>
         </field>
     </mapping>
+    <mapping>
+        <class-a>ru.vmsystems.template.domain.model.ClientEntity</class-a>
+        <class-b>ru.vmsystems.template.interfaces.dto.ClientDto</class-b>
+        <field>
+            <a>clientType.name</a>
+            <b>type</b>
+        </field>
+    </mapping>
+    <mapping  date-format="yyyy-MM-dd HH:mm">
+        <class-a>ru.vmsystems.template.domain.model.OrderEntity</class-a>
+        <class-b>ru.vmsystems.template.interfaces.dto.OrderDto</class-b>
+        <field>
+            <a>creationDate</a>
+            <b>creationDate</b>
+        </field>
+        <field>
+            <a>updateDate</a>
+            <b>updateDate</b>
+        </field>
+    </mapping>
 </mappings>

@@ -3,7 +3,7 @@ package ru.vmsystems.template.domain.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "client_clienttype", schema = "main", catalog = "")
+@Table(name = "client_clienttype", schema = "main")
 public class ClientTypeEntity {
     private Long id;
     private String name;

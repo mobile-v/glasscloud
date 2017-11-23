@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.vmsystems.template.domain.model.user.UserEntity;
 import ru.vmsystems.template.domain.service.OrderService;
+import ru.vmsystems.template.infrastructure.persistence.UserRepository;
 import ru.vmsystems.template.interfaces.dto.OrderDto;
 import ru.vmsystems.template.interfaces.dto.OrderItemDto;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,10 +26,18 @@ public final class OrderController {
 
     @NotNull
     private final OrderService orderService;
+    @NotNull
+    private final UserRepository userRepository;
+    @NotNull
+    private final HttpServletRequest httpServletRequest;
 
     @Autowired
-    public OrderController(@NotNull OrderService orderService) {
+    public OrderController(@NotNull OrderService orderService,
+                           @NotNull HttpServletRequest httpServletRequest,
+                           @NotNull UserRepository userRepository) {
         this.orderService = orderService;
+        this.httpServletRequest = httpServletRequest;
+        this.userRepository = userRepository;
     }
 
     //http://localhost:8080/api/order
@@ -52,10 +63,13 @@ public final class OrderController {
     }
 
     //http://localhost:8080/api/order/
-    @ApiOperation(value = "Создать новый заказ")
+    @ApiOperation(value = "Создать новый / обновить заказ")
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<OrderDto> saveOrder(@RequestBody OrderDto order) {
-        orderService.saveOrder(order);
+        Optional<UserEntity> user = userRepository.getByLogin(httpServletRequest.getRemoteUser());
+        if (!user.isPresent()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+
+        order = orderService.saveOrder(order);
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
