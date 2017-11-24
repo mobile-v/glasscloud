@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/material/color")
-public final class MaterialColorController {
+public class MaterialColorController {
     @NotNull
     private static final Logger LOG = LoggerFactory.getLogger(MaterialColorController.class);
 

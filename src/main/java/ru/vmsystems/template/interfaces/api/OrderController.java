@@ -22,7 +22,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/order")
-public final class OrderController {
+public class OrderController {
     @NotNull
     private static final Logger LOG = LoggerFactory.getLogger(OrderController.class);
 

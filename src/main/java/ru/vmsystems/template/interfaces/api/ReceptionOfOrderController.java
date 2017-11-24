@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/receptionOfOrder")
-public final class ReceptionOfOrderController {
+public class ReceptionOfOrderController {
     @NotNull
     private static final Logger LOG = LoggerFactory.getLogger(ReceptionOfOrderController.class);
 

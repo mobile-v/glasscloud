@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/process")
-public final class ProcessController {
+public class ProcessController {
     @NotNull
     private static final Logger LOG = LoggerFactory.getLogger(ProcessController.class);
 

@@ -29,7 +29,7 @@ public class SwaggerController {
     //http://localhost:8080/swagger-ui.html
     //http://82.202.226.239:8080/swagger-ui.html
     @RequestMapping(value="/swagger-ui.html", method= RequestMethod.GET)
-    @Secured("ROLE_ADMIN")
+//    @Secured("ROLE_ADMIN")
 //    @RolesAllowed("manager")
 //    @PreAuthorize("hasRole('ROLE_USER')")
     @PreAuthorize("@moduleSecurity.swaggerPermitted")

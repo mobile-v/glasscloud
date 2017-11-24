@@ -2,9 +2,9 @@ package ru.vmsystems.template.domain.shared;
 
 public enum Role {
 
-    ROLE_USER("ROLE_USER", "Пользователь"),
-    ROLE_DEVICE("ROLE_DEVICE", "Устройство"),
-    ROLE_ADMIN("ROLE_ADMIN", "Администратор");
+    ROLE_SUPER_ADMIN("ROLE_SUPER_ADMIN", "Супер админ"),
+    ROLE_ADMIN("ROLE_ADMIN", "Администратор"),
+    ROLE_USER("ROLE_USER", "Пользователь");
 
     private String role;
     private String comment;

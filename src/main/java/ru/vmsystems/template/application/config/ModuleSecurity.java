@@ -1,4 +1,4 @@
-package ru.vmsystems.template.application;
+package ru.vmsystems.template.application.config;
 
 import org.springframework.stereotype.Component;
 

@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/client")
-public final class ClientController {
+public class ClientController {
     @NotNull
     private static final Logger LOG = LoggerFactory.getLogger(ClientController.class);
 

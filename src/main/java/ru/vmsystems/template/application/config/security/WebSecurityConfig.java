@@ -46,21 +46,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests()
-//                .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
+//                .antMatchers("/api/**").permitAll()
+
+                .antMatchers("/swagger-ui.html").hasAnyAuthority(Role.ROLE_SUPER_ADMIN.toString())
+                .antMatchers("/v2/**").hasAnyAuthority(Role.ROLE_SUPER_ADMIN.toString())
 
                 .antMatchers("/admin/**").hasAnyAuthority(Role.ROLE_ADMIN.toString())
-//                .antMatchers("/examples/**").hasAnyAuthority(Role.ROLE_ADMIN.toString())
 
-                //FIXME убрать разрешение ддля всех (пока для наладки)
-//                .antMatchers("/api/**").hasAnyAuthority(Role.ROLE_ADMIN.toString(), Role.ROLE_DEVICE.toString())
-//                .antMatchers("/api/**").permitAll()
-                .antMatchers("/api/**").hasAnyAuthority(Role.ROLE_ADMIN.toString())
-                .antMatchers("/v2/**").hasAnyAuthority(Role.ROLE_ADMIN.toString())
-                .antMatchers("/glass/**").hasAnyAuthority(Role.ROLE_ADMIN.toString())
-//                .antMatchers("/swagger-ui.html").hasAnyAuthority(Role.ROLE_ADMIN.toString())
+                .antMatchers("/").hasAnyAuthority(Role.ROLE_SUPER_ADMIN.toString(), Role.ROLE_ADMIN.toString(), Role.ROLE_USER.toString())
+                .antMatchers("/api/**").hasAnyAuthority(Role.ROLE_SUPER_ADMIN.toString(), Role.ROLE_ADMIN.toString(), Role.ROLE_USER.toString())
+                .antMatchers("/glass/**").hasAnyAuthority(Role.ROLE_SUPER_ADMIN.toString(), Role.ROLE_ADMIN.toString(), Role.ROLE_USER.toString())
 
-                .antMatchers("/ws/**").hasAnyAuthority(Role.ROLE_ADMIN.toString())
-                .antMatchers("/").hasAnyAuthority(Role.ROLE_ADMIN.toString())
                 .and()
                 .formLogin().loginPage("/login").defaultSuccessUrl("/", false)
                 .and()
