@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "f3e5e181d5c58f814732"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "2b124da80041c7eb4586"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -722,7 +722,7 @@
 /******/ 	__webpack_require__.h = function() { return hotCurrentHash; };
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return hotCreateRequire(22)(__webpack_require__.s = 22);
+/******/ 	return hotCreateRequire(23)(__webpack_require__.s = 23);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -3599,7 +3599,8 @@ module.exports = {"layout":"layout-eckJb"};
 /* 19 */,
 /* 20 */,
 /* 21 */,
-/* 22 */
+/* 22 */,
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

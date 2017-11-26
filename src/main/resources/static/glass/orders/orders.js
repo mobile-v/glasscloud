@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "f3e5e181d5c58f814732"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "2b124da80041c7eb4586"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -241,7 +241,7 @@
 /******/ 				};
 /******/ 			});
 /******/ 			hotUpdate = {};
-/******/ 			var chunkId = 0;
+/******/ 			var chunkId = 1;
 /******/ 			{ // eslint-disable-line no-lone-blocks
 /******/ 				/*globals chunkId */
 /******/ 				hotEnsureUpdateChunk(chunkId);
@@ -722,7 +722,7 @@
 /******/ 	__webpack_require__.h = function() { return hotCurrentHash; };
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return hotCreateRequire(26)(__webpack_require__.s = 26);
+/******/ 	return hotCreateRequire(24)(__webpack_require__.s = 24);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -3736,7 +3736,7 @@ DataTable.HeaderRow = function (props) {
 DataTable.Row = function (props) {
   return _react2.default.createElement(
     'tr',
-    { className: '' + _index2.default.row },
+    { className: '' + _index2.default.row, onClick: props.onClick },
     props.children
   );
 };
@@ -3986,9 +3986,7 @@ module.exports = {"header":"header-3DJUc","header-menu":"header-menu-1RgNg","men
 /***/ }),
 /* 22 */,
 /* 23 */,
-/* 24 */,
-/* 25 */,
-/* 26 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4012,13 +4010,9 @@ var _title = __webpack_require__(16);
 
 var _title2 = _interopRequireDefault(_title);
 
-var _orderTable = __webpack_require__(27);
+var _ordersTable = __webpack_require__(25);
 
-var _orderTable2 = _interopRequireDefault(_orderTable);
-
-var _orderItems = __webpack_require__(31);
-
-var _orderItems2 = _interopRequireDefault(_orderItems);
+var _ordersTable2 = _interopRequireDefault(_ordersTable);
 
 var _header = __webpack_require__(20);
 
@@ -4048,10 +4042,8 @@ var OrdersPage = function (_React$Component) {
         'div',
         null,
         _react2.default.createElement(_header2.default, null),
-        _react2.default.createElement(_title2.default, { text: '\u0417\u0430\u043A\u0430\u0437', size: 'l' }),
-        _react2.default.createElement(_orderTable2.default, null),
-        _react2.default.createElement(_title2.default, { text: '\u0421\u043E\u0441\u0442\u0430\u0432 \u0437\u0430\u043A\u0430\u0437\u0430', size: 'm' }),
-        _react2.default.createElement(_orderItems2.default, null)
+        _react2.default.createElement(_title2.default, { text: '\u0421\u043F\u0438\u0441\u043E\u043A \u0437\u0430\u043A\u0430\u0437\u043E\u0432', size: 'l' }),
+        _react2.default.createElement(_ordersTable2.default, null)
       );
     }
   }]);
@@ -4066,7 +4058,7 @@ _reactDom2.default.render(_react2.default.createElement(
 ), document.querySelector('.page'));
 
 /***/ }),
-/* 27 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4081,10 +4073,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
-
-var _classnames = __webpack_require__(14);
-
-var _classnames2 = _interopRequireDefault(_classnames);
 
 var _dataTable = __webpack_require__(15);
 
@@ -4092,11 +4080,7 @@ var _dataTable2 = _interopRequireDefault(_dataTable);
 
 var _orders = __webpack_require__(19);
 
-var _select = __webpack_require__(28);
-
-var _select2 = _interopRequireDefault(_select);
-
-var _index = __webpack_require__(30);
+var _index = __webpack_require__(26);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -4108,57 +4092,34 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var columnsOrder = _orders.orderMeta.columnsOrder;
+var columnsOrder = _orders.tableMeta.columnsOrder;
 
-
-function formatReception(value) {
-  return _react2.default.createElement(
-    _dataTable2.default.Cell,
-    { className: (0, _classnames2.default)(_index2.default['select-cell']) },
-    _react2.default.createElement(
-      _select2.default,
-      { className: _index2.default['reception-select'] },
-      _react2.default.createElement(
-        _select2.default.Option,
-        null,
-        value
-      ),
-      _react2.default.createElement(
-        _select2.default.Option,
-        null,
-        value
-      ),
-      _react2.default.createElement(
-        _select2.default.Option,
-        null,
-        value
-      ),
-      _react2.default.createElement(
-        _select2.default.Option,
-        null,
-        value
-      )
-    )
-  );
-}
 
 function formatCell(value, col) {
   switch (col) {
     case 'client':
       return _react2.default.createElement(
         _dataTable2.default.Cell,
-        { className: _index2.default['order-info-cell'] },
+        { className: _index2.default['order-cell'] },
         value.name
       );
     case 'receptionOfOrder':
-      return formatReception(value.desc);
+      return _react2.default.createElement(
+        _dataTable2.default.Cell,
+        { className: _index2.default['order-cell'] },
+        value.desc
+      );
     default:
       return _react2.default.createElement(
         _dataTable2.default.Cell,
-        { className: _index2.default['order-info-cell'] },
+        { className: _index2.default['order-cell'] },
         value
       );
   }
+}
+
+function onOrderSelect(id) {
+  window.location.href = './order?id=' + id;
 }
 
 var OrdersTable = function (_React$Component) {
@@ -4170,240 +4131,7 @@ var OrdersTable = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (OrdersTable.__proto__ || Object.getPrototypeOf(OrdersTable)).call(this));
 
     _this.state = {
-      order: {},
-      columnsOrder: []
-    };
-    return _this;
-  }
-
-  _createClass(OrdersTable, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      var order = {
-        id: 1,
-        number: 'C_1',
-        desc: '',
-        accountNumber: '',
-        discount: '0',
-        discountSum: '11150',
-        count: 3,
-        summa: '11150',
-        area: 3.0,
-        perimeter: 12.0,
-        client: {
-          id: 1,
-          name: 'Петров Петр',
-          inn: -7616,
-          account: '100000000000000000000000',
-          phone: '911',
-          email: 'glass-cloud@yandex.ru',
-          desc: '',
-          discount: '0',
-          type: 'Юридическое лицо'
-        },
-        receptionOfOrder: {
-          id: 2,
-          name: null,
-          orderNumPrefix: 'САВА',
-          desc: 'Савеловская',
-          address: 'м. Савеловская',
-          company: {
-            id: 1,
-            name: 'ВМ системы'
-          },
-          phone: '911'
-        },
-        creationDate: '2017-05-20 07:55',
-        updateDate: '2017-05-20 07:54',
-        items: null
-      };
-      this.prepareTableData(order);
-    }
-  }, {
-    key: 'prepareTableData',
-    value: function prepareTableData(order) {
-      this.setState({ order: order, columnsOrder: columnsOrder });
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this2 = this;
-
-      return _react2.default.createElement(
-        _dataTable2.default,
-        null,
-        _react2.default.createElement(
-          _dataTable2.default.Head,
-          null,
-          _react2.default.createElement(
-            _dataTable2.default.HeaderRow,
-            null,
-            this.state.columnsOrder.map(function (col) {
-              return _react2.default.createElement(
-                _dataTable2.default.HeaderCell,
-                null,
-                _orders.ordersMeta[col].title || ''
-              );
-            })
-          )
-        ),
-        _react2.default.createElement(
-          _dataTable2.default.Body,
-          null,
-          _react2.default.createElement(
-            _dataTable2.default.Row,
-            null,
-            this.state.columnsOrder.map(function (col) {
-              return formatCell(_this2.state.order[col], col);
-            })
-          )
-        )
-      );
-    }
-  }]);
-
-  return OrdersTable;
-}(_react2.default.Component);
-
-exports.default = OrdersTable;
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _classnames = __webpack_require__(14);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _index = __webpack_require__(29);
-
-var _index2 = _interopRequireDefault(_index);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Select = function (_React$Component) {
-  _inherits(Select, _React$Component);
-
-  function Select() {
-    _classCallCheck(this, Select);
-
-    return _possibleConstructorReturn(this, (Select.__proto__ || Object.getPrototypeOf(Select)).apply(this, arguments));
-  }
-
-  _createClass(Select, [{
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        { className: (0, _classnames2.default)(_index2.default.select, this.props.className) },
-        _react2.default.createElement(
-          'select',
-          { className: _index2.default.control },
-          this.props.children
-        )
-      );
-    }
-  }]);
-
-  return Select;
-}(_react2.default.Component);
-
-Select.Option = function (props) {
-  return _react2.default.createElement(
-    'option',
-    null,
-    props.children
-  );
-};
-
-exports.default = Select;
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"select":"select-sY9e_","control":"control-33GvV"};
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"select-cell":"select-cell-2OSCk","reception-select":"reception-select-34VOF"};
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _dataTable = __webpack_require__(15);
-
-var _dataTable2 = _interopRequireDefault(_dataTable);
-
-var _items = __webpack_require__(32);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function formatCell(value, col) {
-  switch (col) {
-    default:
-      return _react2.default.createElement(
-        _dataTable2.default.Cell,
-        null,
-        value
-      );
-  }
-}
-
-var OrdersTable = function (_React$Component) {
-  _inherits(OrdersTable, _React$Component);
-
-  function OrdersTable() {
-    _classCallCheck(this, OrdersTable);
-
-    var _this = _possibleConstructorReturn(this, (OrdersTable.__proto__ || Object.getPrototypeOf(OrdersTable)).call(this));
-
-    _this.state = {
-      items: [],
-      columnsOrder: []
+      orders: null
     };
     return _this;
   }
@@ -4413,23 +4141,21 @@ var OrdersTable = function (_React$Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      fetch('https://92.63.91.60:8443/api/order/1/items').then(function (res) {
+      fetch('/api/order').then(function (res) {
         return res.json();
-      }).then(function (items) {
-        return _this2.prepareTableData(items);
+      }).then(function (orders) {
+        return _this2.prepareTableData(orders);
       });
     }
   }, {
     key: 'prepareTableData',
-    value: function prepareTableData(items) {
-      this.setState({ items: items, columnsOrder: _items.columnsOrder });
+    value: function prepareTableData(orders) {
+      this.setState({ orders: orders });
     }
   }, {
-    key: 'render',
-    value: function render() {
-      var _this3 = this;
-
-      return _react2.default.createElement(
+    key: 'renderTable',
+    value: function renderTable() {
+      return this.state.orders ? _react2.default.createElement(
         _dataTable2.default,
         null,
         _react2.default.createElement(
@@ -4438,11 +4164,11 @@ var OrdersTable = function (_React$Component) {
           _react2.default.createElement(
             _dataTable2.default.HeaderRow,
             null,
-            this.state.columnsOrder.map(function (col) {
+            columnsOrder.map(function (col) {
               return _react2.default.createElement(
                 _dataTable2.default.HeaderCell,
                 null,
-                _items.itemsMeta[col].title || ''
+                _orders.ordersMeta[col].title
               );
             })
           )
@@ -4450,17 +4176,24 @@ var OrdersTable = function (_React$Component) {
         _react2.default.createElement(
           _dataTable2.default.Body,
           null,
-          this.state.items.map(function (item) {
+          this.state.orders.map(function (order) {
             return _react2.default.createElement(
               _dataTable2.default.Row,
-              null,
-              _this3.state.columnsOrder.map(function (col) {
-                return formatCell(item[col], col);
+              { onClick: function onClick() {
+                  return onOrderSelect(order.id);
+                } },
+              columnsOrder.map(function (col) {
+                return formatCell(order[col], col);
               })
             );
           })
         )
-      );
+      ) : null;
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return this.renderTable();
     }
   }]);
 
@@ -4470,53 +4203,11 @@ var OrdersTable = function (_React$Component) {
 exports.default = OrdersTable;
 
 /***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 26 */
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-var itemsMeta = {
-  number: {
-    title: '#'
-  },
-  lenght: {
-    title: 'Длинна'
-  },
-  width: {
-    title: 'Ширина'
-  },
-  area: {
-    title: 'Площадь'
-  },
-  perimeter: {
-    title: 'Периметр'
-  },
-  count: {
-    title: 'Количество'
-  },
-  processSum: {
-    title: 'Сумма'
-  }
-};
-
-var columnsOrder = ['number', 'lenght', 'width', 'area', 'perimeter', 'count', 'processSum'];
-
-module.exports = { itemsMeta: itemsMeta, columnsOrder: columnsOrder };
-
-// {
-//   "id": 1,
-//   "desc": "",
-//   "number": "1",
-//   "length": 1000.0,
-//   "width": null,
-//   "count": 1,
-//   "area": 1.0,
-//   "perimeter": 4.0,
-//   "processSum": "720",
-//   "summa": "1370",
-//   "materialId": 2
-// }
+// removed by extract-text-webpack-plugin
+module.exports = {"order-cell":"order-cell-26mtM"};
 
 /***/ })
 /******/ ]);

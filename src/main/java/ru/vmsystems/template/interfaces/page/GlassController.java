@@ -22,15 +22,15 @@ public class GlassController {
         return "glass/index";
     }
 
-    //http://localhost:8080/glass/order.html
-    @RequestMapping(value="/order.html", method= RequestMethod.GET)
+    //http://localhost:8080/glass/order/index.html
+    @RequestMapping(value="/order", method= RequestMethod.GET)
     public String glassOrder() {
-        return "glass/order";
+        return "glass/order/index";
     }
 
-    //http://localhost:8080/glass/orders.html
-    @RequestMapping(value="/orders.html", method= RequestMethod.GET)
+    //http://localhost:8080/glass/orders/index.html
+    @RequestMapping(value="/orders", method= RequestMethod.GET)
     public String glassOrders() {
-        return "glass/orders";
+        return "glass/orders/index";
     }
 }

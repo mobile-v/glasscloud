@@ -38,6 +38,9 @@ html, body {
 .row_header-ZVuYp:hover {
   background: none;
 }
+.order-cell-26mtM {
+  cursor: pointer;
+}
 .header-3DJUc {
   width: 100%;
   height: 65px;
@@ -71,22 +74,4 @@ html, body {
 .menu-item-1PPMS:hover {
   background: rgba(255, 255, 255, .4);
   cursor: pointer;
-}
-.select-sY9e_ {
-  border: 1px solid #ddd;
-}
-
-.control-33GvV {
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  border: none;
-  outline: none;
-}
-.select-cell-2OSCk {
-  padding: 0;
-}
-
-.reception-select-34VOF {
-  height: 26px;
 }

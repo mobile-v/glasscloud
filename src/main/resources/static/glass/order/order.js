@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "f3e5e181d5c58f814732"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "2b124da80041c7eb4586"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -241,7 +241,7 @@
 /******/ 				};
 /******/ 			});
 /******/ 			hotUpdate = {};
-/******/ 			var chunkId = 1;
+/******/ 			var chunkId = 0;
 /******/ 			{ // eslint-disable-line no-lone-blocks
 /******/ 				/*globals chunkId */
 /******/ 				hotEnsureUpdateChunk(chunkId);
@@ -722,7 +722,7 @@
 /******/ 	__webpack_require__.h = function() { return hotCurrentHash; };
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return hotCreateRequire(23)(__webpack_require__.s = 23);
+/******/ 	return hotCreateRequire(27)(__webpack_require__.s = 27);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -3736,7 +3736,7 @@ DataTable.HeaderRow = function (props) {
 DataTable.Row = function (props) {
   return _react2.default.createElement(
     'tr',
-    { className: '' + _index2.default.row },
+    { className: '' + _index2.default.row, onClick: props.onClick },
     props.children
   );
 };
@@ -3984,12 +3984,58 @@ module.exports = function (_React$Component) {
 module.exports = {"header":"header-3DJUc","header-menu":"header-menu-1RgNg","menu-item":"menu-item-1PPMS"};
 
 /***/ }),
-/* 22 */,
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+
+module.exports = {
+  host: '/api',
+
+  request: function request(path) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    var myHeaders = new Headers();
+    myHeaders.append('Accept', '*/*');
+
+    return fetch(this.host + '/' + path, Object.assign({}, { Headers: myHeaders }, options)).then(function (res) {
+      return res.json();
+    });
+  },
+  getOrder: function getOrder(id) {
+    return this.request('order/' + id);
+  },
+  updateOrder: function updateOrder(data) {
+    return Promise.resolve(data);
+    // return this.request(
+    //   'order',
+    //   {
+    //     method: 'POST',
+    //     data,
+    //   },
+    // );
+  },
+  getOrderItems: function getOrderItems(id) {
+    return this.request('order/' + id + '/items');
+  },
+  getReceptionsList: function getReceptionsList() {
+    return this.request('receptionOfOrder');
+  }
+};
+
+/***/ }),
+/* 23 */,
+/* 24 */,
+/* 25 */,
+/* 26 */,
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -4001,6 +4047,10 @@ var _reactDom = __webpack_require__(0);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
+var _urlParse = __webpack_require__(28);
+
+var _urlParse2 = _interopRequireDefault(_urlParse);
+
 var _pageLayout = __webpack_require__(12);
 
 var _pageLayout2 = _interopRequireDefault(_pageLayout);
@@ -4009,13 +4059,21 @@ var _title = __webpack_require__(16);
 
 var _title2 = _interopRequireDefault(_title);
 
-var _ordersTable = __webpack_require__(24);
+var _orderTable = __webpack_require__(32);
 
-var _ordersTable2 = _interopRequireDefault(_ordersTable);
+var _orderTable2 = _interopRequireDefault(_orderTable);
+
+var _orderItems = __webpack_require__(36);
+
+var _orderItems2 = _interopRequireDefault(_orderItems);
 
 var _header = __webpack_require__(20);
 
 var _header2 = _interopRequireDefault(_header);
+
+var _api = __webpack_require__(22);
+
+var _api2 = _interopRequireDefault(_api);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4025,39 +4083,982 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var OrdersPage = function (_React$Component) {
-  _inherits(OrdersPage, _React$Component);
+var OrderPage = function (_React$Component) {
+  _inherits(OrderPage, _React$Component);
 
-  function OrdersPage() {
-    _classCallCheck(this, OrdersPage);
+  function OrderPage() {
+    _classCallCheck(this, OrderPage);
 
-    return _possibleConstructorReturn(this, (OrdersPage.__proto__ || Object.getPrototypeOf(OrdersPage)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (OrderPage.__proto__ || Object.getPrototypeOf(OrderPage)).call(this));
+
+    _this.onTableChange = function (data) {
+      var orderInfo = Object.assign({}, _this.state.orderInfo, data);
+      _this.updateOrder(orderInfo);
+    };
+
+    _this.updateOrder = function (orderInfo) {
+      _api2.default.updateOrder(orderInfo).then(function (data) {
+        return _this.setState({ orderInfo: data });
+      });
+    };
+
+    _this.prepareData = function (_ref) {
+      var _ref2 = _slicedToArray(_ref, 2),
+          orderInfo = _ref2[0],
+          orderItems = _ref2[1];
+
+      _this.setState({ orderInfo: orderInfo, orderItems: orderItems });
+    };
+
+    _this.state = {
+      orderInfo: null,
+      orderItems: null
+    };
+    return _this;
   }
 
-  _createClass(OrdersPage, [{
+  _createClass(OrderPage, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      var _UrlParse = (0, _urlParse2.default)(window.location, true),
+          id = _UrlParse.query.id;
+
+      Promise.all([_api2.default.getOrder(id), _api2.default.getOrderItems(id)]).then(function (res) {
+        return _this2.prepareData(res);
+      });
+    }
+
+    /**
+     * @param {Object} data - {receptionOfOrder: {...}}
+     */
+
+  }, {
+    key: 'renderTable',
+    value: function renderTable() {
+      return this.state.orderInfo ? _react2.default.createElement(_orderTable2.default, {
+        orderData: this.state.orderInfo,
+        onTableChange: this.onTableChange
+      }) : null;
+    }
+  }, {
+    key: 'renderItems',
+    value: function renderItems() {
+      return this.state.orderItems ? _react2.default.createElement(_orderItems2.default, { itemsData: this.state.orderItems }) : null;
+    }
+  }, {
+    key: 'renderOrderTitle',
+    value: function renderOrderTitle() {
+      return this.state.orderItems ? _react2.default.createElement(_title2.default, { text: '\u0417\u0430\u043A\u0430\u0437 ' + this.state.orderInfo.number, size: 'l' }) : null;
+    }
+  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
         'div',
         null,
         _react2.default.createElement(_header2.default, null),
-        _react2.default.createElement(_title2.default, { text: '\u0421\u043F\u0438\u0441\u043E\u043A \u0437\u0430\u043A\u0430\u0437\u043E\u0432', size: 'l' }),
-        _react2.default.createElement(_ordersTable2.default, null)
+        this.renderOrderTitle(),
+        this.renderTable(),
+        _react2.default.createElement(_title2.default, { text: '\u0421\u043E\u0441\u0442\u0430\u0432 \u0437\u0430\u043A\u0430\u0437\u0430', size: 'm' }),
+        this.renderItems()
       );
     }
   }]);
 
-  return OrdersPage;
+  return OrderPage;
 }(_react2.default.Component);
 
 _reactDom2.default.render(_react2.default.createElement(
   _pageLayout2.default,
   null,
-  _react2.default.createElement(OrdersPage, null)
+  _react2.default.createElement(OrderPage, null)
 ), document.querySelector('.page'));
 
 /***/ }),
-/* 24 */
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {
+
+var required = __webpack_require__(30)
+  , qs = __webpack_require__(31)
+  , protocolre = /^([a-z][a-z0-9.+-]*:)?(\/\/)?([\S\s]*)/i
+  , slashes = /^[A-Za-z][A-Za-z0-9+-.]*:\/\//;
+
+/**
+ * These are the parse rules for the URL parser, it informs the parser
+ * about:
+ *
+ * 0. The char it Needs to parse, if it's a string it should be done using
+ *    indexOf, RegExp using exec and NaN means set as current value.
+ * 1. The property we should set when parsing this value.
+ * 2. Indication if it's backwards or forward parsing, when set as number it's
+ *    the value of extra chars that should be split off.
+ * 3. Inherit from location if non existing in the parser.
+ * 4. `toLowerCase` the resulting value.
+ */
+var rules = [
+  ['#', 'hash'],                        // Extract from the back.
+  ['?', 'query'],                       // Extract from the back.
+  ['/', 'pathname'],                    // Extract from the back.
+  ['@', 'auth', 1],                     // Extract from the front.
+  [NaN, 'host', undefined, 1, 1],       // Set left over value.
+  [/:(\d+)$/, 'port', undefined, 1],    // RegExp the back.
+  [NaN, 'hostname', undefined, 1, 1]    // Set left over.
+];
+
+/**
+ * These properties should not be copied or inherited from. This is only needed
+ * for all non blob URL's as a blob URL does not include a hash, only the
+ * origin.
+ *
+ * @type {Object}
+ * @private
+ */
+var ignore = { hash: 1, query: 1 };
+
+/**
+ * The location object differs when your code is loaded through a normal page,
+ * Worker or through a worker using a blob. And with the blobble begins the
+ * trouble as the location object will contain the URL of the blob, not the
+ * location of the page where our code is loaded in. The actual origin is
+ * encoded in the `pathname` so we can thankfully generate a good "default"
+ * location from it so we can generate proper relative URL's again.
+ *
+ * @param {Object|String} loc Optional default location object.
+ * @returns {Object} lolcation object.
+ * @api public
+ */
+function lolcation(loc) {
+  loc = loc || global.location || {};
+
+  var finaldestination = {}
+    , type = typeof loc
+    , key;
+
+  if ('blob:' === loc.protocol) {
+    finaldestination = new URL(unescape(loc.pathname), {});
+  } else if ('string' === type) {
+    finaldestination = new URL(loc, {});
+    for (key in ignore) delete finaldestination[key];
+  } else if ('object' === type) {
+    for (key in loc) {
+      if (key in ignore) continue;
+      finaldestination[key] = loc[key];
+    }
+
+    if (finaldestination.slashes === undefined) {
+      finaldestination.slashes = slashes.test(loc.href);
+    }
+  }
+
+  return finaldestination;
+}
+
+/**
+ * @typedef ProtocolExtract
+ * @type Object
+ * @property {String} protocol Protocol matched in the URL, in lowercase.
+ * @property {Boolean} slashes `true` if protocol is followed by "//", else `false`.
+ * @property {String} rest Rest of the URL that is not part of the protocol.
+ */
+
+/**
+ * Extract protocol information from a URL with/without double slash ("//").
+ *
+ * @param {String} address URL we want to extract from.
+ * @return {ProtocolExtract} Extracted information.
+ * @api private
+ */
+function extractProtocol(address) {
+  var match = protocolre.exec(address);
+
+  return {
+    protocol: match[1] ? match[1].toLowerCase() : '',
+    slashes: !!match[2],
+    rest: match[3]
+  };
+}
+
+/**
+ * Resolve a relative URL pathname against a base URL pathname.
+ *
+ * @param {String} relative Pathname of the relative URL.
+ * @param {String} base Pathname of the base URL.
+ * @return {String} Resolved pathname.
+ * @api private
+ */
+function resolve(relative, base) {
+  var path = (base || '/').split('/').slice(0, -1).concat(relative.split('/'))
+    , i = path.length
+    , last = path[i - 1]
+    , unshift = false
+    , up = 0;
+
+  while (i--) {
+    if (path[i] === '.') {
+      path.splice(i, 1);
+    } else if (path[i] === '..') {
+      path.splice(i, 1);
+      up++;
+    } else if (up) {
+      if (i === 0) unshift = true;
+      path.splice(i, 1);
+      up--;
+    }
+  }
+
+  if (unshift) path.unshift('');
+  if (last === '.' || last === '..') path.push('');
+
+  return path.join('/');
+}
+
+/**
+ * The actual URL instance. Instead of returning an object we've opted-in to
+ * create an actual constructor as it's much more memory efficient and
+ * faster and it pleases my OCD.
+ *
+ * @constructor
+ * @param {String} address URL we want to parse.
+ * @param {Object|String} location Location defaults for relative paths.
+ * @param {Boolean|Function} parser Parser for the query string.
+ * @api public
+ */
+function URL(address, location, parser) {
+  if (!(this instanceof URL)) {
+    return new URL(address, location, parser);
+  }
+
+  var relative, extracted, parse, instruction, index, key
+    , instructions = rules.slice()
+    , type = typeof location
+    , url = this
+    , i = 0;
+
+  //
+  // The following if statements allows this module two have compatibility with
+  // 2 different API:
+  //
+  // 1. Node.js's `url.parse` api which accepts a URL, boolean as arguments
+  //    where the boolean indicates that the query string should also be parsed.
+  //
+  // 2. The `URL` interface of the browser which accepts a URL, object as
+  //    arguments. The supplied object will be used as default values / fall-back
+  //    for relative paths.
+  //
+  if ('object' !== type && 'string' !== type) {
+    parser = location;
+    location = null;
+  }
+
+  if (parser && 'function' !== typeof parser) parser = qs.parse;
+
+  location = lolcation(location);
+
+  //
+  // Extract protocol information before running the instructions.
+  //
+  extracted = extractProtocol(address || '');
+  relative = !extracted.protocol && !extracted.slashes;
+  url.slashes = extracted.slashes || relative && location.slashes;
+  url.protocol = extracted.protocol || location.protocol || '';
+  address = extracted.rest;
+
+  //
+  // When the authority component is absent the URL starts with a path
+  // component.
+  //
+  if (!extracted.slashes) instructions[2] = [/(.*)/, 'pathname'];
+
+  for (; i < instructions.length; i++) {
+    instruction = instructions[i];
+    parse = instruction[0];
+    key = instruction[1];
+
+    if (parse !== parse) {
+      url[key] = address;
+    } else if ('string' === typeof parse) {
+      if (~(index = address.indexOf(parse))) {
+        if ('number' === typeof instruction[2]) {
+          url[key] = address.slice(0, index);
+          address = address.slice(index + instruction[2]);
+        } else {
+          url[key] = address.slice(index);
+          address = address.slice(0, index);
+        }
+      }
+    } else if ((index = parse.exec(address))) {
+      url[key] = index[1];
+      address = address.slice(0, index.index);
+    }
+
+    url[key] = url[key] || (
+      relative && instruction[3] ? location[key] || '' : ''
+    );
+
+    //
+    // Hostname, host and protocol should be lowercased so they can be used to
+    // create a proper `origin`.
+    //
+    if (instruction[4]) url[key] = url[key].toLowerCase();
+  }
+
+  //
+  // Also parse the supplied query string in to an object. If we're supplied
+  // with a custom parser as function use that instead of the default build-in
+  // parser.
+  //
+  if (parser) url.query = parser(url.query);
+
+  //
+  // If the URL is relative, resolve the pathname against the base URL.
+  //
+  if (
+      relative
+    && location.slashes
+    && url.pathname.charAt(0) !== '/'
+    && (url.pathname !== '' || location.pathname !== '')
+  ) {
+    url.pathname = resolve(url.pathname, location.pathname);
+  }
+
+  //
+  // We should not add port numbers if they are already the default port number
+  // for a given protocol. As the host also contains the port number we're going
+  // override it with the hostname which contains no port number.
+  //
+  if (!required(url.port, url.protocol)) {
+    url.host = url.hostname;
+    url.port = '';
+  }
+
+  //
+  // Parse down the `auth` for the username and password.
+  //
+  url.username = url.password = '';
+  if (url.auth) {
+    instruction = url.auth.split(':');
+    url.username = instruction[0] || '';
+    url.password = instruction[1] || '';
+  }
+
+  url.origin = url.protocol && url.host && url.protocol !== 'file:'
+    ? url.protocol +'//'+ url.host
+    : 'null';
+
+  //
+  // The href is just the compiled result.
+  //
+  url.href = url.toString();
+}
+
+/**
+ * This is convenience method for changing properties in the URL instance to
+ * insure that they all propagate correctly.
+ *
+ * @param {String} part          Property we need to adjust.
+ * @param {Mixed} value          The newly assigned value.
+ * @param {Boolean|Function} fn  When setting the query, it will be the function
+ *                               used to parse the query.
+ *                               When setting the protocol, double slash will be
+ *                               removed from the final url if it is true.
+ * @returns {URL}
+ * @api public
+ */
+function set(part, value, fn) {
+  var url = this;
+
+  switch (part) {
+    case 'query':
+      if ('string' === typeof value && value.length) {
+        value = (fn || qs.parse)(value);
+      }
+
+      url[part] = value;
+      break;
+
+    case 'port':
+      url[part] = value;
+
+      if (!required(value, url.protocol)) {
+        url.host = url.hostname;
+        url[part] = '';
+      } else if (value) {
+        url.host = url.hostname +':'+ value;
+      }
+
+      break;
+
+    case 'hostname':
+      url[part] = value;
+
+      if (url.port) value += ':'+ url.port;
+      url.host = value;
+      break;
+
+    case 'host':
+      url[part] = value;
+
+      if (/:\d+$/.test(value)) {
+        value = value.split(':');
+        url.port = value.pop();
+        url.hostname = value.join(':');
+      } else {
+        url.hostname = value;
+        url.port = '';
+      }
+
+      break;
+
+    case 'protocol':
+      url.protocol = value.toLowerCase();
+      url.slashes = !fn;
+      break;
+
+    case 'pathname':
+    case 'hash':
+      if (value) {
+        var char = part === 'pathname' ? '/' : '#';
+        url[part] = value.charAt(0) !== char ? char + value : value;
+      } else {
+        url[part] = value;
+      }
+      break;
+
+    default:
+      url[part] = value;
+  }
+
+  for (var i = 0; i < rules.length; i++) {
+    var ins = rules[i];
+
+    if (ins[4]) url[ins[1]] = url[ins[1]].toLowerCase();
+  }
+
+  url.origin = url.protocol && url.host && url.protocol !== 'file:'
+    ? url.protocol +'//'+ url.host
+    : 'null';
+
+  url.href = url.toString();
+
+  return url;
+}
+
+/**
+ * Transform the properties back in to a valid and full URL string.
+ *
+ * @param {Function} stringify Optional query stringify function.
+ * @returns {String}
+ * @api public
+ */
+function toString(stringify) {
+  if (!stringify || 'function' !== typeof stringify) stringify = qs.stringify;
+
+  var query
+    , url = this
+    , protocol = url.protocol;
+
+  if (protocol && protocol.charAt(protocol.length - 1) !== ':') protocol += ':';
+
+  var result = protocol + (url.slashes ? '//' : '');
+
+  if (url.username) {
+    result += url.username;
+    if (url.password) result += ':'+ url.password;
+    result += '@';
+  }
+
+  result += url.host + url.pathname;
+
+  query = 'object' === typeof url.query ? stringify(url.query) : url.query;
+  if (query) result += '?' !== query.charAt(0) ? '?'+ query : query;
+
+  if (url.hash) result += url.hash;
+
+  return result;
+}
+
+URL.prototype = { set: set, toString: toString };
+
+//
+// Expose the URL parser and some additional properties that might be useful for
+// others or testing.
+//
+URL.extractProtocol = extractProtocol;
+URL.location = lolcation;
+URL.qs = qs;
+
+module.exports = URL;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Check if we're required to add a port number.
+ *
+ * @see https://url.spec.whatwg.org/#default-port
+ * @param {Number|String} port Port number we need to check
+ * @param {String} protocol Protocol we need to check against.
+ * @returns {Boolean} Is it a default port for the given protocol
+ * @api private
+ */
+module.exports = function required(port, protocol) {
+  protocol = protocol.split(':')[0];
+  port = +port;
+
+  if (!port) return false;
+
+  switch (protocol) {
+    case 'http':
+    case 'ws':
+    return port !== 80;
+
+    case 'https':
+    case 'wss':
+    return port !== 443;
+
+    case 'ftp':
+    return port !== 21;
+
+    case 'gopher':
+    return port !== 70;
+
+    case 'file':
+    return false;
+  }
+
+  return port !== 0;
+};
+
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var has = Object.prototype.hasOwnProperty;
+
+/**
+ * Decode a URI encoded string.
+ *
+ * @param {String} input The URI encoded string.
+ * @returns {String} The decoded string.
+ * @api private
+ */
+function decode(input) {
+  return decodeURIComponent(input.replace(/\+/g, ' '));
+}
+
+/**
+ * Simple query string parser.
+ *
+ * @param {String} query The query string that needs to be parsed.
+ * @returns {Object}
+ * @api public
+ */
+function querystring(query) {
+  var parser = /([^=?&]+)=?([^&]*)/g
+    , result = {}
+    , part;
+
+  //
+  // Little nifty parsing hack, leverage the fact that RegExp.exec increments
+  // the lastIndex property so we can continue executing this loop until we've
+  // parsed all results.
+  //
+  for (;
+    part = parser.exec(query);
+    result[decode(part[1])] = decode(part[2])
+  );
+
+  return result;
+}
+
+/**
+ * Transform a query string to an object.
+ *
+ * @param {Object} obj Object that should be transformed.
+ * @param {String} prefix Optional prefix.
+ * @returns {String}
+ * @api public
+ */
+function querystringify(obj, prefix) {
+  prefix = prefix || '';
+
+  var pairs = [];
+
+  //
+  // Optionally prefix with a '?' if needed
+  //
+  if ('string' !== typeof prefix) prefix = '?';
+
+  for (var key in obj) {
+    if (has.call(obj, key)) {
+      pairs.push(encodeURIComponent(key) +'='+ encodeURIComponent(obj[key]));
+    }
+  }
+
+  return pairs.length ? prefix + pairs.join('&') : '';
+}
+
+//
+// Expose the module.
+//
+exports.stringify = querystringify;
+exports.parse = querystring;
+
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = __webpack_require__(14);
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _dataTable = __webpack_require__(15);
+
+var _dataTable2 = _interopRequireDefault(_dataTable);
+
+var _orders = __webpack_require__(19);
+
+var _select = __webpack_require__(33);
+
+var _select2 = _interopRequireDefault(_select);
+
+var _api = __webpack_require__(22);
+
+var _api2 = _interopRequireDefault(_api);
+
+var _index = __webpack_require__(35);
+
+var _index2 = _interopRequireDefault(_index);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var columnsOrder = _orders.orderMeta.columnsOrder;
+
+var OrderTable = function (_React$Component) {
+  _inherits(OrderTable, _React$Component);
+
+  function OrderTable(_ref) {
+    var orderData = _ref.orderData;
+
+    _classCallCheck(this, OrderTable);
+
+    var _this = _possibleConstructorReturn(this, (OrderTable.__proto__ || Object.getPrototypeOf(OrderTable)).call(this));
+
+    _this.state = {
+      receptionsList: [orderData.receptionOfOrder],
+      currentReception: orderData.receptionOfOrder.id
+    };
+    return _this;
+  }
+
+  _createClass(OrderTable, [{
+    key: 'onReceptionChange',
+    value: function onReceptionChange(_ref2) {
+      var value = _ref2.target.value;
+
+      this.changeReception(value);
+      this.setState({ currentReception: value });
+    }
+  }, {
+    key: 'getReceptionsList',
+    value: function getReceptionsList() {
+      var _this2 = this;
+
+      return _api2.default.getReceptionsList().then(function (receptionsList) {
+        return _this2.setState({ receptionsList: receptionsList });
+      });
+    }
+  }, {
+    key: 'changeReception',
+    value: function changeReception(selectedId) {
+      var selectedReception = this.state.receptionsList.filter(function (_ref3) {
+        var id = _ref3.id;
+        return String(id) === String(selectedId);
+      });
+
+      this.props.onTableChange({ receptionOfOrder: selectedReception[0] });
+    }
+  }, {
+    key: 'formatReception',
+    value: function formatReception() {
+      var _this3 = this;
+
+      var _state = this.state,
+          currentReception = _state.currentReception,
+          receptionsList = _state.receptionsList;
+
+
+      return _react2.default.createElement(
+        _dataTable2.default.Cell,
+        { className: (0, _classnames2.default)(_index2.default['select-cell']) },
+        _react2.default.createElement(
+          _select2.default,
+          {
+            value: currentReception,
+            className: _index2.default.select,
+            onClick: function onClick() {
+              return _this3.getReceptionsList();
+            },
+            onChange: function onChange(event) {
+              return _this3.onReceptionChange(event);
+            }
+          },
+          receptionsList.map(function (_ref4) {
+            var id = _ref4.id,
+                name = _ref4.name;
+            return _react2.default.createElement(
+              _select2.default.Option,
+              { value: id },
+              name
+            );
+          })
+        )
+      );
+    }
+  }, {
+    key: 'formatClient',
+    value: function formatClient(value) {
+      return _react2.default.createElement(
+        _dataTable2.default.Cell,
+        { className: (0, _classnames2.default)(_index2.default['select-cell']) },
+        _react2.default.createElement(
+          _select2.default,
+          { className: _index2.default.select, onClick: this.getClientsList },
+          _react2.default.createElement(
+            _select2.default.Option,
+            null,
+            value
+          ),
+          _react2.default.createElement(
+            _select2.default.Option,
+            null,
+            value
+          ),
+          _react2.default.createElement(
+            _select2.default.Option,
+            null,
+            value
+          ),
+          _react2.default.createElement(
+            _select2.default.Option,
+            null,
+            value
+          )
+        )
+      );
+    }
+  }, {
+    key: 'formatCell',
+    value: function formatCell(value, col) {
+      switch (col) {
+        case 'client':
+          return this.formatClient(value.name);
+        case 'receptionOfOrder':
+          return this.formatReception();
+        default:
+          return _react2.default.createElement(
+            _dataTable2.default.Cell,
+            null,
+            value
+          );
+      }
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this4 = this;
+
+      return _react2.default.createElement(
+        _dataTable2.default,
+        null,
+        _react2.default.createElement(
+          _dataTable2.default.Head,
+          null,
+          _react2.default.createElement(
+            _dataTable2.default.HeaderRow,
+            null,
+            columnsOrder.map(function (col) {
+              return _react2.default.createElement(
+                _dataTable2.default.HeaderCell,
+                null,
+                _orders.ordersMeta[col].title
+              );
+            })
+          )
+        ),
+        _react2.default.createElement(
+          _dataTable2.default.Body,
+          null,
+          _react2.default.createElement(
+            _dataTable2.default.Row,
+            null,
+            columnsOrder.map(function (col) {
+              return _this4.formatCell(_this4.props.orderData[col], col);
+            })
+          )
+        )
+      );
+    }
+  }]);
+
+  return OrderTable;
+}(_react2.default.Component);
+
+exports.default = OrderTable;
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = __webpack_require__(14);
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _index = __webpack_require__(34);
+
+var _index2 = _interopRequireDefault(_index);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Select = function (_React$Component) {
+  _inherits(Select, _React$Component);
+
+  function Select() {
+    _classCallCheck(this, Select);
+
+    return _possibleConstructorReturn(this, (Select.__proto__ || Object.getPrototypeOf(Select)).apply(this, arguments));
+  }
+
+  _createClass(Select, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { className: (0, _classnames2.default)(_index2.default.select, this.props.className) },
+        _react2.default.createElement(
+          'select',
+          {
+            value: this.props.value,
+            className: _index2.default.control,
+            onClick: this.props.onClick,
+            onChange: this.props.onChange
+          },
+          this.props.children
+        )
+      );
+    }
+  }]);
+
+  return Select;
+}(_react2.default.Component);
+
+Select.Option = function (props) {
+  return _react2.default.createElement(
+    'option',
+    { value: props.value },
+    props.children
+  );
+};
+
+exports.default = Select;
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"select":"select-sY9e_","control":"control-33GvV"};
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"select-cell":"select-cell-2OSCk","select":"select-1bmMa"};
+
+/***/ }),
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4077,11 +5078,7 @@ var _dataTable = __webpack_require__(15);
 
 var _dataTable2 = _interopRequireDefault(_dataTable);
 
-var _orders = __webpack_require__(19);
-
-var _index = __webpack_require__(25);
-
-var _index2 = _interopRequireDefault(_index);
+var _items = __webpack_require__(37);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4091,79 +5088,27 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var columnsOrder = _orders.tableMeta.columnsOrder;
-
-
-function format(value, col) {
+function formatCell(value, col) {
   switch (col) {
-    case 'client':
-      return value.name;
-    case 'receptionOfOrder':
-      return value.desc;
     default:
-      return value;
+      return _react2.default.createElement(
+        _dataTable2.default.Cell,
+        null,
+        value
+      );
   }
 }
 
-function buildRows(rows) {
-  return rows.map(function (row) {
-    return {
-      cells: columnsOrder.map(function (col) {
-        return { content: format(row[col], col) };
-      })
-    };
-  });
-}
+var OrderItems = function (_React$Component) {
+  _inherits(OrderItems, _React$Component);
 
-function buildHeaders() {
-  return [{
-    cells: columnsOrder.map(function (col) {
-      return {
-        content: _orders.ordersMeta[col].title || ''
-      };
-    })
-  }];
-}
+  function OrderItems() {
+    _classCallCheck(this, OrderItems);
 
-var OrdersTable = function (_React$Component) {
-  _inherits(OrdersTable, _React$Component);
-
-  function OrdersTable() {
-    _classCallCheck(this, OrdersTable);
-
-    var _this = _possibleConstructorReturn(this, (OrdersTable.__proto__ || Object.getPrototypeOf(OrdersTable)).call(this));
-
-    _this.state = {
-      orders: {
-        headers: [],
-        rows: []
-      }
-    };
-    return _this;
+    return _possibleConstructorReturn(this, (OrderItems.__proto__ || Object.getPrototypeOf(OrderItems)).apply(this, arguments));
   }
 
-  _createClass(OrdersTable, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      var _this2 = this;
-
-      fetch('https://92.63.91.60:8443/api/order').then(function (res) {
-        return res.json();
-      }).then(function (orders) {
-        return _this2.prepareTableData(orders);
-      });
-    }
-  }, {
-    key: 'prepareTableData',
-    value: function prepareTableData(rows) {
-      this.setState({
-        orders: {
-          headers: buildHeaders(),
-          rows: buildRows(rows)
-        }
-      });
-    }
-  }, {
+  _createClass(OrderItems, [{
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
@@ -4172,37 +5117,27 @@ var OrdersTable = function (_React$Component) {
         _react2.default.createElement(
           _dataTable2.default.Head,
           null,
-          this.state.orders.headers.map(function (_ref) {
-            var cells = _ref.cells;
-            return _react2.default.createElement(
-              _dataTable2.default.HeaderRow,
-              null,
-              cells.map(function (_ref2) {
-                var content = _ref2.content;
-                return _react2.default.createElement(
-                  _dataTable2.default.HeaderCell,
-                  null,
-                  content
-                );
-              })
-            );
-          })
+          _react2.default.createElement(
+            _dataTable2.default.HeaderRow,
+            null,
+            _items.columnsOrder.map(function (col) {
+              return _react2.default.createElement(
+                _dataTable2.default.HeaderCell,
+                null,
+                _items.itemsMeta[col].title
+              );
+            })
+          )
         ),
         _react2.default.createElement(
           _dataTable2.default.Body,
           null,
-          this.state.orders.rows.map(function (_ref3) {
-            var cells = _ref3.cells;
+          this.props.itemsData.map(function (item) {
             return _react2.default.createElement(
               _dataTable2.default.Row,
               null,
-              cells.map(function (_ref4) {
-                var content = _ref4.content;
-                return _react2.default.createElement(
-                  _dataTable2.default.Cell,
-                  { className: _index2.default['order-row'] },
-                  content
-                );
+              _items.columnsOrder.map(function (col) {
+                return formatCell(item[col], col);
               })
             );
           })
@@ -4211,17 +5146,59 @@ var OrdersTable = function (_React$Component) {
     }
   }]);
 
-  return OrdersTable;
+  return OrderItems;
 }(_react2.default.Component);
 
-exports.default = OrdersTable;
+exports.default = OrderItems;
 
 /***/ }),
-/* 25 */
-/***/ (function(module, exports) {
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
 
-// removed by extract-text-webpack-plugin
-module.exports = {"order-row":"order-row-8wkOa"};
+"use strict";
+
+
+var itemsMeta = {
+  number: {
+    title: '#'
+  },
+  length: {
+    title: 'Длинна'
+  },
+  width: {
+    title: 'Ширина'
+  },
+  area: {
+    title: 'Площадь'
+  },
+  perimeter: {
+    title: 'Периметр'
+  },
+  count: {
+    title: 'Количество'
+  },
+  processSum: {
+    title: 'Сумма'
+  }
+};
+
+var columnsOrder = ['number', 'length', 'width', 'area', 'perimeter', 'count', 'processSum'];
+
+module.exports = { itemsMeta: itemsMeta, columnsOrder: columnsOrder };
+
+// {
+//   "id": 1,
+//   "desc": "",
+//   "number": "1",
+//   "length": 1000.0,
+//   "width": null,
+//   "count": 1,
+//   "area": 1.0,
+//   "perimeter": 4.0,
+//   "processSum": "720",
+//   "summa": "1370",
+//   "materialId": 2
+// }
 
 /***/ })
 /******/ ]);
