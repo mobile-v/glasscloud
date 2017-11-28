@@ -46,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests()
-                .antMatchers("/api/**").permitAll()
+//                .antMatchers("/api/**").permitAll()
 
                 .antMatchers("/swagger-ui.html").hasAnyAuthority(Role.ROLE_SUPER_ADMIN.toString())
                 .antMatchers("/v2/**").hasAnyAuthority(Role.ROLE_SUPER_ADMIN.toString())
@@ -54,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasAnyAuthority(Role.ROLE_ADMIN.toString())
 
                 .antMatchers("/").hasAnyAuthority(Role.ROLE_SUPER_ADMIN.toString(), Role.ROLE_ADMIN.toString(), Role.ROLE_USER.toString())
-//                .antMatchers("/api/**").hasAnyAuthority(Role.ROLE_SUPER_ADMIN.toString(), Role.ROLE_ADMIN.toString(), Role.ROLE_USER.toString())
+                .antMatchers("/api/**").hasAnyAuthority(Role.ROLE_SUPER_ADMIN.toString(), Role.ROLE_ADMIN.toString(), Role.ROLE_USER.toString())
                 .antMatchers("/glass/**").hasAnyAuthority(Role.ROLE_SUPER_ADMIN.toString(), Role.ROLE_ADMIN.toString(), Role.ROLE_USER.toString())
 
                 .and()

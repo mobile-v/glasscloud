@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "2b124da80041c7eb4586"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "c79969cbd19843a53322"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -3666,7 +3666,7 @@ var _classnames = __webpack_require__(14);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _index = __webpack_require__(18);
+var _index = __webpack_require__(19);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -3758,6 +3758,54 @@ exports.default = DataTable;
 "use strict";
 
 
+module.exports = {
+  host: '/api',
+
+  request: function request(path) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    var requestOptions = Object.assign({
+      method: 'GET',
+      mode: 'cors',
+      credentials: 'include',
+      redirect: 'follow'
+    }, options);
+
+    return fetch(this.host + '/' + path, requestOptions).then(function (res) {
+      return res.json();
+    });
+  },
+  getOrders: function getOrders() {
+    return this.request('order');
+  },
+  getOrder: function getOrder(id) {
+    return this.request('order/' + id);
+  },
+  updateOrder: function updateOrder(data) {
+    return Promise.resolve(data);
+    // return this.request(
+    //   'order',
+    //   {
+    //     method: 'POST',
+    //     data,
+    //   },
+    // );
+  },
+  getOrderItems: function getOrderItems(id) {
+    return this.request('order/' + id + '/items');
+  },
+  getReceptionsList: function getReceptionsList() {
+    return this.request('receptionOfOrder');
+  }
+};
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -3767,7 +3815,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _index = __webpack_require__(17);
+var _index = __webpack_require__(18);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3799,21 +3847,21 @@ function Title(_ref) {
 }
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 module.exports = {"title":"title-vh8hp"};
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 module.exports = {"data-table":"data-table-1jWnW","cell":"cell-1kfda","cell_header":"cell_header-3zmIm","row":"row-3xuaE","row_header":"row_header-ZVuYp"};
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3911,7 +3959,7 @@ module.exports = { ordersMeta: ordersMeta, tableMeta: tableMeta, orderMeta: orde
 // }
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3923,7 +3971,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _index = __webpack_require__(21);
+var _index = __webpack_require__(22);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -3977,14 +4025,13 @@ module.exports = function (_React$Component) {
 }(_react2.default.Component);
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 module.exports = {"header":"header-3DJUc","header-menu":"header-menu-1RgNg","menu-item":"menu-item-1PPMS"};
 
 /***/ }),
-/* 22 */,
 /* 23 */,
 /* 24 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -4006,7 +4053,7 @@ var _pageLayout = __webpack_require__(12);
 
 var _pageLayout2 = _interopRequireDefault(_pageLayout);
 
-var _title = __webpack_require__(16);
+var _title = __webpack_require__(17);
 
 var _title2 = _interopRequireDefault(_title);
 
@@ -4014,7 +4061,7 @@ var _ordersTable = __webpack_require__(25);
 
 var _ordersTable2 = _interopRequireDefault(_ordersTable);
 
-var _header = __webpack_require__(20);
+var _header = __webpack_require__(21);
 
 var _header2 = _interopRequireDefault(_header);
 
@@ -4078,11 +4125,15 @@ var _dataTable = __webpack_require__(15);
 
 var _dataTable2 = _interopRequireDefault(_dataTable);
 
-var _orders = __webpack_require__(19);
+var _orders = __webpack_require__(20);
 
 var _index = __webpack_require__(26);
 
 var _index2 = _interopRequireDefault(_index);
+
+var _api = __webpack_require__(16);
+
+var _api2 = _interopRequireDefault(_api);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4141,9 +4192,7 @@ var OrdersTable = function (_React$Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      fetch('/api/order').then(function (res) {
-        return res.json();
-      }).then(function (orders) {
+      _api2.default.getOrders().then(function (orders) {
         return _this2.prepareTableData(orders);
       });
     }
