@@ -52,7 +52,7 @@ public class ClientController {
 
     //http://localhost:8080/api/client/
     @ApiOperation(value = "Создать нового клиента")
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<ClientDto> save(@RequestBody ClientDto client) {
         clientService.save(client);
         return new ResponseEntity<>(client, HttpStatus.OK);

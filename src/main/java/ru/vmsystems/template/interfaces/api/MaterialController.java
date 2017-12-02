@@ -71,7 +71,7 @@ public class MaterialController {
     }
 
     //http://localhost:8080/api/material/
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<MaterialDto> save(@RequestBody MaterialDto type) {
         Optional<UserEntity> user = userRepository.getByLogin(httpServletRequest.getRemoteUser());
         if (!user.isPresent()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);

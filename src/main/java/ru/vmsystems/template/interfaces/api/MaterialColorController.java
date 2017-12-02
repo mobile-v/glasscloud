@@ -68,7 +68,7 @@ public class MaterialColorController {
     }
 
     //http://localhost:8080/api/material/color/
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<MaterialColorDto> save(@RequestBody MaterialColorDto color) {
         Optional<UserEntity> user = userRepository.getByLogin(httpServletRequest.getRemoteUser());
         if (!user.isPresent()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);

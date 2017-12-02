@@ -73,7 +73,7 @@ public class ProcessTypeController {
     }
 
     //http://localhost:8080/api/process/type/
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<MaterialTypeDto> save(@RequestBody MaterialTypeDto type) {
         Optional<UserEntity> user = userRepository.getByLogin(httpServletRequest.getRemoteUser());
         if (!user.isPresent()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);

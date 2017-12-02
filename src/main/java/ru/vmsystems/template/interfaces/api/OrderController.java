@@ -66,7 +66,7 @@ public class OrderController {
 
     //http://localhost:8080/api/order/
     @ApiOperation(value = "Создать новый / обновить заказ")
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     @PreAuthorize("@moduleSecurity.orderPermitted")
     public ResponseEntity<OrderDto> saveOrder(@RequestBody OrderDto order, Principal principal) {
         Optional<UserEntity> user = userRepository.getByLogin(principal.getName());
