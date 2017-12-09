@@ -6,8 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.vmsystems.template.domain.model.user.UserEntity;
 import ru.vmsystems.template.domain.service.OrderService;
@@ -66,13 +66,19 @@ public class OrderController {
 
     //http://localhost:8080/api/order/
     @ApiOperation(value = "Создать новый / обновить заказ")
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    @PreAuthorize("@moduleSecurity.orderPermitted")
+    @RequestMapping(value = "", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    @PreAuthorize("@moduleSecurity.orderPermitted")
     public ResponseEntity<OrderDto> saveOrder(@RequestBody OrderDto order, Principal principal) {
         Optional<UserEntity> user = userRepository.getByLogin(principal.getName());
         if (!user.isPresent()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
-        order = orderService.saveOrder(order);
+        if (order.getId() == null) {
+            order = orderService.newOrder(order);
+        } else {
+            order = orderService.saveOrder(order);
+        }
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 

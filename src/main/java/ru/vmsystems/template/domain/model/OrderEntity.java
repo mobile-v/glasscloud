@@ -13,7 +13,7 @@ public class OrderEntity {
     private String accountNumber;
     private String discount;
     private String discountSum;
-    private Short count;
+    private Integer count;
     private String summa;
     private Double area;
     private Double perimeter;
@@ -87,11 +87,11 @@ public class OrderEntity {
 
     @Basic
     @Column(name = "count")
-    public Short getCount() {
+    public Integer getCount() {
         return count;
     }
 
-    public void setCount(Short count) {
+    public void setCount(Integer count) {
         this.count = count;
     }
 

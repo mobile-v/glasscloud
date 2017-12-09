@@ -17,7 +17,7 @@ public class OrderDto {
     @ApiModelProperty(notes = "Сумма скидки", required = true)
     private String discountSum;
     @ApiModelProperty(notes = "Количество", required = true)
-    private Short count;
+    private Integer count;
     @ApiModelProperty(notes = "Сумма", required = true)
     private String summa;
     @ApiModelProperty(notes = "Площадь", required = true)
@@ -83,11 +83,11 @@ public class OrderDto {
         this.discountSum = discountSum;
     }
 
-    public Short getCount() {
+    public Integer getCount() {
         return count;
     }
 
-    public void setCount(Short count) {
+    public void setCount(Integer count) {
         this.count = count;
     }
 

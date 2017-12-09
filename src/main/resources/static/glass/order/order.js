@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "c79969cbd19843a53322"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "04bccd7b99b945886317"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -3767,8 +3767,7 @@ module.exports = {
     var requestOptions = Object.assign({
       method: 'GET',
       mode: 'cors',
-      credentials: 'include',
-      redirect: 'follow'
+      credentials: 'include'
     }, options);
 
     return fetch(this.host + '/' + path, requestOptions).then(function (res) {
@@ -3787,7 +3786,7 @@ module.exports = {
     //   'order',
     //   {
     //     method: 'POST',
-    //     data,
+    //     body: JSON.stringify(data),
     //   },
     // );
   },
@@ -3796,6 +3795,12 @@ module.exports = {
   },
   getReceptionsList: function getReceptionsList() {
     return this.request('receptionOfOrder');
+  },
+  getClientsList: function getClientsList() {
+    return this.request('client');
+  },
+  fetchSource: function fetchSource(path) {
+    return this.request(path);
   }
 };
 
@@ -4042,8 +4047,6 @@ module.exports = {"header":"header-3DJUc","header-menu":"header-menu-1RgNg","men
 "use strict";
 
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(0);
@@ -4070,7 +4073,7 @@ var _orderTable = __webpack_require__(32);
 
 var _orderTable2 = _interopRequireDefault(_orderTable);
 
-var _orderItems = __webpack_require__(36);
+var _orderItems = __webpack_require__(37);
 
 var _orderItems2 = _interopRequireDefault(_orderItems);
 
@@ -4109,12 +4112,8 @@ var OrderPage = function (_React$Component) {
       });
     };
 
-    _this.prepareData = function (_ref) {
-      var _ref2 = _slicedToArray(_ref, 2),
-          orderInfo = _ref2[0],
-          orderItems = _ref2[1];
-
-      _this.setState({ orderInfo: orderInfo, orderItems: orderItems });
+    _this.prepareData = function (orderInfo) {
+      _this.setState({ orderInfo: orderInfo });
     };
 
     _this.state = {
@@ -4132,7 +4131,7 @@ var OrderPage = function (_React$Component) {
       var _UrlParse = (0, _urlParse2.default)(window.location, true),
           id = _UrlParse.query.id;
 
-      Promise.all([_api2.default.getOrder(id), _api2.default.getOrderItems(id)]).then(function (res) {
+      _api2.default.getOrder(id).then(function (res) {
         return _this2.prepareData(res);
       });
     }
@@ -4152,7 +4151,7 @@ var OrderPage = function (_React$Component) {
   }, {
     key: 'renderItems',
     value: function renderItems() {
-      return this.state.orderItems ? _react2.default.createElement(_orderItems2.default, { itemsData: this.state.orderItems }) : null;
+      return this.state.orderInfo ? _react2.default.createElement(_orderItems2.default, { itemsData: this.state.orderInfo.items }) : null;
     }
   }, {
     key: 'renderOrderTitle',
@@ -4781,19 +4780,17 @@ var _dataTable2 = _interopRequireDefault(_dataTable);
 
 var _orders = __webpack_require__(20);
 
-var _select = __webpack_require__(33);
+var _lazySelect = __webpack_require__(33);
 
-var _select2 = _interopRequireDefault(_select);
+var _lazySelect2 = _interopRequireDefault(_lazySelect);
 
-var _api = __webpack_require__(16);
-
-var _api2 = _interopRequireDefault(_api);
-
-var _index = __webpack_require__(35);
+var _index = __webpack_require__(36);
 
 var _index2 = _interopRequireDefault(_index);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4806,114 +4803,51 @@ var columnsOrder = _orders.orderMeta.columnsOrder;
 var OrderTable = function (_React$Component) {
   _inherits(OrderTable, _React$Component);
 
-  function OrderTable(_ref) {
-    var orderData = _ref.orderData;
+  function OrderTable() {
+    var _ref;
+
+    var _temp, _this, _ret;
 
     _classCallCheck(this, OrderTable);
 
-    var _this = _possibleConstructorReturn(this, (OrderTable.__proto__ || Object.getPrototypeOf(OrderTable)).call(this));
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
 
-    _this.state = {
-      receptionsList: [orderData.receptionOfOrder],
-      currentReception: orderData.receptionOfOrder.id
-    };
-    return _this;
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = OrderTable.__proto__ || Object.getPrototypeOf(OrderTable)).call.apply(_ref, [this].concat(args))), _this), _this.onSelect = function (value, fieldName) {
+      return _this.props.onTableChange(_defineProperty({}, fieldName, value));
+    }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(OrderTable, [{
-    key: 'onReceptionChange',
-    value: function onReceptionChange(_ref2) {
-      var value = _ref2.target.value;
+    key: 'buildSelect',
 
-      this.changeReception(value);
-      this.setState({ currentReception: value });
-    }
-  }, {
-    key: 'getReceptionsList',
-    value: function getReceptionsList() {
+
+    /**
+     * @param {String} currentValue
+     * @param {Array.<Object>} valuesList
+     * @param {Function} getList
+     * @param {String} fieldName
+     * @returns {JSX}
+     */
+    value: function buildSelect(col) {
       var _this2 = this;
 
-      return _api2.default.getReceptionsList().then(function (receptionsList) {
-        return _this2.setState({ receptionsList: receptionsList });
-      });
-    }
-  }, {
-    key: 'changeReception',
-    value: function changeReception(selectedId) {
-      var selectedReception = this.state.receptionsList.filter(function (_ref3) {
-        var id = _ref3.id;
-        return String(id) === String(selectedId);
-      });
-
-      this.props.onTableChange({ receptionOfOrder: selectedReception[0] });
-    }
-  }, {
-    key: 'formatReception',
-    value: function formatReception() {
-      var _this3 = this;
-
-      var _state = this.state,
-          currentReception = _state.currentReception,
-          receptionsList = _state.receptionsList;
+      var orderData = this.props.orderData;
 
 
       return _react2.default.createElement(
         _dataTable2.default.Cell,
         { className: (0, _classnames2.default)(_index2.default['select-cell']) },
-        _react2.default.createElement(
-          _select2.default,
-          {
-            value: currentReception,
-            className: _index2.default.select,
-            onClick: function onClick() {
-              return _this3.getReceptionsList();
-            },
-            onChange: function onChange(event) {
-              return _this3.onReceptionChange(event);
-            }
-          },
-          receptionsList.map(function (_ref4) {
-            var id = _ref4.id,
-                name = _ref4.name;
-            return _react2.default.createElement(
-              _select2.default.Option,
-              { value: id },
-              name
-            );
-          })
-        )
-      );
-    }
-  }, {
-    key: 'formatClient',
-    value: function formatClient(value) {
-      return _react2.default.createElement(
-        _dataTable2.default.Cell,
-        { className: (0, _classnames2.default)(_index2.default['select-cell']) },
-        _react2.default.createElement(
-          _select2.default,
-          { className: _index2.default.select, onClick: this.getClientsList },
-          _react2.default.createElement(
-            _select2.default.Option,
-            null,
-            value
-          ),
-          _react2.default.createElement(
-            _select2.default.Option,
-            null,
-            value
-          ),
-          _react2.default.createElement(
-            _select2.default.Option,
-            null,
-            value
-          ),
-          _react2.default.createElement(
-            _select2.default.Option,
-            null,
-            value
-          )
-        )
+        _react2.default.createElement(_lazySelect2.default, {
+          className: _index2.default.select,
+          value: orderData[col].id,
+          list: [orderData[col]],
+          resource: col,
+          onSelect: function onSelect(event) {
+            return _this2.onSelect(event, col);
+          }
+        })
       );
     }
   }, {
@@ -4921,9 +4855,9 @@ var OrderTable = function (_React$Component) {
     value: function formatCell(value, col) {
       switch (col) {
         case 'client':
-          return this.formatClient(value.name);
+          return this.buildSelect(col);
         case 'receptionOfOrder':
-          return this.formatReception();
+          return this.buildSelect(col);
         default:
           return _react2.default.createElement(
             _dataTable2.default.Cell,
@@ -4935,7 +4869,7 @@ var OrderTable = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this4 = this;
+      var _this3 = this;
 
       return _react2.default.createElement(
         _dataTable2.default,
@@ -4962,7 +4896,7 @@ var OrderTable = function (_React$Component) {
             _dataTable2.default.Row,
             null,
             columnsOrder.map(function (col) {
-              return _this4.formatCell(_this4.props.orderData[col], col);
+              return _this3.formatCell(_this3.props.orderData[col], col);
             })
           )
         )
@@ -4992,11 +4926,122 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _select = __webpack_require__(34);
+
+var _select2 = _interopRequireDefault(_select);
+
+var _api = __webpack_require__(16);
+
+var _api2 = _interopRequireDefault(_api);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var LazySelect = function (_React$Component) {
+  _inherits(LazySelect, _React$Component);
+
+  function LazySelect(_ref) {
+    var list = _ref.list,
+        value = _ref.value;
+
+    _classCallCheck(this, LazySelect);
+
+    var _this = _possibleConstructorReturn(this, (LazySelect.__proto__ || Object.getPrototypeOf(LazySelect)).call(this));
+
+    _initialiseProps.call(_this);
+
+    _this.state = {
+      list: list,
+      value: value
+    };
+    return _this;
+  }
+
+  _createClass(LazySelect, [{
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      return _react2.default.createElement(
+        _select2.default,
+        {
+          className: this.props.className,
+          value: this.state.value,
+          onClick: function onClick() {
+            return _this2.getList(_this2.props.resource);
+          },
+          onChange: function onChange(event) {
+            return _this2.onSelect(event);
+          }
+        },
+        this.state.list.map(function (_ref2) {
+          var id = _ref2.id,
+              name = _ref2.name;
+          return _react2.default.createElement(
+            _select2.default.Option,
+            { value: id },
+            name
+          );
+        })
+      );
+    }
+  }]);
+
+  return LazySelect;
+}(_react2.default.Component);
+
+var _initialiseProps = function _initialiseProps() {
+  var _this3 = this;
+
+  this.getList = function (source) {
+    return _api2.default.fetchSource(source).then(function (list) {
+      return _this3.setState({ list: list });
+    });
+  };
+
+  this.onSelect = function (_ref3) {
+    var value = _ref3.target.value;
+
+    _this3.setState({ value: value });
+
+    var selectedItem = _this3.state.list.filter(function (_ref4) {
+      var id = _ref4.id;
+      return String(id) === String(value);
+    });
+
+    _this3.props.onSelect(selectedItem[0]);
+  };
+};
+
+exports.default = LazySelect;
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
 var _classnames = __webpack_require__(14);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _index = __webpack_require__(34);
+var _index = __webpack_require__(35);
 
 var _index2 = _interopRequireDefault(_index);
 
@@ -5051,21 +5096,21 @@ Select.Option = function (props) {
 exports.default = Select;
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 module.exports = {"select":"select-sY9e_","control":"control-33GvV"};
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 module.exports = {"select-cell":"select-cell-2OSCk","select":"select-1bmMa"};
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5085,7 +5130,7 @@ var _dataTable = __webpack_require__(15);
 
 var _dataTable2 = _interopRequireDefault(_dataTable);
 
-var _items = __webpack_require__(37);
+var _items = __webpack_require__(38);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5159,7 +5204,7 @@ var OrderItems = function (_React$Component) {
 exports.default = OrderItems;
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

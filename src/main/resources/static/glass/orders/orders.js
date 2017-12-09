@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "c79969cbd19843a53322"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "04bccd7b99b945886317"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -3767,8 +3767,7 @@ module.exports = {
     var requestOptions = Object.assign({
       method: 'GET',
       mode: 'cors',
-      credentials: 'include',
-      redirect: 'follow'
+      credentials: 'include'
     }, options);
 
     return fetch(this.host + '/' + path, requestOptions).then(function (res) {
@@ -3787,7 +3786,7 @@ module.exports = {
     //   'order',
     //   {
     //     method: 'POST',
-    //     data,
+    //     body: JSON.stringify(data),
     //   },
     // );
   },
@@ -3796,6 +3795,12 @@ module.exports = {
   },
   getReceptionsList: function getReceptionsList() {
     return this.request('receptionOfOrder');
+  },
+  getClientsList: function getClientsList() {
+    return this.request('client');
+  },
+  fetchSource: function fetchSource(path) {
+    return this.request(path);
   }
 };
 

@@ -78,6 +78,25 @@ public class OrderService {
     }
 
     @NotNull
+    public OrderDto newOrder(@NotNull OrderDto order) {
+        ReceptionOfOrderEntity receptionOfOrder = receptionOfOrderRepository.findOne(order.getReceptionOfOrder().getId());
+
+        //todo
+        order.setNumber(receptionOfOrder.getOrderNumPrefix() + "1");
+        if (order.getDiscount() == null) {
+            order.setDiscount("0");
+        }
+        order.setCreationDate(new Timestamp(new Date().getTime()).toString());
+        order.setDiscountSum("0");
+        order.setCount(0);
+        order.setSumma("0");
+        order.setArea(0.0);
+        order.setPerimeter(0.0);
+
+        return saveOrder(order);
+    }
+
+    @NotNull
     public OrderDto saveOrder(@NotNull OrderDto order) {
         ClientEntity client = clientRepository.findOne(order.getClient().getId());
 
