@@ -5,9 +5,10 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import ru.vmsystems.template.domain.model.user.UserEntity;
 import ru.vmsystems.template.domain.service.OrderService;
@@ -65,12 +66,12 @@ public class OrderController {
     }
 
     //http://localhost:8080/api/order/
+//    @CrossOrigin(origins = "http://localhost:8080")
     @ApiOperation(value = "Создать новый / обновить заказ")
-    @RequestMapping(value = "", method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "", method = RequestMethod.POST)
 //    @PreAuthorize("@moduleSecurity.orderPermitted")
     public ResponseEntity<OrderDto> saveOrder(@RequestBody OrderDto order, Principal principal) {
+        LOG.info("-- save --");
         Optional<UserEntity> user = userRepository.getByLogin(principal.getName());
         if (!user.isPresent()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
@@ -80,6 +81,15 @@ public class OrderController {
             order = orderService.saveOrder(order);
         }
         return new ResponseEntity<>(order, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "options")
+    @RequestMapping(method = RequestMethod.OPTIONS)
+    public ResponseEntity<?> options() {
+        LOG.info("-- options --");
+        MultiValueMap<String, String> headers = new HttpHeaders();
+        headers.add(HttpHeaders.ACCEPT, RequestMethod.POST.name());
+        return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 
     //http://localhost:8080/api/order/1/

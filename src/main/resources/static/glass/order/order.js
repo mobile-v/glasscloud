@@ -3781,14 +3781,17 @@ module.exports = {
     return this.request('order/' + id);
   },
   updateOrder: function updateOrder(data) {
-    return Promise.resolve(data);
-    // return this.request(
-    //   'order',
-    //   {
-    //     method: 'POST',
-    //     body: JSON.stringify(data),
-    //   },
-    // );
+      return this.request('order', {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              // 'X-CSRF-TOKEN': token
+          },
+          credentials: 'include',
+          body: JSON.stringify(data)
+      });
   },
   getOrderItems: function getOrderItems(id) {
     return this.request('order/' + id + '/items');

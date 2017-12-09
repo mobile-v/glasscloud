@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ru.vmsystems.template.domain.shared.Role;
 
@@ -17,7 +18,7 @@ import ru.vmsystems.template.domain.shared.Role;
 
 /**
  * @author Vladimir Minikh
- *         Created on 24.04.2015.
+ * Created on 24.04.2015.
  * @EnableWebSecurity подключает необходимые бины для использования Spring Security.
  * Вам также нужен LDAP сервер. Spring Security LDAP модуль подключает встроенный сервер,
  * написанный на чистой Java.
@@ -43,13 +44,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.csrf().disable();
+        http
+                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .and()
+//                .csrf().disable()
+//                .cors().disable()
 
-        http.authorizeRequests()
+                .authorizeRequests()
 //                .antMatchers("/api/**").permitAll()
 
-                .antMatchers("/swagger-ui.html").hasAnyAuthority(Role.ROLE_SUPER_ADMIN.toString())
-                .antMatchers("/v2/**").hasAnyAuthority(Role.ROLE_SUPER_ADMIN.toString())
+                .antMatchers("/swagger-ui.html").hasAnyAuthority(Role.ROLE_SUPER_ADMIN.toString(), Role.ROLE_ADMIN.toString())
+                .antMatchers("/v2/**").hasAnyAuthority(Role.ROLE_SUPER_ADMIN.toString(), Role.ROLE_ADMIN.toString())
 
                 .antMatchers("/admin/**").hasAnyAuthority(Role.ROLE_ADMIN.toString())
 
@@ -69,5 +74,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public BasePasswordEncoder getPasswordEncoder() {
         return new Md5PasswordEncoder();
     }
+
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurerAdapter() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/**")
+//                        .allowedOrigins("*")
+//                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+//                        .allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "authorization", "api_key");
+//            }
+//        };
+//    }
 
 }
