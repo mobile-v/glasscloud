@@ -93,11 +93,11 @@ public class OrderService {
         order.setArea(0.0);
         order.setPerimeter(0.0);
 
-        return saveOrder(order);
+        return updateOrder(order);
     }
 
     @NotNull
-    public OrderDto saveOrder(@NotNull OrderDto order) {
+    public OrderDto updateOrder(@NotNull OrderDto order) {
         ClientEntity client = clientRepository.findOne(order.getClient().getId());
 
         OrderEntity entity = mapper.map(order, OrderEntity.class);

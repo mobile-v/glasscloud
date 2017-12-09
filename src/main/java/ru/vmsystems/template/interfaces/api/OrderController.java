@@ -67,23 +67,37 @@ public class OrderController {
 
     //http://localhost:8080/api/order/
 //    @CrossOrigin(origins = "http://localhost:8080")
-    @ApiOperation(value = "Создать новый / обновить заказ")
+    @ApiOperation(value = "Создать новый заказ")
     @RequestMapping(value = "", method = RequestMethod.POST)
 //    @PreAuthorize("@moduleSecurity.orderPermitted")
-    public ResponseEntity<OrderDto> saveOrder(@RequestBody OrderDto order, Principal principal) {
-        LOG.info("-- save --");
+    public ResponseEntity<OrderDto> newOrder(@RequestBody OrderDto order, Principal principal) {
         Optional<UserEntity> user = userRepository.getByLogin(principal.getName());
         if (!user.isPresent()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        LOG.info("-- save --");
 
-        if (order.getId() == null) {
-            order = orderService.newOrder(order);
-        } else {
-            order = orderService.saveOrder(order);
+        if (order.getId() != null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
+        order = orderService.newOrder(order);
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "options")
+    //http://localhost:8080/api/order/1
+    @ApiOperation(value = "Обновить заказ")
+    @RequestMapping(value = "/{orderId}", method = RequestMethod.PUT)
+    public ResponseEntity<OrderDto> updateOrder(@PathVariable(value = "orderId") Long orderId,
+                                                @RequestBody OrderDto order, Principal principal) {
+        Optional<UserEntity> user = userRepository.getByLogin(principal.getName());
+        if (!user.isPresent()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        LOG.info("-- update --");
+
+        order.setId(orderId);
+        order = orderService.updateOrder(order);
+
+        return new ResponseEntity<>(order, HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.OPTIONS)
     public ResponseEntity<?> options() {
         LOG.info("-- options --");
