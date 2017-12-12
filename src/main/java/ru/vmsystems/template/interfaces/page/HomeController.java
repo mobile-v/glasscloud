@@ -32,10 +32,10 @@ public class HomeController {
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping({"/"})
-    public String redirectToIndex() {
-        return "redirect:/glass/orders";
-    }
+//    @RequestMapping({"/"})
+//    public String redirectToIndex() {
+//        return "glass/index";
+//    }
 
     @RequestMapping({"/admin"})
     public String redirectToAdmin() {
@@ -51,15 +51,9 @@ public class HomeController {
 
         switch (Role.valueOf(userEntity.get().getRole())){
             case ROLE_ADMIN:
-                redirect = "redirect:/admin/story";
+                redirect = "redirect:/admin";
                 break;
         }
         return redirect;
-    }
-
-    //http://localhost:8080/charts
-    @RequestMapping({"/charts"})
-    public String charts() {
-        return "charts/charts";
     }
 }

@@ -10,27 +10,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping(value="/glass")
+//@RequestMapping(value="/glass")
 public class GlassController {
     private static final Logger LOG = LoggerFactory.getLogger(GlassController.class);
     @Autowired
     private HttpServletRequest httpServletRequest;
 
-    //http://localhost:8080/glass/index.html
-    @RequestMapping(value="/index.html", method= RequestMethod.GET)
-    public String glassIndex() {
-        return "glass/index";
-    }
-
-    //http://localhost:8080/glass/order/index.html
-    @RequestMapping(value="/order", method= RequestMethod.GET)
-    public String glassOrder() {
-        return "glass/order/index";
-    }
-
     //http://localhost:8080/glass/orders/index.html
-    @RequestMapping(value="/orders", method= RequestMethod.GET)
+    @RequestMapping(value={"", "/", "/auth", "/order", "/orders"}, method= RequestMethod.GET)
     public String glassOrders() {
-        return "glass/orders/index";
+        return "glass/index";
     }
 }
