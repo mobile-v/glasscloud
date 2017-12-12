@@ -74,18 +74,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public BasePasswordEncoder getPasswordEncoder() {
         return new Md5PasswordEncoder();
     }
-
-//    @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurerAdapter() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/**")
-//                        .allowedOrigins("*")
-//                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-//                        .allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "authorization", "api_key");
-//            }
-//        };
-//    }
-
 }

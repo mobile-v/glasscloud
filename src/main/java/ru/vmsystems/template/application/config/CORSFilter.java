@@ -17,7 +17,7 @@ import java.io.IOException;
 @Order(Integer.MIN_VALUE)
 public class CORSFilter extends OncePerRequestFilter {
 
-    static final String ORIGIN = "Origin";
+    private static final String ORIGIN = "Origin";
 
     private static final Logger LOG = LoggerFactory.getLogger(CORSFilter.class);
 
@@ -33,6 +33,7 @@ public class CORSFilter extends OncePerRequestFilter {
         response.setHeader("Access-Control-Allow-Headers",
                 "authorization, content-type, xsrf-token, Origin, X-Requested-With, Accept, api_key, X-XSRF-TOKEN, X-CSRF-TOKEN");
         response.addHeader("Access-Control-Expose-Headers", "xsrf-token, X-XSRF-TOKEN, X-CSRF-TOKEN");
+
         if ("OPTIONS".equals(request.getMethod())) {
             LOG.info("-- options filter --");
             response.setStatus(HttpServletResponse.SC_OK);
