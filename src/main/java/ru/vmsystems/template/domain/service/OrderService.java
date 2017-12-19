@@ -11,10 +11,7 @@ import ru.vmsystems.template.interfaces.dto.OrderDto;
 import ru.vmsystems.template.interfaces.dto.OrderItemDto;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class OrderService {
@@ -109,12 +106,14 @@ public class OrderService {
             entity.setCreationDate(new Timestamp(new Date().getTime()));
         }
         entity.setUpdateDate(new Timestamp(new Date().getTime()));
-        for (OrderItemEntity item : entity.getItems()) {
-            if (item.getCreationDate() == null) {
-                item.setCreationDate(new Timestamp(new Date().getTime()));
+        if (entity.getItems() != null) {
+            for (OrderItemEntity item : entity.getItems()) {
+                if (item.getCreationDate() == null) {
+                    item.setCreationDate(new Timestamp(new Date().getTime()));
+                }
+                item.setUpdateDate(new Timestamp(new Date().getTime()));
+                item.setOrder(entity);
             }
-            item.setUpdateDate(new Timestamp(new Date().getTime()));
-            item.setOrder(entity);
         }
 
         entity = orderRepository.save(entity);
