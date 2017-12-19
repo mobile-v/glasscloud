@@ -44133,8 +44133,8 @@ Styleguide pt-tree
   height:  100%;
 }
 .title-vh8hp {
-  margin: 25px 0 10px 0;
-  padding: 0 15px;
+  margin: 0;
+  padding: 0;
   font-weight: normal;
 }
 .data-table-1jWnW {
@@ -44208,11 +44208,51 @@ Styleguide pt-tree
   border: none;
   outline: none;
 }
+.new-order-2WQOU {
+  margin: 15px;
+}
+
+.form-37tc0 {
+  padding: 20px 20px 0 20px;
+}
+
+.select-u9-RG {
+  width: 250px;
+}
+
+.add-button-pIn69 {
+  margin-left: 10px;
+}
+
+.disabled-1Uk9V {
+  pointer-events: none;
+}
+.padding-block-2yJsg {
+  padding: 0 15px;
+  margin: 25px 0 15px 0;
+}
+.header-3KSJa {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.confirm-duKYp {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
 .select-cell-2OSCk {
   padding-top: 0;
   padding-bottom: 0;
-}
-
-.select-1bmMa {
-  height: 26px;
 }

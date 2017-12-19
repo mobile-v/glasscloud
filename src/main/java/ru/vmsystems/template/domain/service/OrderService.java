@@ -109,6 +109,13 @@ public class OrderService {
             entity.setCreationDate(new Timestamp(new Date().getTime()));
         }
         entity.setUpdateDate(new Timestamp(new Date().getTime()));
+        for (OrderItemEntity item : entity.getItems()) {
+            if (item.getCreationDate() == null) {
+                item.setCreationDate(new Timestamp(new Date().getTime()));
+            }
+            item.setUpdateDate(new Timestamp(new Date().getTime()));
+            item.setOrder(entity);
+        }
 
         entity = orderRepository.save(entity);
 
