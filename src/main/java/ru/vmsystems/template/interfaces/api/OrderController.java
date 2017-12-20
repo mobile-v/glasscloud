@@ -15,6 +15,7 @@ import ru.vmsystems.template.domain.service.OrderService;
 import ru.vmsystems.template.infrastructure.persistence.UserRepository;
 import ru.vmsystems.template.interfaces.dto.OrderDto;
 import ru.vmsystems.template.interfaces.dto.OrderItemDto;
+import ru.vmsystems.template.interfaces.dto.Result;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -109,9 +110,9 @@ public class OrderController {
     //http://localhost:8080/api/order/1/
     @ApiOperation(value = "Удалить заказ по id заказа")
     @RequestMapping(value = "/{orderId}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteOrder(@PathVariable(value = "orderId") Long orderId) {
+    public ResponseEntity<Result> deleteOrder(@PathVariable(value = "orderId") Long orderId) {
         orderService.deleteOrder(orderId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new Result("OK"), HttpStatus.OK);
     }
 
     //http://localhost:8080/api/order/1/items
@@ -132,8 +133,8 @@ public class OrderController {
 
     //http://localhost:8080/api/order/items/1
     @RequestMapping(value = "/items/{itemId}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteOrderItem(@PathVariable(value = "itemId") Long itemId) {
+    public ResponseEntity<Result> deleteOrderItem(@PathVariable(value = "itemId") Long itemId) {
         orderService.deleteOrderItem(itemId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new Result("OK"), HttpStatus.OK);
     }
 }

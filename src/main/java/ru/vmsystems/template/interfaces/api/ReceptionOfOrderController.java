@@ -56,8 +56,8 @@ public class ReceptionOfOrderController {
 
 //    //http://localhost:8080/api/receptionOfOrder/1/
 //    @RequestMapping(value = "/{receptionOfOrderId}", method = RequestMethod.DELETE)
-//    public ResponseEntity<?> delete(@PathVariable(value = "receptionOfOrderId") Long receptionOfOrderId) {
+//    public ResponseEntity<Result> delete(@PathVariable(value = "receptionOfOrderId") Long receptionOfOrderId) {
 //        receptionOfOrderService.delete(receptionOfOrderId);
-//        return new ResponseEntity<>(HttpStatus.OK);
+//        return new ResponseEntity<>(new Result("OK"), HttpStatus.OK);
 //    }
 }

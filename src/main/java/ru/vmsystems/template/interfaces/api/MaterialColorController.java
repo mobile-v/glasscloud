@@ -13,6 +13,7 @@ import ru.vmsystems.template.domain.model.user.UserEntity;
 import ru.vmsystems.template.infrastructure.persistence.MaterialColorRepository;
 import ru.vmsystems.template.infrastructure.persistence.UserRepository;
 import ru.vmsystems.template.interfaces.dto.MaterialColorDto;
+import ru.vmsystems.template.interfaces.dto.Result;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -82,8 +83,8 @@ public class MaterialColorController {
 
     //http://localhost:8080/api/material/color/1/
     @RequestMapping(value = "/{colorId}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> delete(@PathVariable(value = "colorId") Long colorId) {
+    public ResponseEntity<Result> delete(@PathVariable(value = "colorId") Long colorId) {
         repository.delete(colorId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new Result("OK"), HttpStatus.OK);
     }
 }

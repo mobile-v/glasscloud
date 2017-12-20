@@ -61,8 +61,8 @@ public class ClientController {
 //    //http://localhost:8080/api/client/1/
 //    @ApiOperation(value = "Удалить клиента по id клиента")
 //    @RequestMapping(value = "/{clientId}", method = RequestMethod.DELETE)
-//    public ResponseEntity<?> delete(@PathVariable(value = "clientId") Long clientId) {
+//    public ResponseEntity<Result> delete(@PathVariable(value = "clientId") Long clientId) {
 //        clientService.delete(clientId);
-//        return new ResponseEntity<>(HttpStatus.OK);
+//        return new ResponseEntity<>(new Result("OK"), HttpStatus.OK);
 //    }
 }

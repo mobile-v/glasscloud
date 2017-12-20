@@ -8,14 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.vmsystems.template.domain.model.MaterialColorEntity;
 import ru.vmsystems.template.domain.model.MaterialTypeEntity;
 import ru.vmsystems.template.domain.model.user.UserEntity;
-import ru.vmsystems.template.infrastructure.persistence.MaterialColorRepository;
 import ru.vmsystems.template.infrastructure.persistence.MaterialTypeRepository;
 import ru.vmsystems.template.infrastructure.persistence.UserRepository;
-import ru.vmsystems.template.interfaces.dto.MaterialColorDto;
 import ru.vmsystems.template.interfaces.dto.MaterialTypeDto;
+import ru.vmsystems.template.interfaces.dto.Result;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -85,8 +83,8 @@ public class MaterialTypeController {
 
     //http://localhost:8080/api/material/type/1/
     @RequestMapping(value = "/{typeId}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> delete(@PathVariable(value = "typeId") Long typeId) {
+    public ResponseEntity<Result> delete(@PathVariable(value = "typeId") Long typeId) {
         repository.delete(typeId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new Result("OK"), HttpStatus.OK);
     }
 }

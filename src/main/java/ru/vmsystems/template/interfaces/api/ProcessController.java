@@ -9,13 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.vmsystems.template.domain.model.ProcessEntity;
-import ru.vmsystems.template.domain.model.ProcessTypeEntity;
 import ru.vmsystems.template.domain.model.user.UserEntity;
 import ru.vmsystems.template.infrastructure.persistence.ProcessRepository;
 import ru.vmsystems.template.infrastructure.persistence.UserRepository;
 import ru.vmsystems.template.interfaces.dto.MaterialTypeDto;
 import ru.vmsystems.template.interfaces.dto.ProcessDto;
-import ru.vmsystems.template.interfaces.dto.ProcessTypeDto;
+import ru.vmsystems.template.interfaces.dto.Result;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
@@ -88,8 +87,8 @@ public class ProcessController {
 
     //http://localhost:8080/api/process/1/
     @RequestMapping(value = "/{processId}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> delete(@PathVariable(value = "processId") Long processId) {
+    public ResponseEntity<Result> delete(@PathVariable(value = "processId") Long processId) {
         repository.delete(processId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new Result("OK"), HttpStatus.OK);
     }
 }

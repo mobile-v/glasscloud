@@ -9,11 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.vmsystems.template.domain.model.MaterialEntity;
-import ru.vmsystems.template.domain.model.MaterialTypeEntity;
 import ru.vmsystems.template.domain.model.user.UserEntity;
 import ru.vmsystems.template.infrastructure.persistence.MaterialRepository;
 import ru.vmsystems.template.infrastructure.persistence.UserRepository;
 import ru.vmsystems.template.interfaces.dto.MaterialDto;
+import ru.vmsystems.template.interfaces.dto.Result;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
@@ -86,8 +86,8 @@ public class MaterialController {
 
     //http://localhost:8080/api/material/1/
     @RequestMapping(value = "/{typeId}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> delete(@PathVariable(value = "typeId") Long typeId) {
+    public ResponseEntity<Result> delete(@PathVariable(value = "typeId") Long typeId) {
         repository.delete(typeId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new Result("OK"), HttpStatus.OK);
     }
 }
