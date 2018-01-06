@@ -44160,6 +44160,20 @@ Styleguide pt-tree
 .row_header-ZVuYp:hover {
   background: none;
 }
+.splash-screen-29xp5 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: #ccc;
+  font-size: 18px;
+  font-weight: bold;
+}
 .order-cell-26mtM {
   cursor: pointer;
 }
@@ -44167,6 +44181,12 @@ Styleguide pt-tree
   width: 100%;
   height: 65px;
   background: #03a9f4;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 .header-menu-1RgNg {
@@ -44196,6 +44216,34 @@ Styleguide pt-tree
 .menu-item-1PPMS:hover {
   background: rgba(255, 255, 255, .4);
   cursor: pointer;
+}
+
+.reception-2Nbya {
+  color: #fff;
+  -ms-flex-item-align: center;
+      align-self: center;
+  height: 34px;
+  margin-right: 15px;
+}
+
+.reception-2Nbya .reception-select-1zesv {
+  -webkit-transition: background .2s;
+  transition: background .2s;
+  background: rgba(255, 255, 255, .2);
+  border-radius: 3px;
+}
+
+.reception-2Nbya .reception-select-1zesv:hover {
+  background: rgba(255, 255, 255, .4);
+}
+
+.reception-2Nbya .reception-select-1zesv .reception-select-control-3Ii1h {
+  color: #fff;
+}
+
+.reception-2Nbya .reception-select-1zesv .reception-select-control-3Ii1h:hover {
+  color: #fff;
+  background: none;
 }
 .select-sY9e_ {
   border: 1px solid #ddd;

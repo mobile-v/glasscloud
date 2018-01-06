@@ -21,6 +21,7 @@ import ru.vmsystems.template.interfaces.dto.Result;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,7 +68,7 @@ public class OrderController {
                 .filter(e -> e.getCompany().getId().equals(user.get().getCompany().getId()));
 
         if (!receptionOfOrderEntity.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
         }
 
         List<OrderDto> result = orderService.getOrdersByReceptionOfOrder(receptionOfOrder);
