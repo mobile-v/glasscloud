@@ -10,8 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import ru.vmsystems.template.domain.model.ReceptionOfOrderEntity;
 import ru.vmsystems.template.domain.model.user.UserEntity;
 import ru.vmsystems.template.domain.service.OrderService;
+import ru.vmsystems.template.infrastructure.persistence.ReceptionOfOrderRepository;
 import ru.vmsystems.template.infrastructure.persistence.UserRepository;
 import ru.vmsystems.template.interfaces.dto.OrderDto;
 import ru.vmsystems.template.interfaces.dto.OrderItemDto;
@@ -21,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+
+import static java.util.Optional.ofNullable;
 
 @RestController
 @RequestMapping("/api")
@@ -32,33 +36,39 @@ public class OrderController {
     private final OrderService orderService;
     @NotNull
     private final UserRepository userRepository;
+    private final ReceptionOfOrderRepository receptionOfOrderRepository;
     @NotNull
     private final HttpServletRequest httpServletRequest;
 
     @Autowired
     public OrderController(@NotNull OrderService orderService,
                            @NotNull HttpServletRequest httpServletRequest,
-                           @NotNull UserRepository userRepository) {
+                           @NotNull UserRepository userRepository,
+                           @NotNull ReceptionOfOrderRepository receptionOfOrderRepository) {
         this.orderService = orderService;
         this.httpServletRequest = httpServletRequest;
         this.userRepository = userRepository;
-    }
-
-    //http://localhost:8080/api/order
-    @ApiOperation(value = "Получить список всех заказов")
-    @NotNull
-    @RequestMapping(value = "/order", method = RequestMethod.GET)
-    public ResponseEntity<List<OrderDto>> getOrders() {
-        List<OrderDto> result = orderService.getOrders();
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        this.receptionOfOrderRepository = receptionOfOrderRepository;
     }
 
     //http://localhost:8080/api/1/order
-    @ApiOperation(value = "Получить список всех заказов")
+    @ApiOperation(value = "Получить список всех заказов по точке выдачи")
     @NotNull
     @RequestMapping(value = "/{receptionOfOrder}/order", method = RequestMethod.GET)
     public ResponseEntity<List<OrderDto>> getOrdersByReceptionOfOrder(
-            @PathVariable(value = "receptionOfOrder") Long receptionOfOrder) {
+            @PathVariable(value = "receptionOfOrder") Long receptionOfOrder,
+            Principal principal) {
+
+        Optional<UserEntity> user = userRepository.getByLogin(principal.getName());
+        if (!user.isPresent()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+
+        Optional<ReceptionOfOrderEntity> receptionOfOrderEntity = ofNullable(receptionOfOrderRepository
+                .findOne(receptionOfOrder))
+                .filter(e -> e.getCompany().getId().equals(user.get().getCompany().getId()));
+
+        if (!receptionOfOrderEntity.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         List<OrderDto> result = orderService.getOrdersByReceptionOfOrder(receptionOfOrder);
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -71,10 +81,8 @@ public class OrderController {
     public ResponseEntity<OrderDto> getOrder(@PathVariable(value = "orderId") Long orderId) {
 
         Optional<OrderDto> order = orderService.getOrder(orderId);
-        return order.map(orderDto ->
-                new ResponseEntity<>(orderDto, HttpStatus.OK))
-                .orElseGet(() ->
-                        new ResponseEntity<>(HttpStatus.NO_CONTENT));
+        return order.map(orderDto -> new ResponseEntity<>(orderDto, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     //http://localhost:8080/api/order/

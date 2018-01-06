@@ -48,6 +48,7 @@ public class OrderService {
         this.mapper = mapper;
     }
 
+    //todo сделать проверку на принадлежность заказа пользователю
     public List<OrderDto> getOrders() {
         return StreamSupport.stream(orderRepository.findAll().spliterator(), false)
                 .map(order -> mapper.map(order, OrderDto.class))
