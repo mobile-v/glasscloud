@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/order")
+@RequestMapping("/api")
 public class OrderController {
     @NotNull
     private static final Logger LOG = LoggerFactory.getLogger(OrderController.class);
@@ -47,16 +47,27 @@ public class OrderController {
     //http://localhost:8080/api/order
     @ApiOperation(value = "Получить список всех заказов")
     @NotNull
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/order", method = RequestMethod.GET)
     public ResponseEntity<List<OrderDto>> getOrders() {
         List<OrderDto> result = orderService.getOrders();
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    //http://localhost:8080/api/1/order
+    @ApiOperation(value = "Получить список всех заказов")
+    @NotNull
+    @RequestMapping(value = "/{receptionOfOrder}/order", method = RequestMethod.GET)
+    public ResponseEntity<List<OrderDto>> getOrdersByReceptionOfOrder(
+            @PathVariable(value = "receptionOfOrder") Long receptionOfOrder) {
+
+        List<OrderDto> result = orderService.getOrdersByReceptionOfOrder(receptionOfOrder);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     //http://localhost:8080/api/order/1
     @ApiOperation(value = "Получить заказ по id заказа")
     @NotNull
-    @RequestMapping(value = "/{orderId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/order/{orderId}", method = RequestMethod.GET)
     public ResponseEntity<OrderDto> getOrder(@PathVariable(value = "orderId") Long orderId) {
 
         Optional<OrderDto> order = orderService.getOrder(orderId);
@@ -69,7 +80,7 @@ public class OrderController {
     //http://localhost:8080/api/order/
 //    @CrossOrigin(origins = "http://localhost:8080")
     @ApiOperation(value = "Создать новый заказ")
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(value = "/order", method = RequestMethod.POST)
 //    @PreAuthorize("@moduleSecurity.orderPermitted")
     public ResponseEntity<OrderDto> newOrder(@RequestBody OrderDto order, Principal principal) {
         Optional<UserEntity> user = userRepository.getByLogin(principal.getName());
@@ -86,7 +97,7 @@ public class OrderController {
 
     //http://localhost:8080/api/order/1
     @ApiOperation(value = "Обновить заказ")
-    @RequestMapping(value = "/{orderId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/order/{orderId}", method = RequestMethod.PUT)
     public ResponseEntity<OrderDto> updateOrder(@PathVariable(value = "orderId") Long orderId,
                                                 @RequestBody OrderDto order, Principal principal) {
         Optional<UserEntity> user = userRepository.getByLogin(principal.getName());
@@ -109,7 +120,7 @@ public class OrderController {
 
     //http://localhost:8080/api/order/1/
     @ApiOperation(value = "Удалить заказ по id заказа")
-    @RequestMapping(value = "/{orderId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/order/{orderId}", method = RequestMethod.DELETE)
     public ResponseEntity<Result> deleteOrder(@PathVariable(value = "orderId") Long orderId) {
         orderService.deleteOrder(orderId);
         return new ResponseEntity<>(new Result("OK"), HttpStatus.OK);
@@ -117,14 +128,14 @@ public class OrderController {
 
     //http://localhost:8080/api/order/1/items
     @NotNull
-    @RequestMapping(value = "/{orderId}/items", method = RequestMethod.GET)
+    @RequestMapping(value = "/order/{orderId}/items", method = RequestMethod.GET)
     public ResponseEntity<List<OrderItemDto>> getOrderItems(@PathVariable(value = "orderId") Long orderId) {
         List<OrderItemDto> result = orderService.getOrderItems(orderId);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     //http://localhost:8080/api/order/1/items/
-    @RequestMapping(value = "/{orderId}/items", method = RequestMethod.POST)
+    @RequestMapping(value = "/order/{orderId}/items", method = RequestMethod.POST)
     public ResponseEntity<OrderDto> saveOrderItem(@PathVariable(value = "orderId") Long orderId,
                                                   @RequestBody OrderItemDto orderItem) {
         OrderDto result = orderService.saveOrderItem(orderId, orderItem);
@@ -132,7 +143,7 @@ public class OrderController {
     }
 
     //http://localhost:8080/api/order/items/1
-    @RequestMapping(value = "/items/{itemId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/order/items/{itemId}", method = RequestMethod.DELETE)
     public ResponseEntity<Result> deleteOrderItem(@PathVariable(value = "itemId") Long itemId) {
         orderService.deleteOrderItem(itemId);
         return new ResponseEntity<>(new Result("OK"), HttpStatus.OK);

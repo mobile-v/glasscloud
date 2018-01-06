@@ -11,7 +11,11 @@ import ru.vmsystems.template.interfaces.dto.OrderDto;
 import ru.vmsystems.template.interfaces.dto.OrderItemDto;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class OrderService {
@@ -45,10 +49,16 @@ public class OrderService {
     }
 
     public List<OrderDto> getOrders() {
-        List<OrderDto> result = new ArrayList<>();
-        orderRepository.findAll()
-                .forEach(order -> result.add(mapper.map(order, OrderDto.class)));
-        return result;
+        return StreamSupport.stream(orderRepository.findAll().spliterator(), false)
+                .map(order -> mapper.map(order, OrderDto.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<OrderDto> getOrdersByReceptionOfOrder(Long receptionOfOrder) {
+        return StreamSupport.stream(orderRepository.findAll().spliterator(), false)
+                .filter(order -> receptionOfOrder.equals(order.getReceptionOfOrder().getId()))
+                .map(order -> mapper.map(order, OrderDto.class))
+                .collect(Collectors.toList());
     }
 
     public Optional<OrderDto> getOrder(@NotNull Long orderId) {
