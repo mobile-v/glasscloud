@@ -14,6 +14,8 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ru.vmsystems.template.domain.shared.Role;
 
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
+
 //http://spring-projects.ru/guides/securing-web/
 
 /**
@@ -63,9 +65,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/glass/**").hasAnyAuthority(Role.ROLE_SUPER_ADMIN.toString(), Role.ROLE_ADMIN.toString(), Role.ROLE_USER.toString())
 
                 .and()
-                .formLogin().loginPage("/login").defaultSuccessUrl("/", false)
+                .formLogin()
+                .failureHandler((request, response, exception) -> response.setStatus(SC_UNAUTHORIZED))
+//                .successHandler((request, response, authentication) -> response.setStatus(SC_OK))
+                .defaultSuccessUrl("/", false)
+                .loginPage("/login")
                 .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .and()
                 .httpBasic();
     }
