@@ -55,7 +55,9 @@ public class OrderController {
     //http://localhost:8080/api/1/order
     @ApiOperation(value = "Получить список всех заказов по точке выдачи")
     @NotNull
-    @RequestMapping(value = "/{receptionOfOrder}/order", method = RequestMethod.GET)
+    @RequestMapping(value = {
+            "/{receptionOfOrder}/order",
+            "/order/receptionOfOrder/{receptionOfOrder}"}, method = RequestMethod.GET)
     public ResponseEntity<List<OrderDto>> getOrdersByReceptionOfOrder(
             @PathVariable(value = "receptionOfOrder") Long receptionOfOrder,
             Principal principal) {

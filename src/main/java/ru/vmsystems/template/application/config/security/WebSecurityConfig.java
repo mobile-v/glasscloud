@@ -48,6 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//                .ignoringAntMatchers("/swagger-ui.html", "/v2/**", "/api/client")
                 .and()
 //                .csrf().disable()
 //                .cors().disable()

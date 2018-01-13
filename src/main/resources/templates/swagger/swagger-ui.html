@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Swagger UI</title>
+  <!--<meta th:name="_csrf" th:content="${_csrf.token}"/>-->
+  <!--<meta th:name="_csrf_header" th:content="X-CSRF-TOKEN"/>-->
   <link rel="icon" type="image/png" href="webjars/springfox-swagger-ui/images/favicon-32x32.png" sizes="32x32"/>
   <link rel="icon" type="image/png" href="webjars/springfox-swagger-ui/images/favicon-16x16.png" sizes="16x16"/>
   <link href='webjars/springfox-swagger-ui/css/typography.css' media='screen' rel='stylesheet' type='text/css'/>
@@ -40,9 +42,11 @@
       <div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div>
       <div id='auth_container'></div>
       <div class='input'><a id="explore" class="header__btn" href="#" data-sw-translate>Explore</a></div>
+      <!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
     </form>
   </div>
 </div>
+
 
 <div id="message-bar" class="swagger-ui-wrap" data-sw-translate>&nbsp;</div>
 <div id="swagger-ui-container" class="swagger-ui-wrap"></div>
