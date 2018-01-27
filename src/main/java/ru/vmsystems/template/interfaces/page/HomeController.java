@@ -32,10 +32,10 @@ public class HomeController {
     @Autowired
     private UserRepository userRepository;
 
-//    @RequestMapping({"/"})
-//    public String redirectToIndex() {
-//        return "glass/index";
-//    }
+    @RequestMapping({"/"})
+    public String redirectToIndex() {
+        return "glass/order/orders";
+    }
 
     @RequestMapping({"/admin"})
     public String redirectToAdmin() {

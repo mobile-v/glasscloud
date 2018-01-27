@@ -9,6 +9,10 @@ body {
     padding: 0;
 }
 
+main {
+    margin: 5em;
+}
+
 #PageHeader1 {
     background-color: #3A6D98;
     background-image: none;
