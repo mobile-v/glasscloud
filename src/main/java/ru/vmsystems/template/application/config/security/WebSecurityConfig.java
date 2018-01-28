@@ -68,7 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .failureHandler((request, response, exception) -> response.setStatus(SC_UNAUTHORIZED))
 //                .successHandler((request, response, authentication) -> response.setStatus(SC_OK))
-                .defaultSuccessUrl("/glass/login-reception-of-order", true)
+                .defaultSuccessUrl("/", true)
                 .loginPage("/login").permitAll()
                 .and()
                 .logout()
