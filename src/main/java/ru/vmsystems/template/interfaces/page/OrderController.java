@@ -73,6 +73,7 @@ public class OrderController {
         if (!receptionOfOrderEntity.isPresent()) {
             result = Collections.emptyList();
         } else {
+            model.addAttribute("receptionName", receptionOfOrderEntity.get().getName());
             result = orderService.getOrdersByReceptionOfOrder(receptionOfOrder.get());
         }
 
@@ -80,7 +81,8 @@ public class OrderController {
 
         if (false) {
             WebContext context = new WebContext(null, null, null);
-            context.setVariable("orders", result);
+            context.setVariable("orders", "");
+            context.setVariable("receptionName", "");
         }
         return "glass/order/orders";
     }
