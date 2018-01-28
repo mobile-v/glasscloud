@@ -28,6 +28,8 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
+import static ru.vmsystems.template.interfaces.page.URLS.*;
+
 /**
  * Handles requests for the application home page.
  */
@@ -44,11 +46,21 @@ public class HomeController {
 
     @RequestMapping({"/"})
     public String redirectToIndex() {
-        return "glass/order/orders";
+        Optional<Long> reception = receptionOfOrderService.getReceptionOfOrder(httpServletRequest.getSession().getId());
+        if (reception.isPresent()) {
+            return URI_REDIRECT_TO_ORDERS;
+        } else {
+            return URI_REDIRECT_TO_SELECT_RECEPTION;
+        }
     }
 
     @RequestMapping({"/glass/login-reception-of-order"})
     public String getReceptionOfOrder(Model model, Principal principal) {
+
+        Optional<Long> reception = receptionOfOrderService.getReceptionOfOrder(httpServletRequest.getSession().getId());
+        if (reception.isPresent()) {
+            return URI_REDIRECT_TO_ORDERS;
+        }
 
         List<ReceptionOfOrderDto> result = receptionOfOrderService.getByUserName(principal.getName());
 
@@ -62,18 +74,21 @@ public class HomeController {
             context.setVariable("receptionOfOrder", receptionOfOrderDto);
         }
 
-        return "glass/login-reception-of-order";
+        return URI_SELECT_RECEPTION;
     }
 
     @RequestMapping(value = "/glass/login-reception-of-order", method = RequestMethod.POST)
     public String selectReceptionOfOrder(@ModelAttribute ReceptionOfOrderDto receptionOfOrder, Principal principal) {
 
-        return "redirect:/glass/orders/receptionOfOrder/" + receptionOfOrder.getId();
+        receptionOfOrderService.setReceptionOfOrder(httpServletRequest.getSession().getId(),
+                receptionOfOrder.getId(), principal);
+
+        return URI_REDIRECT_TO_ORDERS;
     }
 
     @RequestMapping({"/admin"})
     public String redirectToAdmin() {
-        String redirect = "redirect:/logout";
+        String redirect = URI_REDIRECT_TO_LOGOUT;
 
         String login = httpServletRequest.getRemoteUser();
         Optional<UserEntity> userEntity = userRepository.getByLogin(login);
@@ -85,7 +100,7 @@ public class HomeController {
 
         switch (Role.valueOf(userEntity.get().getRole())) {
             case ROLE_ADMIN:
-                redirect = "redirect:/admin";
+                redirect = URI_REDIRECT_TO_ADMIN;
                 break;
         }
         return redirect;

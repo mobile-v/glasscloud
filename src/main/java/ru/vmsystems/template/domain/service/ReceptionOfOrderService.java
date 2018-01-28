@@ -13,10 +13,9 @@ import ru.vmsystems.template.infrastructure.persistence.ReceptionOfOrderReposito
 import ru.vmsystems.template.infrastructure.persistence.UserRepository;
 import ru.vmsystems.template.interfaces.dto.ReceptionOfOrderDto;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.security.Principal;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +30,8 @@ public class ReceptionOfOrderService {
     @NotNull
     private final Mapper mapper;
 
+    private Map<String, Long> receptions = new ConcurrentHashMap<>();
+
     @Autowired
     public ReceptionOfOrderService(@NotNull ReceptionOfOrderRepository receptionOfOrderRepository,
                                    @NotNull CompanyRepository companyRepository,
@@ -40,6 +41,23 @@ public class ReceptionOfOrderService {
         this.companyRepository = companyRepository;
         this.userRepository = userRepository;
         this.mapper = mapper;
+    }
+
+    public void setReceptionOfOrder(String sessionId, Long reception, Principal principal) {
+        Optional<UserEntity> user = userRepository.getByLogin(principal.getName());
+
+        if (!user.isPresent()) throw new RuntimeException("Пользователь не найден");
+
+        CompanyEntity company = companyRepository.findOne(user.get().getCompany().getId());
+        receptionOfOrderRepository.getByCompanyId(company.getId()).stream()
+                .filter(receptionOfOrderEntity -> reception.equals(receptionOfOrderEntity.getId()))
+                .findFirst().orElseThrow(() -> new RuntimeException("Точка приема не найдена"));
+
+        receptions.put(sessionId, reception);
+    }
+
+    public Optional<Long> getReceptionOfOrder(String sessionId) {
+        return Optional.ofNullable(receptions.get(sessionId));
     }
 
     public List<ReceptionOfOrderDto> get() {
