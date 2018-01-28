@@ -1,0 +1,52 @@
+.wrapper{
+  text-align: center;
+  width: 500px;
+  margin: 200px auto;
+}
+
+.wrapper div {
+  text-align: justify;
+}
+
+.wrapper a{
+  float: left;
+  color: #66cdaa;
+  margin: 5px 0 0 0;
+}
+
+.welcome{
+  color: #00a1f4;
+  font-size: 20px;
+}
+
+.hint_p{
+  color: #868686;
+  background: #accedd;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.red_font {
+    color: red;
+}
+
+#input_login{
+  margin: 5px 0 15px 0;
+  border-radius: 5px;
+}
+
+#input_password{
+  border-radius: 5px;
+}
+
+#input_remember{
+  margin: 20px 0 0 0;
+}
+
+button {
+  margin: 0 0 0 10px;
+  width: 70px;
+  border-radius: 3px;
+  
+}
+
