@@ -37,7 +37,7 @@ import static ru.vmsystems.template.interfaces.page.URLS.*;
 public class HomeController {
     private static final Logger LOG = LoggerFactory.getLogger(HomeController.class);
     @Autowired
-    private HttpServletRequest httpServletRequest;
+    private HttpServletRequest httpRequest;
 
     @Autowired
     private UserRepository userRepository;
@@ -46,7 +46,7 @@ public class HomeController {
 
     @RequestMapping({"/"})
     public String redirectToIndex() {
-        Optional<Long> reception = receptionOfOrderService.getReceptionOfOrder(httpServletRequest.getSession().getId());
+        Optional<Long> reception = receptionOfOrderService.getReceptionOfOrder();
         if (reception.isPresent()) {
             return URI_REDIRECT_TO_ORDERS;
         } else {
@@ -57,7 +57,7 @@ public class HomeController {
     @RequestMapping({"/glass/login-reception-of-order"})
     public String getReceptionOfOrder(Model model, Principal principal) {
 
-        Optional<Long> reception = receptionOfOrderService.getReceptionOfOrder(httpServletRequest.getSession().getId());
+        Optional<Long> reception = receptionOfOrderService.getReceptionOfOrder();
         if (reception.isPresent()) {
             return URI_REDIRECT_TO_ORDERS;
         }
@@ -78,10 +78,9 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/glass/login-reception-of-order", method = RequestMethod.POST)
-    public String selectReceptionOfOrder(@ModelAttribute ReceptionOfOrderDto receptionOfOrder, Principal principal) {
+    public String selectReceptionOfOrder(@ModelAttribute ReceptionOfOrderDto receptionOfOrder) {
 
-        receptionOfOrderService.setReceptionOfOrder(httpServletRequest.getSession().getId(),
-                receptionOfOrder.getId(), principal);
+        receptionOfOrderService.setReceptionOfOrder(receptionOfOrder.getId());
 
         return URI_REDIRECT_TO_ORDERS;
     }
@@ -90,7 +89,7 @@ public class HomeController {
     public String redirectToAdmin() {
         String redirect = URI_REDIRECT_TO_LOGOUT;
 
-        String login = httpServletRequest.getRemoteUser();
+        String login = httpRequest.getRemoteUser();
         Optional<UserEntity> userEntity = userRepository.getByLogin(login);
         if (!userEntity.isPresent()) return redirect;
 

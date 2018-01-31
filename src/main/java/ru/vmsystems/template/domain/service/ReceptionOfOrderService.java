@@ -13,13 +13,12 @@ import ru.vmsystems.template.infrastructure.persistence.ReceptionOfOrderReposito
 import ru.vmsystems.template.infrastructure.persistence.UserRepository;
 import ru.vmsystems.template.interfaces.dto.ReceptionOfOrderDto;
 
-import java.security.Principal;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
-public class ReceptionOfOrderService {
+public class ReceptionOfOrderService extends BackService {
 
     @NotNull
     private final ReceptionOfOrderRepository receptionOfOrderRepository;
@@ -43,8 +42,8 @@ public class ReceptionOfOrderService {
         this.mapper = mapper;
     }
 
-    public void setReceptionOfOrder(String sessionId, Long reception, Principal principal) {
-        Optional<UserEntity> user = userRepository.getByLogin(principal.getName());
+    public void setReceptionOfOrder(Long reception) {
+        Optional<UserEntity> user = userRepository.getByLogin(getLogin());
 
         if (!user.isPresent()) throw new RuntimeException("Пользователь не найден");
 
@@ -53,11 +52,20 @@ public class ReceptionOfOrderService {
                 .filter(receptionOfOrderEntity -> reception.equals(receptionOfOrderEntity.getId()))
                 .findFirst().orElseThrow(() -> new RuntimeException("Точка приема не найдена"));
 
-        receptions.put(sessionId, reception);
+        receptions.put(getSesionId(), reception);
     }
 
-    public Optional<Long> getReceptionOfOrder(String sessionId) {
-        return Optional.ofNullable(receptions.get(sessionId));
+    public Optional<Long> getReceptionOfOrder() {
+        return Optional.ofNullable(receptions.get(getSesionId()));
+    }
+
+    public Optional<String> getReceptionOfOrderName() {
+        Long id = receptions.get(getSesionId());
+        ReceptionOfOrderEntity entity = receptionOfOrderRepository.findOne(id);
+        if (entity == null) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(entity.getName());
     }
 
     public List<ReceptionOfOrderDto> get() {

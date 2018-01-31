@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Admin</title>
+
+    <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+    <link href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet/less" href="../../../static/css/style.less" type="text/css">
+    <link rel="stylesheet/less" href="../../../static/css/main_page.css" type="text/css">
+    <script src="../../../static/css/less.min.js"></script>
+</head>
+<body>
+
+<div th:replace="glass/header :: header"></div>
+
+<main class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well">
+                <div class="table-responsive">
+                    <h1>Список расцветов маретиалов</h1>
+                    <!--<form th:action="@{/api/material/color/{id}(id=${color.id})}" method="post" th:object="${color}">-->
+                    <form th:action="@{/glass/color/{id}(id=${color.id})}" method="post" th:object="${color}">
+
+                        <div class="form-group bootstrap3-required">
+
+                        </div>
+                        <div class="form-group bootstrap3-required">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <span><strong>Название цвета</strong></span>
+                                    <textarea class="form-control" cols="40" id="id_name" name="name" rows="3"
+                                              required th:text="*{name}"/>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-star"></span> Сохранить
+                        </button>
+                    </form>
+                    <div id="table1Pager"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

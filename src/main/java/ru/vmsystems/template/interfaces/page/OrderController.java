@@ -59,7 +59,7 @@ public class OrderController {
     @RequestMapping(value="/orders", method= RequestMethod.GET)
     public String getPageOrdersBy(Model model, Principal principal) {
 
-        Optional<Long> receptionOfOrder = receptionOfOrderService.getReceptionOfOrder(httpServletRequest.getSession().getId());
+        Optional<Long> receptionOfOrder = receptionOfOrderService.getReceptionOfOrder();
         if (!receptionOfOrder.isPresent()) return URI_REDIRECT_TO_SELECT_RECEPTION;
 
         Optional<UserEntity> user = userRepository.getByLogin(principal.getName());

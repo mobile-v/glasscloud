@@ -84,10 +84,26 @@ public class MaterialController {
         return new ResponseEntity<>(type, HttpStatus.OK);
     }
 
+    //http://localhost:8080/api/material/1
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    public ResponseEntity<MaterialDto> update(@PathVariable(value = "id") Long id,
+                                              @RequestBody MaterialDto type) {
+        Optional<UserEntity> user = userRepository.getByLogin(httpServletRequest.getRemoteUser());
+        if (!user.isPresent()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+
+        MaterialEntity entity = mapper.map(type, MaterialEntity.class);
+        entity.setCompany(user.get().getCompany());
+        entity.setLastUpdate(new Timestamp(new Date().getTime()));
+        entity.setId(id);
+        repository.save(entity);
+        type.setId(entity.getId());
+        return new ResponseEntity<>(type, HttpStatus.OK);
+    }
+
     //http://localhost:8080/api/material/1/
-    @RequestMapping(value = "/{typeId}", method = RequestMethod.DELETE)
-    public ResponseEntity<Result> delete(@PathVariable(value = "typeId") Long typeId) {
-        repository.delete(typeId);
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Result> delete(@PathVariable(value = "id") Long id) {
+        repository.delete(id);
         return new ResponseEntity<>(new Result("OK"), HttpStatus.OK);
     }
 }
