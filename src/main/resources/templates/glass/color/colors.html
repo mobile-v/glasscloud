@@ -23,7 +23,7 @@
             <div class="well">
                 <div class="table-responsive">
                     <h1>Список расцветок маретиалов</h1>
-                    <div class="panel-group" id="accordion">
+                    <div class="panel-group">
                         <a data-toggle="modal" data-parent="#accordion" href="#addItem">
                             <span class="glyphicon glyphicon-plus order_add_accord"></span>
                             Добавить
@@ -58,10 +58,11 @@
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <span><strong>Название цвета</strong></span>
-                                                                <textarea class="form-control" cols="40" id="id_name"
+                                                                <textarea class="form-control"
                                                                           name="name"
                                                                           rows="3"
-                                                                          required th:text="${color.name}"/>
+                                                                          required th:text="${color.name}">
+                                                                </textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -83,12 +84,11 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </td>
                         </tr>
                     </table>
                     <div id="table1Pager"></div>
-                    <div class="panel-group" id="accordion">
+                    <div class="panel-group">
                         <a data-toggle="modal" data-parent="#accordion" href="#addItem">
                             <span class="glyphicon glyphicon-plus order_add_accord"></span>
                             Добавить
