@@ -17,8 +17,6 @@ import ru.vmsystems.template.interfaces.dto.ProcessTypeDto;
 import ru.vmsystems.template.interfaces.dto.Result;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -79,7 +77,6 @@ public class ProcessTypeController {
 
         ProcessTypeEntity entity = mapper.map(type, ProcessTypeEntity.class);
         entity.setCompany(user.get().getCompany());
-        entity.setLastUpdate(new Timestamp(new Date().getTime()));
         repository.save(entity);
         type.setId(entity.getId());
         return new ResponseEntity<>(type, HttpStatus.OK);
