@@ -1,6 +1,8 @@
 package ru.vmsystems.template.domain.service;
 
+import org.dozer.DozerBeanMapper;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.vmsystems.template.domain.model.*;
@@ -19,12 +21,15 @@ public class ClientService {
     private final ClientRepository clientRepository;
     @NotNull
     private final ClientTypeRepository clientTypeRepository;
+    private final DozerBeanMapper mapper;
 
     @Autowired
     public ClientService(@NotNull ClientRepository clientRepository,
-                         @NotNull ClientTypeRepository clientTypeRepository) {
+                         @NotNull ClientTypeRepository clientTypeRepository,
+                         DozerBeanMapper mapper) {
         this.clientRepository = clientRepository;
         this.clientTypeRepository = clientTypeRepository;
+        this.mapper = mapper;
     }
 
     public List<ClientDto> get() {
@@ -45,11 +50,19 @@ public class ClientService {
         return Optional.of(result);
     }
 
-    public void save(@NotNull ClientDto client) {
-        ClientTypeEntity clientType = clientTypeRepository.findByName(client.getType());
+    @NotNull
+    public ClientDto create(@NotNull ClientDto dto) {
+        return update(null, dto);
+    }
 
-        ClientEntity entity = clientRepository.save(ClientTransformer.toEntity(client, clientType));
-        client.setId(entity.getId());
+    public ClientDto update(@Nullable Long id, @NotNull ClientDto dto) {
+        dto.setId(id);
+        ClientTypeEntity clientType = clientTypeRepository.findByName(dto.getType());
+
+        ClientEntity entity = clientRepository.save(ClientTransformer.toEntity(dto, clientType));
+        dto.setId(entity.getId());
+
+        return mapper.map(entity, ClientDto.class);
     }
 
     public void delete(Long orderId) {
