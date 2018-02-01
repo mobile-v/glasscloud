@@ -2,6 +2,7 @@ package ru.vmsystems.template.domain.service;
 
 import org.dozer.DozerBeanMapper;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.vmsystems.template.domain.model.MaterialColorEntity;
@@ -46,19 +47,15 @@ public class ColorService extends BackService {
 
     @NotNull
     public MaterialColorDto create(@NotNull MaterialColorDto dto) {
-
-        dto.setId(null);
-
-        return update(dto);
+        return update(null, dto);
     }
 
     @NotNull
-    public MaterialColorDto update(@NotNull MaterialColorDto dto) {
+    public MaterialColorDto update(@Nullable Long id, @NotNull MaterialColorDto dto) {
 
+        dto.setId(id);
         MaterialColorEntity entity = mapper.map(dto, MaterialColorEntity.class);
-
         entity.setCompany(getCompany());
-
         entity = repository.save(entity);
 
         return mapper.map(entity, MaterialColorDto.class);

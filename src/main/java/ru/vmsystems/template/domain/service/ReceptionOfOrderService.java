@@ -13,8 +13,10 @@ import ru.vmsystems.template.infrastructure.persistence.ReceptionOfOrderReposito
 import ru.vmsystems.template.infrastructure.persistence.UserRepository;
 import ru.vmsystems.template.interfaces.dto.ReceptionOfOrderDto;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,8 +31,6 @@ public class ReceptionOfOrderService extends BackService {
     @NotNull
     private final Mapper mapper;
 
-    private Map<String, Long> receptions = new ConcurrentHashMap<>();
-
     @Autowired
     public ReceptionOfOrderService(@NotNull ReceptionOfOrderRepository receptionOfOrderRepository,
                                    @NotNull CompanyRepository companyRepository,
@@ -40,32 +40,6 @@ public class ReceptionOfOrderService extends BackService {
         this.companyRepository = companyRepository;
         this.userRepository = userRepository;
         this.mapper = mapper;
-    }
-
-    public void setReceptionOfOrder(Long reception) {
-        Optional<UserEntity> user = userRepository.getByLogin(getLogin());
-
-        if (!user.isPresent()) throw new RuntimeException("Пользователь не найден");
-
-        CompanyEntity company = companyRepository.findOne(user.get().getCompany().getId());
-        receptionOfOrderRepository.getByCompanyId(company.getId()).stream()
-                .filter(receptionOfOrderEntity -> reception.equals(receptionOfOrderEntity.getId()))
-                .findFirst().orElseThrow(() -> new RuntimeException("Точка приема не найдена"));
-
-        receptions.put(getSesionId(), reception);
-    }
-
-    public Optional<Long> getReceptionOfOrder() {
-        return Optional.ofNullable(receptions.get(getSesionId()));
-    }
-
-    public Optional<String> getReceptionOfOrderName() {
-        Long id = receptions.get(getSesionId());
-        ReceptionOfOrderEntity entity = receptionOfOrderRepository.findOne(id);
-        if (entity == null) {
-            return Optional.empty();
-        }
-        return Optional.ofNullable(entity.getName());
     }
 
     public List<ReceptionOfOrderDto> get() {

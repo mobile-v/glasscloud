@@ -14,6 +14,10 @@ public abstract class BackService {
     private HttpServletRequest httpRequest;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ReceptionOfOrderService receptionOfOrderService;
+    @Autowired
+    private SessionService sessionService;
 
     public String getSesionId() {
         return httpRequest.getSession().getId();
@@ -34,5 +38,9 @@ public abstract class BackService {
 
     public Long getCompanyId() {
         return getCompany().getId();
+    }
+
+    public String getReceptionOfOrderName() {
+        return sessionService.getReceptionOfOrderName();
     }
 }

@@ -13,57 +13,53 @@ import org.thymeleaf.context.WebContext;
 import ru.vmsystems.template.domain.model.ReceptionOfOrderEntity;
 import ru.vmsystems.template.domain.model.user.UserEntity;
 import ru.vmsystems.template.domain.service.OrderService;
-import ru.vmsystems.template.domain.service.ReceptionOfOrderService;
+import ru.vmsystems.template.domain.service.SessionService;
 import ru.vmsystems.template.infrastructure.persistence.ReceptionOfOrderRepository;
 import ru.vmsystems.template.infrastructure.persistence.UserRepository;
 import ru.vmsystems.template.interfaces.dto.OrderDto;
 
-import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
-import static ru.vmsystems.template.interfaces.page.URLS.URI_REDIRECT_TO_LOGIN;
-import static ru.vmsystems.template.interfaces.page.URLS.URI_REDIRECT_TO_SELECT_RECEPTION;
+import static ru.vmsystems.template.interfaces.page.URLS.PAGE_REDIRECT_TO_LOGIN;
+import static ru.vmsystems.template.interfaces.page.URLS.PAGE_REDIRECT_TO_SELECT_RECEPTION;
 
 @Controller
-@RequestMapping("glass")
+@RequestMapping("glass/order")
 public class OrderController {
 
     private static final Logger LOG = LoggerFactory.getLogger(OrderController.class);
-
-    @Autowired
-    private HttpServletRequest httpServletRequest;
 
     @NotNull
     private final OrderService orderService;
     @NotNull
     private final ReceptionOfOrderRepository receptionOfOrderRepository;
     private final UserRepository userRepository;
-    private final ReceptionOfOrderService receptionOfOrderService;
+    private final SessionService sessionService;
 
     @Autowired
     public OrderController(@NotNull OrderService orderService,
                            @NotNull ReceptionOfOrderRepository receptionOfOrderRepository,
                            @NotNull UserRepository userRepository,
-                           ReceptionOfOrderService receptionOfOrderService) {
+                           SessionService sessionService) {
         this.orderService = orderService;
         this.receptionOfOrderRepository = receptionOfOrderRepository;
         this.userRepository = userRepository;
-        this.receptionOfOrderService = receptionOfOrderService;
+        this.sessionService = sessionService;
     }
 
-    //http://localhost:8080/glass/orders
-    @RequestMapping(value="/orders", method= RequestMethod.GET)
+    //http://localhost:8080/glass/order
+    @RequestMapping(method= RequestMethod.GET)
     public String getPageOrdersBy(Model model, Principal principal) {
 
-        Optional<Long> receptionOfOrder = receptionOfOrderService.getReceptionOfOrder();
-        if (!receptionOfOrder.isPresent()) return URI_REDIRECT_TO_SELECT_RECEPTION;
+        Optional<Long> receptionOfOrder = sessionService.getReceptionOfOrder();
+        if (!receptionOfOrder.isPresent()) return PAGE_REDIRECT_TO_SELECT_RECEPTION;
 
         Optional<UserEntity> user = userRepository.getByLogin(principal.getName());
-        if (!user.isPresent())  return URI_REDIRECT_TO_LOGIN;
+        if (!user.isPresent())  return PAGE_REDIRECT_TO_LOGIN;
 
         Optional<ReceptionOfOrderEntity> receptionOfOrderEntity = ofNullable(receptionOfOrderRepository
                 .findOne(receptionOfOrder.get()))
@@ -88,7 +84,7 @@ public class OrderController {
     }
 
     //http://localhost:8080/glass/order/3
-    @RequestMapping(value="order/{orderId}", method= RequestMethod.GET)
+    @RequestMapping(value="/{orderId}", method= RequestMethod.GET)
     public String getPageOrder(Model model, @PathVariable(value = "orderId") Long orderId) {
 
         Optional<OrderDto> order = orderService.getOrder(orderId);

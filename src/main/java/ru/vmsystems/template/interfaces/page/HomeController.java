@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.thymeleaf.context.WebContext;
 import ru.vmsystems.template.domain.model.user.UserEntity;
 import ru.vmsystems.template.domain.service.ReceptionOfOrderService;
+import ru.vmsystems.template.domain.service.SessionService;
 import ru.vmsystems.template.domain.shared.Role;
 import ru.vmsystems.template.infrastructure.persistence.UserRepository;
 import ru.vmsystems.template.interfaces.dto.ReceptionOfOrderDto;
@@ -42,24 +43,26 @@ public class HomeController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private SessionService sessionService;
+    @Autowired
     private ReceptionOfOrderService receptionOfOrderService;
 
     @RequestMapping({"/"})
     public String redirectToIndex() {
-        Optional<Long> reception = receptionOfOrderService.getReceptionOfOrder();
+        Optional<Long> reception = sessionService.getReceptionOfOrder();
         if (reception.isPresent()) {
-            return URI_REDIRECT_TO_ORDERS;
+            return PAGE_REDIRECT_TO_ORDERS;
         } else {
-            return URI_REDIRECT_TO_SELECT_RECEPTION;
+            return PAGE_REDIRECT_TO_SELECT_RECEPTION;
         }
     }
 
     @RequestMapping({"/glass/login-reception-of-order"})
     public String getReceptionOfOrder(Model model, Principal principal) {
 
-        Optional<Long> reception = receptionOfOrderService.getReceptionOfOrder();
+        Optional<Long> reception = sessionService.getReceptionOfOrder();
         if (reception.isPresent()) {
-            return URI_REDIRECT_TO_ORDERS;
+            return PAGE_REDIRECT_TO_ORDERS;
         }
 
         List<ReceptionOfOrderDto> result = receptionOfOrderService.getByUserName(principal.getName());
@@ -74,20 +77,20 @@ public class HomeController {
             context.setVariable("receptionOfOrder", receptionOfOrderDto);
         }
 
-        return URI_SELECT_RECEPTION;
+        return PAGE_SELECT_RECEPTION;
     }
 
     @RequestMapping(value = "/glass/login-reception-of-order", method = RequestMethod.POST)
     public String selectReceptionOfOrder(@ModelAttribute ReceptionOfOrderDto receptionOfOrder) {
 
-        receptionOfOrderService.setReceptionOfOrder(receptionOfOrder.getId());
+        sessionService.setReceptionOfOrder(receptionOfOrder.getId());
 
-        return URI_REDIRECT_TO_ORDERS;
+        return PAGE_REDIRECT_TO_ORDERS;
     }
 
     @RequestMapping({"/admin"})
     public String redirectToAdmin() {
-        String redirect = URI_REDIRECT_TO_LOGOUT;
+        String redirect = PAGE_REDIRECT_TO_LOGOUT;
 
         String login = httpRequest.getRemoteUser();
         Optional<UserEntity> userEntity = userRepository.getByLogin(login);
@@ -99,7 +102,7 @@ public class HomeController {
 
         switch (Role.valueOf(userEntity.get().getRole())) {
             case ROLE_ADMIN:
-                redirect = URI_REDIRECT_TO_ADMIN;
+                redirect = PAGE_REDIRECT_TO_ADMIN;
                 break;
         }
         return redirect;
