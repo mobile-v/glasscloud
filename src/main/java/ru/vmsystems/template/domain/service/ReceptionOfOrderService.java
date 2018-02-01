@@ -2,6 +2,7 @@ package ru.vmsystems.template.domain.service;
 
 import org.dozer.Mapper;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.vmsystems.template.domain.model.CompanyEntity;
@@ -60,11 +61,19 @@ public class ReceptionOfOrderService extends BackService {
         return Optional.of(result);
     }
 
-    public void save(@NotNull ReceptionOfOrderDto receptionOfOrderDto) {
+    @NotNull
+    public ReceptionOfOrderDto create(@NotNull ReceptionOfOrderDto dto) {
+        return update(null, dto);
+    }
+
+    public ReceptionOfOrderDto update(@Nullable Long id, @NotNull ReceptionOfOrderDto receptionOfOrderDto) {
+        receptionOfOrderDto.setId(id);
         CompanyEntity company = companyRepository.findOne(receptionOfOrderDto.getCompany().getId());
 
         ReceptionOfOrderEntity entity = receptionOfOrderRepository.save(ReceptionOfOrderTransformer.toEntity(receptionOfOrderDto, company));
         receptionOfOrderDto.setId(entity.getId());
+
+        return mapper.map(entity, ReceptionOfOrderDto.class);
     }
 
     public void delete(Long orderId) {

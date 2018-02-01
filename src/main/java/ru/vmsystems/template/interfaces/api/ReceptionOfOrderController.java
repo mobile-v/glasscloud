@@ -50,7 +50,7 @@ public class ReceptionOfOrderController {
     //http://localhost:8080/api/receptionOfOrder/
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<ReceptionOfOrderDto> save(@RequestBody ReceptionOfOrderDto receptionOfOrder) {
-        receptionOfOrderService.save(receptionOfOrder);
+        receptionOfOrderService.create(receptionOfOrder);
         return new ResponseEntity<>(receptionOfOrder, HttpStatus.OK);
     }
 
