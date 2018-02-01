@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@RestController
+@RestController("ProcessTypeControllerApi")
 @RequestMapping("/api/process/type")
 public class ProcessTypeController {
     @NotNull

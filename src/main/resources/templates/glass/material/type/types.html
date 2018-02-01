@@ -22,7 +22,7 @@
         <div class="col-md-6">
             <div class="well">
                 <div class="table-responsive">
-                    <h1>Список расцветок маретиалов</h1>
+                    <h1>Список типов маретиалов</h1>
                     <div class="panel-group">
                         <a data-toggle="modal" data-parent="#accordion" href="#addItem">
                             <span class="glyphicon glyphicon-plus order_add_accord"></span>
@@ -35,14 +35,14 @@
                             <th></th>
                             <!--<th></th>-->
                         </tr>
-                        <tr th:each="color : ${colors}">
+                        <tr th:each="dto : ${dtos}">
                             <!--th:onclick="'window.location.href = \'' + @{/glass/color/{id}(id=${color.id})} + '\''">-->
-                            <td th:text="${color.name}"></td>
+                            <td th:text="${dto.name}"></td>
                             <td>
-                                <a data-toggle="modal" href="#editItem"><span
+                                <a data-toggle="modal" th:href="'#editItem' + ${dto.id}"><span
                                         class="glyphicon glyphicon-edit"></span></a>
 
-                                <div id="editItem" class="modal fade">
+                                <div th:id="'editItem' + ${dto.id}" class="modal fade">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -52,16 +52,17 @@
                                                 <h4 class="modal-title">Редактировать</h4>
                                             </div>
                                             <div class="modal-body">
-                                                <form th:action="@{/glass/color/{id}(id=${color.id})}" method="post"
-                                                      th:object="${color}">
+                                                <form th:action="@{/glass/material/type/{id}(id=${dto.id})}"
+                                                      method="post"
+                                                      th:object="${dto}">
                                                     <div class="form-group bootstrap3-required">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <span><strong>Название цвета</strong></span>
+                                                                <span><strong>Название типа материала</strong></span>
                                                                 <textarea class="form-control"
                                                                           name="name"
                                                                           rows="3"
-                                                                          required th:text="${color.name}">
+                                                                          required th:text="${dto.name}">
                                                                 </textarea>
                                                             </div>
                                                         </div>
@@ -72,11 +73,11 @@
                                                     </button>
 
                                                     <a th:width="100" class="btn btn-default"
-                                                       th:href="@{/glass/color}">
+                                                       th:href="@{/glass/material/type}">
                                                         Отменить
                                                     </a>
                                                     <a class="btn btn-danger"
-                                                       th:href="@{/glass/color/{id}/delete(id=${color.id})}">
+                                                       th:href="@{/glass/material/type/{id}/delete(id=${dto.id})}">
                                                         Удалить
                                                     </a>
                                                 </form>
@@ -103,11 +104,11 @@
                                     <h4 class="modal-title">Добавить</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <form th:action="@{/glass/color}" method="post">
+                                    <form th:action="@{/glass/material/type}" method="post">
                                         <div class="form-group bootstrap3-required">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <span><strong>Название цвета</strong></span>
+                                                    <span><strong>Название типа материала</strong></span>
                                                     <textarea class="form-control" cols="40" id="id_name" name="name"
                                                               rows="3"
                                                               required th:text="*{name}"/>
@@ -118,7 +119,7 @@
                                         <button type="submit" class="btn btn-primary">
                                             Сохранить
                                         </button>
-                                        <a class="btn btn-default" th:href="@{/glass/color}">
+                                        <a class="btn btn-default" th:href="@{/glass/material/type}">
                                             Отменить
                                         </a>
                                     </form>

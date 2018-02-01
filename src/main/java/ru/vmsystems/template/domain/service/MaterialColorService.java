@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
-public class ColorService extends BackService {
+public class MaterialColorService extends BackService {
 
     @NotNull
     private final MaterialColorRepository repository;
@@ -23,8 +23,8 @@ public class ColorService extends BackService {
     private final DozerBeanMapper mapper;
 
     @Autowired
-    public ColorService(@NotNull MaterialColorRepository repository,
-                        @NotNull DozerBeanMapper mapper) {
+    public MaterialColorService(@NotNull MaterialColorRepository repository,
+                                @NotNull DozerBeanMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;
     }

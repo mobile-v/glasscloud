@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@RestController
+@RestController("MaterialControllerApi")
 @RequestMapping("/api/material")
 public class MaterialController {
     @NotNull

@@ -13,25 +13,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.thymeleaf.context.WebContext;
 import ru.vmsystems.template.domain.service.BackService;
-import ru.vmsystems.template.domain.service.ColorService;
+import ru.vmsystems.template.domain.service.MaterialColorService;
 import ru.vmsystems.template.interfaces.dto.MaterialColorDto;
 
-import static ru.vmsystems.template.interfaces.page.URLS.PAGE_REDIRECT_TO_COLORS;
+import static ru.vmsystems.template.interfaces.page.URLS.PAGE_REDIRECT_TO_MATERIAL_COLORS;
 
 @Controller
-@RequestMapping("glass/color")
-public class ColorController extends BackService {
+@RequestMapping("glass/material/color")
+public class MaterialColorController extends BackService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ColorController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MaterialColorController.class);
 
-    private static final String PAGE = "glass/color/colors";
-    private static final String PAGE_REDIRECT = PAGE_REDIRECT_TO_COLORS;
+    private static final String PAGE = "glass/material/color/colors";
+    private static final String PAGE_REDIRECT = PAGE_REDIRECT_TO_MATERIAL_COLORS;
 
     @NotNull
-    private final ColorService service;
+    private final MaterialColorService service;
 
     @Autowired
-    public ColorController(@NotNull ColorService service) {
+    public MaterialColorController(@NotNull MaterialColorService service) {
         this.service = service;
     }
 
@@ -40,11 +40,11 @@ public class ColorController extends BackService {
     public String getPage(Model model) {
 
         model.addAttribute("receptionName", getReceptionOfOrderName());
-        model.addAttribute("colors", service.get());
+        model.addAttribute("dtos", service.get());
 
         if (false) {
             WebContext context = new WebContext(null, null, null);
-            context.setVariable("colors", "");
+            context.setVariable("dtos", "");
             context.setVariable("receptionName", "");
         }
         return PAGE;

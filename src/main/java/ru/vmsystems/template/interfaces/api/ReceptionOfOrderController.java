@@ -13,7 +13,7 @@ import ru.vmsystems.template.interfaces.dto.ReceptionOfOrderDto;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@RestController("ReceptionOfOrderControllerApi")
 @RequestMapping("/api/receptionOfOrder")
 public class ReceptionOfOrderController {
     @NotNull

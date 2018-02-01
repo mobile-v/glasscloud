@@ -11,5 +11,6 @@ class URLS {
 
     static final String PAGE_REDIRECT_TO_ORDERS = "redirect:/glass/order";
 
-    static final String PAGE_REDIRECT_TO_COLORS = "redirect:/glass/color";
+    static final String PAGE_REDIRECT_TO_MATERIAL_COLORS = "redirect:/glass/material/color";
+    static final String PAGE_REDIRECT_TO_MATERIAL_TYPES = "redirect:/glass/material/type";
 }
