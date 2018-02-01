@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static ru.vmsystems.template.interfaces.page.URLS.URI_REDIRECT_TO_COLORS;
 import static ru.vmsystems.template.interfaces.page.URLS.URI_REDIRECT_TO_LOGIN;
 
 @Controller
@@ -79,7 +80,20 @@ public class ColorController extends BackService {
     @Autowired
     private DozerBeanMapper mapper;
 
-    //http://localhost:8080/api/material/color/1
+    //http://localhost:8080/glass/color
+    @RequestMapping(value = "/color", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public String create(@ModelAttribute(value = "color") MaterialColorDto color) {
+
+        MaterialColorEntity entity = mapper.map(color, MaterialColorEntity.class);
+        entity.setCompany(getCompany());
+        repository.save(entity);
+        color.setId(entity.getId());
+        return URI_REDIRECT_TO_COLORS;
+    }
+
+    //http://localhost:8080/glass/color/3
     @RequestMapping(value = "/color/{colorId}", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
@@ -91,7 +105,15 @@ public class ColorController extends BackService {
         entity.setId(colorId);
         repository.save(entity);
         color.setId(entity.getId());
-        return "redirect:/glass/colors";
+        return URI_REDIRECT_TO_COLORS;
+    }
+
+    //http://localhost:8080/glass/color/3/delete
+    @RequestMapping(value = "/color/{colorId}/delete", method = RequestMethod.GET)
+    public String delete(@PathVariable(value = "colorId") Long colorId) {
+
+        repository.delete(colorId);
+        return URI_REDIRECT_TO_COLORS;
     }
 
     //http://localhost:8080/glass/color/3

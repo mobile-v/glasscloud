@@ -8,5 +8,8 @@ class URLS {
     static final String URI_REDIRECT_TO_LOGOUT = "redirect:/logout";
     static final String URI_REDIRECT_TO_ADMIN = "redirect:/admin/admin";
     static final String URI_REDIRECT_TO_SELECT_RECEPTION = "redirect:" + URI_SELECT_RECEPTION;
+
     static final String URI_REDIRECT_TO_ORDERS = "redirect:/glass/orders";
+
+    static final String URI_REDIRECT_TO_COLORS = "redirect:/glass/colors";
 }

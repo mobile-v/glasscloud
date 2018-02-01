@@ -18,35 +18,31 @@
 
 <main class="container-fluid">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-5">
             <div class="well">
                 <div class="table-responsive">
-                    <h1>Список расцветов маретиалов</h1>
                     <!--<form th:action="@{/api/material/color/{id}(id=${color.id})}" method="post" th:object="${color}">-->
                     <form th:action="@{/glass/color/{id}(id=${color.id})}" method="post" th:object="${color}">
-
-                        <div class="form-group bootstrap3-required">
-
-                        </div>
-                        <div class="form-group bootstrap3-required">
-                            <div class="col-md-12">
+                        <div class="form-group">
+                            <!--<div class="col-md-12">-->
                                 <div class="form-group">
-                                    <span><strong>Название цвета</strong></span>
+                                    <h4 for="id_name">Название цвета</h4>
                                     <textarea class="form-control" cols="40" id="id_name" name="name" rows="3"
                                               required th:text="*{name}"/>
-
                                 </div>
-                            </div>
+                            <!--</div>-->
                         </div>
 
                         <button type="submit" class="btn btn-primary">
-                            <span class="glyphicon glyphicon-star"></span> Сохранить
+                            Сохранить
                         </button>
-                        <a class="btn" th:href="@{/glass/colors}">
+                        <a class="btn btn-default" th:href="@{/glass/colors}">
                             <span class="glyphicon"></span> Отменить
                         </a>
+                        <a class="btn btn-danger" th:href="@{/glass/color/{id}/delete(id=${color.id})}">
+                            Удалить
+                        </a>
                     </form>
-                    <div id="table1Pager"></div>
                 </div>
             </div>
         </div>
