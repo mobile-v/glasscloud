@@ -45,7 +45,7 @@ public class ReceptionOfOrderService extends BackService {
 
     public List<ReceptionOfOrderDto> get() {
         List<ReceptionOfOrderDto> result = new ArrayList<>();
-        receptionOfOrderRepository.findAll()
+        receptionOfOrderRepository.getByCompanyId(getCompanyId())
                 .forEach(client -> result.add(ReceptionOfOrderTransformer.toDto(client)));
         return result;
     }

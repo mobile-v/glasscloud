@@ -5,51 +5,52 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.vmsystems.template.domain.model.ProcessTypeEntity;
-import ru.vmsystems.template.infrastructure.persistence.ProcessTypeRepository;
-import ru.vmsystems.template.interfaces.dto.ProcessTypeDto;
+import ru.vmsystems.template.domain.model.MaterialEntity;
+import ru.vmsystems.template.infrastructure.persistence.MaterialRepository;
+import ru.vmsystems.template.interfaces.dto.MaterialDto;
+import ru.vmsystems.template.interfaces.dto.MaterialTypeDto;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class ProcessTypeService extends BackService {
+public class MaterialService extends BackService {
 
     @Autowired
-    private ProcessTypeRepository repository;
+    private MaterialRepository repository;
     @Autowired
     private DozerBeanMapper mapper;
 
-    public List<ProcessTypeDto> get() {
+    public List<MaterialTypeDto> get() {
         return repository.getByCompanyId(getCompanyId()).stream()
-                .map(entity -> mapper.map(entity, ProcessTypeDto.class))
+                .map(entity -> mapper.map(entity, MaterialTypeDto.class))
                 .collect(Collectors.toList());
     }
 
-    public Optional<ProcessTypeDto> get(@NotNull Long id) {
-        ProcessTypeEntity entity = repository.findOne(id);
+    public Optional<MaterialDto> get(@NotNull Long id) {
+        MaterialEntity entity = repository.findOne(id);
         if (entity == null) {
             return Optional.empty();
         }
 
-        return Optional.of(mapper.map(entity, ProcessTypeDto.class));
+        return Optional.of(mapper.map(entity, MaterialDto.class));
     }
 
     @NotNull
-    public ProcessTypeDto create(@NotNull ProcessTypeDto dto) {
+    public MaterialDto create(@NotNull MaterialDto dto) {
         return update(null, dto);
     }
 
     @NotNull
-    public ProcessTypeDto update(@Nullable Long id, @NotNull ProcessTypeDto dto) {
+    public MaterialDto update(@Nullable Long id, @NotNull MaterialDto dto) {
 
         dto.setId(id);
-        ProcessTypeEntity entity = mapper.map(dto, ProcessTypeEntity.class);
+        MaterialEntity entity = mapper.map(dto, MaterialEntity.class);
         entity.setCompany(getCompany());
         entity = repository.save(entity);
 
-        return mapper.map(entity, ProcessTypeDto.class);
+        return mapper.map(entity, MaterialDto.class);
     }
 
     public void delete(Long orderId) {

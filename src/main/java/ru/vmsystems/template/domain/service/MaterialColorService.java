@@ -12,7 +12,6 @@ import ru.vmsystems.template.interfaces.dto.MaterialColorDto;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class MaterialColorService extends BackService {
@@ -30,8 +29,7 @@ public class MaterialColorService extends BackService {
     }
 
     public List<MaterialColorDto> get() {
-        return StreamSupport.stream(repository.findAll().spliterator(), false)
-                .filter(entity -> getCompanyId().equals(entity.getCompany().getId()))
+        return repository.getByCompanyId(getCompanyId()).stream()
                 .map(entity -> mapper.map(entity, MaterialColorDto.class))
                 .collect(Collectors.toList());
     }

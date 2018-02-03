@@ -12,7 +12,6 @@ import ru.vmsystems.template.interfaces.dto.MaterialTypeDto;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class MaterialTypeService extends BackService {
@@ -30,8 +29,7 @@ public class MaterialTypeService extends BackService {
     }
 
     public List<MaterialTypeDto> get() {
-        return StreamSupport.stream(repository.findAll().spliterator(), false)
-                .filter(entity -> getCompanyId().equals(entity.getCompany().getId()))
+        return repository.getByCompanyId(getCompanyId()).stream()
                 .map(entity -> mapper.map(entity, MaterialTypeDto.class))
                 .collect(Collectors.toList());
     }
