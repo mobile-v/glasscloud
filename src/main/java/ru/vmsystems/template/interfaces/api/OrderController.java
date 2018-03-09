@@ -27,7 +27,7 @@ import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
 
-@RestController
+@RestController("OrderControllerApi")
 @RequestMapping("/api")
 public class OrderController {
     @NotNull

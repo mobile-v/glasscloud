@@ -1,7 +1,6 @@
 package ru.vmsystems.template.domain.model;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 @Entity
 @Table(name = "process_processtype", schema = "main")
@@ -9,7 +8,6 @@ public class ProcessTypeEntity {
     private Long id;
     private String name;
     private String desc;
-    private Timestamp lastUpdate;
     private CompanyEntity company;
 
     @Id
@@ -41,16 +39,6 @@ public class ProcessTypeEntity {
 
     public void setDesc(String desc) {
         this.desc = desc;
-    }
-
-    @Basic
-    @Column(name = "last_updated")
-    public Timestamp getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(Timestamp lastUpdate) {
-        this.lastUpdate = lastUpdate;
     }
 
     @ManyToOne

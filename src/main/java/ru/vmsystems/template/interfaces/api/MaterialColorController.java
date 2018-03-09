@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.vmsystems.template.domain.model.MaterialColorEntity;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@RestController
+@RestController("MaterialColorControllerApi")
 @RequestMapping("/api/material/color")
 public class MaterialColorController {
     @NotNull
@@ -76,6 +77,23 @@ public class MaterialColorController {
 
         MaterialColorEntity entity = mapper.map(color, MaterialColorEntity.class);
         entity.setCompany(user.get().getCompany());
+        repository.save(entity);
+        color.setId(entity.getId());
+        return new ResponseEntity<>(color, HttpStatus.OK);
+    }
+
+    //http://localhost:8080/api/material/color/1
+    @RequestMapping(value = "/{colorId}", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<MaterialColorDto> update(@PathVariable(value = "colorId") Long colorId,
+                                                   @ModelAttribute(value="color") MaterialColorDto color) {
+        Optional<UserEntity> user = userRepository.getByLogin(httpServletRequest.getRemoteUser());
+        if (!user.isPresent()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+
+        MaterialColorEntity entity = mapper.map(color, MaterialColorEntity.class);
+        entity.setCompany(user.get().getCompany());
+        entity.setId(colorId);
         repository.save(entity);
         color.setId(entity.getId());
         return new ResponseEntity<>(color, HttpStatus.OK);

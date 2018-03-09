@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@RestController
+@RestController("MaterialTypeControllerApi")
 @RequestMapping("/api/material/type")
 public class MaterialTypeController {
     @NotNull

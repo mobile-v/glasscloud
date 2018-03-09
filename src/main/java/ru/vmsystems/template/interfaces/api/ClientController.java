@@ -14,7 +14,7 @@ import ru.vmsystems.template.interfaces.dto.ClientDto;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@RestController("ClientControllerApi")
 @RequestMapping("/api/client")
 public class ClientController {
     @NotNull
@@ -54,7 +54,7 @@ public class ClientController {
     @ApiOperation(value = "Создать нового клиента")
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<ClientDto> save(@RequestBody ClientDto client) {
-        clientService.save(client);
+        clientService.create(client);
         return new ResponseEntity<>(client, HttpStatus.OK);
     }
 
