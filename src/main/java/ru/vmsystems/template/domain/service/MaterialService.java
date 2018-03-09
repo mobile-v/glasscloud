@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import ru.vmsystems.template.domain.model.MaterialEntity;
 import ru.vmsystems.template.infrastructure.persistence.MaterialRepository;
 import ru.vmsystems.template.interfaces.dto.MaterialDto;
-import ru.vmsystems.template.interfaces.dto.MaterialTypeDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,9 +21,9 @@ public class MaterialService extends BackService {
     @Autowired
     private DozerBeanMapper mapper;
 
-    public List<MaterialTypeDto> get() {
+    public List<MaterialDto> get() {
         return repository.getByCompanyId(getCompanyId()).stream()
-                .map(entity -> mapper.map(entity, MaterialTypeDto.class))
+                .map(entity -> mapper.map(entity, MaterialDto.class))
                 .collect(Collectors.toList());
     }
 

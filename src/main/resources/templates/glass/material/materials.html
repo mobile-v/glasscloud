@@ -37,7 +37,7 @@
                         </tr>
                         <tr th:each="dto : ${dtos}">
                             <!--th:onclick="'window.location.href = \'' + @{/glass/color/{id}(id=${color.id})} + '\''">-->
-                            <td th:text="${dto.name}"></td>
+                            <td th:text="${dto.type} + '. ' + ${dto.color} + '. ' + ${dto.depth} + ' мм'"></td>
                             <td>
                                 <a data-toggle="modal" th:href="'#editItem' + ${dto.id}"><span
                                         class="glyphicon glyphicon-edit"></span></a>
@@ -52,35 +52,35 @@
                                                 <h4 class="modal-title">Редактировать</h4>
                                             </div>
                                             <div class="modal-body">
-                                                <form th:action="@{/glass/material/type/{id}(id=${dto.id})}"
-                                                      method="post"
-                                                      th:object="${dto}">
-                                                    <div class="form-group bootstrap3-required">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <span><strong>Название типа материала</strong></span>
-                                                                <textarea class="form-control"
-                                                                          name="name"
-                                                                          rows="3"
-                                                                          required th:text="${dto.name}">
-                                                                </textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                <!--<form th:action="@{/glass/material/type/{id}(id=${dto.id})}"-->
+                                                      <!--method="post"-->
+                                                      <!--th:object="${dto}">-->
+                                                    <!--<div class="form-group bootstrap3-required">-->
+                                                        <!--<div class="col-md-12">-->
+                                                            <!--<div class="form-group">-->
+                                                                <!--<span><strong>Название типа материала</strong></span>-->
+                                                                <!--<textarea class="form-control"-->
+                                                                          <!--name="name"-->
+                                                                          <!--rows="3"-->
+                                                                          <!--required th:text="${dto.name}">-->
+                                                                <!--</textarea>-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                    <!--</div>-->
 
-                                                    <button type="submit" class="btn btn-primary">
-                                                        Сохранить
-                                                    </button>
+                                                    <!--<button type="submit" class="btn btn-primary">-->
+                                                        <!--Сохранить-->
+                                                    <!--</button>-->
 
-                                                    <a th:width="100" class="btn btn-default"
-                                                       th:href="@{/glass/material/type}">
-                                                        Отменить
-                                                    </a>
-                                                    <a class="btn btn-danger"
-                                                       th:href="@{/glass/material/type/{id}/delete(id=${dto.id})}">
-                                                        Удалить
-                                                    </a>
-                                                </form>
+                                                    <!--<a th:width="100" class="btn btn-default"-->
+                                                       <!--th:href="@{/glass/material/type}">-->
+                                                        <!--Отменить-->
+                                                    <!--</a>-->
+                                                    <!--<a class="btn btn-danger"-->
+                                                       <!--th:href="@{/glass/material/type/{id}/delete(id=${dto.id})}">-->
+                                                        <!--Удалить-->
+                                                    <!--</a>-->
+                                                <!--</form>-->
                                             </div>
                                         </div>
                                     </div>
@@ -104,25 +104,25 @@
                                     <h4 class="modal-title">Добавить</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <form th:action="@{/glass/material/type}" method="post">
-                                        <div class="form-group bootstrap3-required">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <span><strong>Название типа материала</strong></span>
-                                                    <textarea class="form-control" cols="40" id="id_name" name="name"
-                                                              rows="3"
-                                                              required th:text="*{name}"/>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <!--<form th:action="@{/glass/material/type}" method="post">-->
+                                        <!--<div class="form-group bootstrap3-required">-->
+                                            <!--<div class="col-md-12">-->
+                                                <!--<div class="form-group">-->
+                                                    <!--<span><strong>Название типа материала</strong></span>-->
+                                                    <!--<textarea class="form-control" cols="40" id="id_name" name="name"-->
+                                                              <!--rows="3"-->
+                                                              <!--required th:text="*{name}"/>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
 
-                                        <button type="submit" class="btn btn-primary">
-                                            Сохранить
-                                        </button>
-                                        <a class="btn btn-default" th:href="@{/glass/material/type}">
-                                            Отменить
-                                        </a>
-                                    </form>
+                                        <!--<button type="submit" class="btn btn-primary">-->
+                                            <!--Сохранить-->
+                                        <!--</button>-->
+                                        <!--<a class="btn btn-default" th:href="@{/glass/material/type}">-->
+                                            <!--Отменить-->
+                                        <!--</a>-->
+                                    <!--</form>-->
                                 </div>
                             </div>
                         </div>
