@@ -61,10 +61,10 @@ public class MaterialController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    //http://localhost:8080/api/material/type/1
+    //http://localhost:8080/api/material/1
     @NotNull
-    @RequestMapping(value = "/{typeId}", method = RequestMethod.GET)
-    public ResponseEntity<MaterialDto> get(@PathVariable(value = "typeId") Long typeId) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<MaterialDto> get(@PathVariable(value = "id") Long typeId) {
 
         MaterialDto color = mapper.map(repository.findOne(typeId), MaterialDto.class);
         return new ResponseEntity<>(color, HttpStatus.OK);
@@ -85,7 +85,7 @@ public class MaterialController {
     }
 
     //http://localhost:8080/api/material/1
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<MaterialDto> update(@PathVariable(value = "id") Long id,
                                               @RequestBody MaterialDto type) {
         Optional<UserEntity> user = userRepository.getByLogin(httpServletRequest.getRemoteUser());

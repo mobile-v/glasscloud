@@ -62,8 +62,8 @@ public class MaterialColorController {
 
     //http://localhost:8080/api/material/color/1
     @NotNull
-    @RequestMapping(value = "/{colorId}", method = RequestMethod.GET)
-    public ResponseEntity<MaterialColorDto> get(@PathVariable(value = "colorId") Long colorId) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<MaterialColorDto> get(@PathVariable(value = "id") Long colorId) {
 
         MaterialColorDto color = mapper.map(repository.findOne(colorId), MaterialColorDto.class);
         return new ResponseEntity<>(color, HttpStatus.OK);
@@ -83,10 +83,10 @@ public class MaterialColorController {
     }
 
     //http://localhost:8080/api/material/color/1
-    @RequestMapping(value = "/{colorId}", method = RequestMethod.POST,
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<MaterialColorDto> update(@PathVariable(value = "colorId") Long colorId,
+    public ResponseEntity<MaterialColorDto> update(@PathVariable(value = "id") Long colorId,
                                                    @ModelAttribute(value="color") MaterialColorDto color) {
         Optional<UserEntity> user = userRepository.getByLogin(httpServletRequest.getRemoteUser());
         if (!user.isPresent()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -100,8 +100,8 @@ public class MaterialColorController {
     }
 
     //http://localhost:8080/api/material/color/1/
-    @RequestMapping(value = "/{colorId}", method = RequestMethod.DELETE)
-    public ResponseEntity<Result> delete(@PathVariable(value = "colorId") Long colorId) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Result> delete(@PathVariable(value = "id") Long colorId) {
         repository.delete(colorId);
         return new ResponseEntity<>(new Result("OK"), HttpStatus.OK);
     }

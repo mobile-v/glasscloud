@@ -6,20 +6,20 @@
     <mapping>
         <class-a>ru.vmsystems.template.domain.model.MaterialEntity</class-a>
         <class-b>ru.vmsystems.template.interfaces.dto.MaterialDto</class-b>
-        <field>
-            <a>type.name</a>
-            <b>type</b>
-        </field>
-        <field>
-            <a>color.name</a>
-            <b>color</b>
-        </field>
+        <!--<field>-->
+            <!--<a>type.name</a>-->
+            <!--<b>type</b>-->
+        <!--</field>-->
+        <!--<field>-->
+            <!--<a>color.name</a>-->
+            <!--<b>color</b>-->
+        <!--</field>-->
     </mapping>
     <mapping>
         <class-a>ru.vmsystems.template.domain.model.ClientEntity</class-a>
         <class-b>ru.vmsystems.template.interfaces.dto.ClientDto</class-b>
         <field>
-            <a>clientType.name</a>
+            <a>clientType</a>
             <b>type</b>
         </field>
     </mapping>

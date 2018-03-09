@@ -12,7 +12,6 @@ import ru.vmsystems.template.domain.model.ProcessEntity;
 import ru.vmsystems.template.domain.model.user.UserEntity;
 import ru.vmsystems.template.infrastructure.persistence.ProcessRepository;
 import ru.vmsystems.template.infrastructure.persistence.UserRepository;
-import ru.vmsystems.template.interfaces.dto.MaterialTypeDto;
 import ru.vmsystems.template.interfaces.dto.ProcessDto;
 import ru.vmsystems.template.interfaces.dto.Result;
 
@@ -64,8 +63,8 @@ public class ProcessController {
 
     //http://localhost:8080/api/process/1
     @NotNull
-    @RequestMapping(value = "/{processId}", method = RequestMethod.GET)
-    public ResponseEntity<ProcessDto> get(@PathVariable(value = "processId") Long processId) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<ProcessDto> get(@PathVariable(value = "id") Long processId) {
 
         ProcessDto type = mapper.map(repository.findOne(processId), ProcessDto.class);
         return new ResponseEntity<>(type, HttpStatus.OK);
@@ -73,7 +72,7 @@ public class ProcessController {
 
     //http://localhost:8080/api/process/
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<MaterialTypeDto> save(@RequestBody MaterialTypeDto type) {
+    public ResponseEntity<ProcessDto> save(@RequestBody ProcessDto type) {
         Optional<UserEntity> user = userRepository.getByLogin(httpServletRequest.getRemoteUser());
         if (!user.isPresent()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
@@ -85,9 +84,25 @@ public class ProcessController {
         return new ResponseEntity<>(type, HttpStatus.OK);
     }
 
+    //http://localhost:8080/api/process/1
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<ProcessDto> update(@PathVariable(value = "id") Long id,
+                                              @RequestBody ProcessDto type) {
+        Optional<UserEntity> user = userRepository.getByLogin(httpServletRequest.getRemoteUser());
+        if (!user.isPresent()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+
+        ProcessEntity entity = mapper.map(type, ProcessEntity.class);
+        entity.setCompany(user.get().getCompany());
+        entity.setLastUpdate(new Timestamp(new Date().getTime()));
+        entity.setId(id);
+        repository.save(entity);
+        type.setId(entity.getId());
+        return new ResponseEntity<>(type, HttpStatus.OK);
+    }
+
     //http://localhost:8080/api/process/1/
-    @RequestMapping(value = "/{processId}", method = RequestMethod.DELETE)
-    public ResponseEntity<Result> delete(@PathVariable(value = "processId") Long processId) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Result> delete(@PathVariable(value = "id") Long processId) {
         repository.delete(processId);
         return new ResponseEntity<>(new Result("OK"), HttpStatus.OK);
     }
