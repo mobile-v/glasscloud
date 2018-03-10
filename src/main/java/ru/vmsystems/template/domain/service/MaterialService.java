@@ -23,7 +23,11 @@ public class MaterialService extends BackService {
 
     public List<MaterialDto> get() {
         return repository.getByCompanyId(getCompanyId()).stream()
-                .map(entity -> mapper.map(entity, MaterialDto.class))
+                .map(entity -> {
+                    MaterialDto dto = mapper.map(entity, MaterialDto.class);
+                    dto.setName();
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -49,7 +53,10 @@ public class MaterialService extends BackService {
         entity.setCompany(getCompany());
         entity = repository.save(entity);
 
-        return mapper.map(entity, MaterialDto.class);
+        MaterialDto materialDto = mapper.map(entity, MaterialDto.class);
+        materialDto.setName();
+
+        return materialDto;
     }
 
     public void delete(Long orderId) {

@@ -13,4 +13,8 @@ public class MaterialDto {
     private String name;
     private MaterialColorDto color;
     private MaterialTypeDto type;
+
+    public void setName() {
+        name = String.join(" ", type.getName(), color.getName(), String.valueOf(depth), " мм");
+    }
 }

@@ -37,7 +37,7 @@
                         </tr>
                         <tr th:each="dto : ${dtos}">
                             <!--th:onclick="'window.location.href = \'' + @{/glass/color/{id}(id=${color.id})} + '\''">-->
-                            <td th:text="${dto.type} + '. ' + ${dto.color} + '. ' + ${dto.depth} + ' мм'"></td>
+                            <td th:text="${dto.name}"></td>
                             <td>
                                 <a data-toggle="modal" th:href="'#editItem' + ${dto.id}"><span
                                         class="glyphicon glyphicon-edit"></span></a>
