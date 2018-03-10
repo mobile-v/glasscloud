@@ -44219,6 +44219,9 @@ Styleguide pt-tree
 .menu-item-1PPMS:hover {
   background: rgba(255, 255, 255, .4);
   cursor: pointer;
+  text-decoration: none;
+  font-weight: normal;
+  color: #fff;
 }
 
 .reception-2Nbya {
@@ -44323,4 +44326,50 @@ Styleguide pt-tree
 
 .input-group-2BFQ5 {
   width: 300px;
+}
+.new-order-2r_X2 {
+  margin: 15px;
+}
+
+.form-12R9D {
+  padding: 20px 20px 0 20px;
+}
+
+.select-3YKy0 {
+  width: 250px;
+}
+
+.add-button-ZK6i6 {
+  margin-left: 10px;
+}
+
+.disabled-TkOaq {
+  pointer-events: none;
+}
+
+.size-input-2CZcm {
+  width: 33.33%
+}
+.new-order-3-F-w {
+  margin: 15px;
+}
+
+.form-1M_cF {
+  padding: 20px 20px 0 20px;
+}
+
+.select-kQoEE {
+  width: 250px;
+}
+
+.add-button-QuWW0 {
+  margin-left: 10px;
+}
+
+.disabled-kKz66 {
+  pointer-events: none;
+}
+
+.size-input-3UX1- {
+  width: 33.33%
 }
