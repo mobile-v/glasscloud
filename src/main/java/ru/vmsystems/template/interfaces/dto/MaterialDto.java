@@ -10,6 +10,7 @@ public class MaterialDto {
     private Double width;
     private String price;
     private String desc;
+    private String name;
     private MaterialColorDto color;
     private MaterialTypeDto type;
 }
