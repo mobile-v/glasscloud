@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController("MaterialControllerApi")
 @RequestMapping("/api/material")
@@ -48,14 +49,25 @@ public class MaterialController {
         this.httpServletRequest = httpServletRequest;
     }
 
-    //http://localhost:8080/api/material
+    //http://localhost:8080/api/material?depth=2&type=1
     @NotNull
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<MaterialDto>> get() {
+    public ResponseEntity<List<MaterialDto>> get(
+            @RequestParam(value = "depth",  required = false) Integer depth,
+            @RequestParam(value = "width",  required = false) Long typeId
+    ) {
         Optional<UserEntity> user = userRepository.getByLogin(httpServletRequest.getRemoteUser());
         if (!user.isPresent()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
-        List<MaterialDto> result = repository.getByCompany(user.get().getCompany()).stream()
+        Stream<MaterialEntity> stream = repository.getByCompany(user.get().getCompany()).stream();
+        if (depth != null) {
+            stream = stream.filter(dto -> dto.getDepth().equals(depth));
+        }
+        if (typeId != null) {
+            stream = stream.filter(dto -> dto.getType().getId().equals(typeId));
+        }
+
+        List<MaterialDto> result = stream
                 .map(e -> mapper.map(e, MaterialDto.class))
                 .collect(Collectors.toList());
         return new ResponseEntity<>(result, HttpStatus.OK);
