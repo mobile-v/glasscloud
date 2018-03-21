@@ -49,12 +49,12 @@ public class MaterialController {
         this.httpServletRequest = httpServletRequest;
     }
 
-    //http://localhost:8080/api/material?depth=2&type=1
+    //http://localhost:8080/api/material?depth=2&typeId=1
     @NotNull
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<MaterialDto>> get(
             @RequestParam(value = "depth",  required = false) Integer depth,
-            @RequestParam(value = "width",  required = false) Long typeId
+            @RequestParam(value = "typeId",  required = false) Long typeId
     ) {
         Optional<UserEntity> user = userRepository.getByLogin(httpServletRequest.getRemoteUser());
         if (!user.isPresent()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);

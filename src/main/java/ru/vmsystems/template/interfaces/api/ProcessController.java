@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.vmsystems.template.domain.model.MaterialEntity;
 import ru.vmsystems.template.domain.model.ProcessEntity;
 import ru.vmsystems.template.domain.model.user.UserEntity;
 import ru.vmsystems.template.infrastructure.persistence.ProcessRepository;
@@ -21,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController("ProcessControllerApi")
 @RequestMapping("/api/process")
@@ -48,14 +50,37 @@ public class ProcessController {
         this.httpServletRequest = httpServletRequest;
     }
 
-    //http://localhost:8080/api/process
+    //http://localhost:8080/api/process?depth=2&typeId=1&materialId=1
     @NotNull
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<ProcessDto>> get() {
+    public ResponseEntity<List<ProcessDto>> get(
+            @RequestParam(value = "depth",  required = false) Integer depth,
+            @RequestParam(value = "typeId",  required = false) Long typeId,
+            @RequestParam(value = "materialId",  required = false) Long materialId
+    ) {
         Optional<UserEntity> user = userRepository.getByLogin(httpServletRequest.getRemoteUser());
         if (!user.isPresent()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
-        List<ProcessDto> result = repository.getByCompany(user.get().getCompany()).stream()
+        Stream<ProcessEntity> stream = repository.getByCompany(user.get().getCompany()).stream();
+        if (depth != null) {
+            stream = stream.filter(dto -> dto.getDepth().equals(depth));
+        }
+        if (typeId != null) {
+            stream = stream.filter(dto -> dto.getType().getId().equals(typeId));
+        }
+        if (materialId != null) {
+            stream = stream
+                    .filter(dto -> {
+                        for (MaterialEntity material : dto.getMaterial()) {
+                            if (material.getId().equals(materialId)){
+                                return true;
+                            }
+                        }
+                        return false;
+                    });
+        }
+
+        List<ProcessDto> result = stream
                 .map(e -> mapper.map(e, ProcessDto.class))
                 .collect(Collectors.toList());
         return new ResponseEntity<>(result, HttpStatus.OK);
