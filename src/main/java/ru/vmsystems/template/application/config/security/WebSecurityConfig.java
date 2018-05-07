@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ru.vmsystems.template.domain.shared.Role;
 
@@ -47,11 +46,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                //todo для реакта раскоментировать 3 строки
+//                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 //                .ignoringAntMatchers("/swagger-ui.html", "/v2/**", "/api/client")
-                .and()
-//                .csrf().disable()
-//                .cors().disable()
+//                .and()
+
+                //todo для реакта закоментировать 2 строки
+                .csrf().disable()
+                .cors().disable()
 
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
