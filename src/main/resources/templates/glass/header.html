@@ -1,46 +1,66 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<div xmlns:th="http://www.thymeleaf.org">
 
-<nav class="navbar navbar-inverse navbar-fixed-top" th:fragment="header">
-    <div class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-            <li><a id="showDeck" href="#">GlassCloud</a></li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Настройки <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                    <li><a><b>КАМПАНИИ</b></a></li>
-                    <li><a th:href="@{/glass/company}">Список кампаний</a></li>
-                    <li><a th:href="@{/glass/reception}">Точки приема заказов</a></li>
-                    <li><a th:href="@{/glass/client}">Клиенты</a></li>
-                    <li class="divider"></li>
-                    <li><a><b>МАТЕРИАЛЫ</b></a></li>
-                    <li><a th:href="@{/glass/material}">Список материалов</a></li>
-                    <li><a th:href="@{/glass/material/color}">Справочник расцветок материалов</a></li>
-                    <li><a th:href="@{/glass/material/type}">Справочник типов материалов</a></li>
-                    <li class="divider"></li>
-                    <li><a><b>РАБОТЫ</b></a></li>
-                    <li><a th:href="@{/glass/process}">Список работ</a></li>
-                    <li><a th:href="@{/glass/process/type}">Справочник типов работ</a></li>
-                    <li class="divider"></li>
-                    <li><a><b>АДМИНКА</b></a></li>
-                    <li><a th:href="@{/glass/user}">Пользователи</a></li>
-                    <li><a th:href="@{/glass/permitions}">Разрешения</a></li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Заказы <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                    <li><a id="" th:href="@{/glass/order}">Список заказов</a></li>
-                    <!--<li class="divider"></li>-->
-                </ul>
-            </li>
+    <nav class="navbar navbar-dark navbar-expand-lg" style="background-color: #3738fd;" th:fragment="header">
+        <a class="navbar-brand" href="#">GlassCloud</a>
 
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a>Точка приема заказов: <span th:text="${receptionName}"/></a></li>
-            <li><a></a></li>
-            <li><a th:href="@{/logout}">Выход</a></li>
-            <li><a></a></li>
-        </ul>
-    </div>
-</nav>
-</html>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">Настройки</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown01">
+                        <a class="dropdown-item"><b>КАМПАНИИ</b></a>
+                        <a class="dropdown-item" th:href="@{/glass/company}">Список кампаний</a>
+                        <a class="dropdown-item" th:href="@{/glass/reception}">Точки приема заказов</a>
+                        <a class="dropdown-item" th:href="@{/glass/client}">Клиенты</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item"><b>МАТЕРИАЛЫ</b></a>
+                        <a class="dropdown-item" th:href="@{/glass/material}">Список материалов</a>
+                        <a class="dropdown-item" th:href="@{/glass/material/color}">Справочник расцветок материалов</a>
+                        <a class="dropdown-item" th:href="@{/glass/material/type}">Справочник типов материалов</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item"><b>РАБОТЫ</b></a>
+                        <a class="dropdown-item" th:href="@{/glass/process}">Список работ</a>
+                        <a class="dropdown-item" th:href="@{/glass/process/type}">Справочник типов работ</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item"><b>АДМИНКА</b></a>
+                        <a class="dropdown-item" th:href="@{/glass/user}">Пользователи</a>
+                        <a class="dropdown-item" th:href="@{/glass/permitions}">Разрешения</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown02" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">Заказы</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown01">
+                        <a class="dropdown-item" th:href="@{/glass/order}">Список заказов</a>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Точка приема заказов: <span th:text="${receptionName}"/><</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/logout}">Выход</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+</div>
+
+
