@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" type="text/css" href="../../static/css/reception-of-order.css"/>
 
-    <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
-    <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
-    <link href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <link href="/webjars/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet/less" href="../../static/css/style.less" type="text/css">
     <link rel="stylesheet/less" href="../../static/css/main_page.css" type="text/css">
@@ -17,31 +17,28 @@
     <title>Авторизация</title>
 </head>
 
-<body>
-<main class="container-fluid wrapper">
+<body class="text-center">
 
-    <div class="row">
-        <div class="well">
-            <p class="welcome">Добро пожаловать</p>
+<main role="main" class="container">
+    <div class="jumbotron">
+        <h1>Добро пожаловать</h1>
+        <h2>В какой точке приёма заказов вы находитесь?</h2>
 
-            <p class="hint_p">В какой точке приёма заказов вы находитесь?</p>
-
-            <div class="panel-body">
-                <form class="aut_form" th:action="@{/glass/login-reception-of-order}" th:object="${receptionOfOrder}"  method="post">
-                    <div>
-                        <select class="form-control" id="id_reception_of_order" name="reception_of_order" title=""
-                                required th:field="*{id}">
-                            <option th:each="n : ${receptions}" th:value="${n.id}" th:text="${n.name}"/>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary">
-                            <span class="glyphicon "></span> Войти
-                        </button>
-                    </div>
-                </form>
+        <form class="aut_form" th:action="@{/glass/login-reception-of-order}" th:object="${receptionOfOrder}"
+              method="post">
+            <div>
+                <select class="btn btn-secondary dropdown-toggle btn-lg" id="id_reception_of_order"
+                        name="reception_of_order" title=""
+                        required th:field="*{id}">
+                    <option th:each="n : ${receptions}" th:value="${n.id}" th:text="${n.name}"/>
+                </select>
             </div>
-        </div>
+            <div class="m-2">
+                <button type="submit" class="btn btn-lg btn-primary">
+                    Войти &raquo;
+                </button>
+            </div>
+        </form>
     </div>
 </main>
 
