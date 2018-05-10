@@ -41,6 +41,6 @@ public abstract class BackService {
     }
 
     public String getReceptionOfOrderName() {
-        return sessionService.getReceptionOfOrderName();
+        return sessionService.getCurrentReceptionOfOrderName();
     }
 }

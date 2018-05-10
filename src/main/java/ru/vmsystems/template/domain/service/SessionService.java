@@ -56,12 +56,20 @@ public class SessionService {
         return Optional.ofNullable(receptions.get(httpRequest.getSession().getId()));
     }
 
-    public String getReceptionOfOrderName() {
+    public String getCurrentReceptionOfOrderName() {
         Long id = receptions.get(httpRequest.getSession().getId());
         ReceptionOfOrderEntity entity = receptionOfOrderRepository.findOne(id);
         if (entity == null) {
             return "";
         }
         return entity.getName();
+    }
+
+    public Optional<ReceptionOfOrderEntity> getCurrentReceptionOfOrder() {
+        Long id = receptions.get(httpRequest.getSession().getId());
+        if (id == null) return Optional.empty();
+
+        ReceptionOfOrderEntity entity = receptionOfOrderRepository.findOne(id);
+        return Optional.of(entity);
     }
 }
