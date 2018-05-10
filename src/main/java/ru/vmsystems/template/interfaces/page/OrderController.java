@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +26,8 @@ import static java.util.Optional.ofNullable;
 import static ru.vmsystems.template.interfaces.page.URLS.PAGE_REDIRECT_TO_LOGIN;
 import static ru.vmsystems.template.interfaces.page.URLS.PAGE_REDIRECT_TO_SELECT_RECEPTION;
 
-@Controller
-@RequestMapping("glass/order")
+//@Controller
+//@RequestMapping("glass/order")
 public class OrderController {
 
     private static final Logger LOG = LoggerFactory.getLogger(OrderController.class);
