@@ -29,6 +29,12 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
         registry.addResourceHandler("/images/**").addResourceLocations("classpath:/static/images/");
         registry.addResourceHandler("/favicon.ico").addResourceLocations("classpath:/static/favicon.ico");
+
+        registry.addResourceHandler("/polyfills.js").addResourceLocations("classpath:/static/glass/polyfills.js");
+        registry.addResourceHandler("/styles.js").addResourceLocations("classpath:/static/glass/styles.js");
+        registry.addResourceHandler("/vendor.js").addResourceLocations("classpath:/static/glass/vendor.js");
+        registry.addResourceHandler("/main.js").addResourceLocations("classpath:/static/glass/main.js");
+        registry.addResourceHandler("/runtime.js").addResourceLocations("classpath:/static/glass/runtime.js");
     }
 
     @Override
