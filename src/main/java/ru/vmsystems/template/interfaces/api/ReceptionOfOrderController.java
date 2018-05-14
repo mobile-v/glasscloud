@@ -13,6 +13,7 @@ import ru.vmsystems.template.domain.service.ReceptionOfOrderService;
 import ru.vmsystems.template.domain.service.SessionService;
 import ru.vmsystems.template.interfaces.dto.ReceptionOfOrderDto;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,13 +36,13 @@ public class ReceptionOfOrderController {
         this.mapper = mapper;
     }
 
-    //http://localhost:8080/api/receptionOfOrder
-    @NotNull
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<ReceptionOfOrderDto>> get() {
-        List<ReceptionOfOrderDto> result = receptionOfOrderService.get();
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
+//    //http://localhost:8080/api/receptionOfOrder
+//    @NotNull
+//    @RequestMapping(method = RequestMethod.GET)
+//    public ResponseEntity<List<ReceptionOfOrderDto>> get() {
+//        List<ReceptionOfOrderDto> result = receptionOfOrderService.get();
+//        return new ResponseEntity<>(result, HttpStatus.OK);
+//    }
 
     //http://localhost:8080/api/receptionOfOrder/current
     @NotNull
@@ -49,7 +50,7 @@ public class ReceptionOfOrderController {
     public ResponseEntity<ReceptionOfOrderDto[]> getCurrentReception() {
 
         Optional<ReceptionOfOrderEntity> currentReceptionOfOrder = sessionService.getCurrentReceptionOfOrder();
-        if (currentReceptionOfOrder.isPresent()){
+        if (currentReceptionOfOrder.isPresent()) {
             ReceptionOfOrderDto[] res = new ReceptionOfOrderDto[1];
             res[0] = mapper.map(currentReceptionOfOrder.get(), ReceptionOfOrderDto.class);
             return new ResponseEntity<>(res, HttpStatus.OK);
@@ -83,4 +84,20 @@ public class ReceptionOfOrderController {
 //        receptionOfOrderService.delete(receptionOfOrderId);
 //        return new ResponseEntity<>(new Result("OK"), HttpStatus.OK);
 //    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<ReceptionOfOrderDto>> getReceptions(Principal principal) {
+
+        List<ReceptionOfOrderDto> result = receptionOfOrderService.getByUserName(principal.getName());
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/select/{receptionOfOrderId}", method = RequestMethod.POST)
+    public ResponseEntity selectReceptionOfOrder(@PathVariable(value = "receptionOfOrderId") Long receptionOfOrderId) {
+
+        sessionService.setReceptionOfOrder(receptionOfOrderId);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

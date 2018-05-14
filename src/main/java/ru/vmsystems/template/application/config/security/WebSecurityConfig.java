@@ -10,9 +10,11 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ru.vmsystems.template.domain.shared.Role;
 
+import static javax.servlet.http.HttpServletResponse.SC_OK;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
 //http://spring-projects.ru/guides/securing-web/
@@ -47,16 +49,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 //todo для реакта раскоментировать 3 строки
-//                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//                .ignoringAntMatchers("/swagger-ui.html", "/v2/**", "/api/client")
-//                .and()
+                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .ignoringAntMatchers("/swagger-ui.html", "/v2/**", "/api/client")
+                .and()
 
                 //todo для реакта закоментировать 2 строки
-                .csrf().disable()
-                .cors().disable()
+//                .csrf().disable()
+                .cors().and()
+//                .disable()
 
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
+                .antMatchers("/login").permitAll()
                 .antMatchers("/glass").hasAnyAuthority(Role.ROLE_SUPER_ADMIN.toString(), Role.ROLE_ADMIN.toString(), Role.ROLE_USER.toString())
 
                 .antMatchers("/swagger-ui.html").hasAnyAuthority(Role.ROLE_SUPER_ADMIN.toString(), Role.ROLE_ADMIN.toString())
@@ -70,12 +74,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .failureHandler((request, response, exception) -> response.setStatus(SC_UNAUTHORIZED))
-//                .successHandler((request, response, authentication) -> response.setStatus(SC_OK))
-                .defaultSuccessUrl("/", false)
+                .successHandler((request, response, authentication) -> response.setStatus(SC_OK))
+//                .defaultSuccessUrl("/", false)
                 .loginPage("/login")
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessHandler((request, response, authentication) -> response.setStatus(SC_OK))
                 .and()
                 .httpBasic();
     }

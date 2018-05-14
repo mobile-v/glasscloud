@@ -47,7 +47,7 @@ public class HomeController {
     @Autowired
     private ReceptionOfOrderService receptionOfOrderService;
 
-    @RequestMapping({"/"})
+//    @RequestMapping({"/"})
     public String redirectToIndex() {
         Optional<Long> reception = sessionService.getReceptionOfOrder();
         if (reception.isPresent()) {
