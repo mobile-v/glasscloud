@@ -47,12 +47,12 @@ public class ReceptionOfOrderController {
     //http://localhost:8080/api/receptionOfOrder/current
     @NotNull
     @RequestMapping(value = "/current", method = RequestMethod.GET)
-    public ResponseEntity<ReceptionOfOrderDto[]> getCurrentReception() {
+    public ResponseEntity<ReceptionOfOrderDto> getCurrentReception() {
 
         Optional<ReceptionOfOrderEntity> currentReceptionOfOrder = sessionService.getCurrentReceptionOfOrder();
         if (currentReceptionOfOrder.isPresent()) {
-            ReceptionOfOrderDto[] res = new ReceptionOfOrderDto[1];
-            res[0] = mapper.map(currentReceptionOfOrder.get(), ReceptionOfOrderDto.class);
+            ReceptionOfOrderDto res; // = new ReceptionOfOrderDto[1];
+            res = mapper.map(currentReceptionOfOrder.get(), ReceptionOfOrderDto.class);
             return new ResponseEntity<>(res, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
