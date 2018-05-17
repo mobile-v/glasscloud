@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.vmsystems.template.domain.model.MaterialColorEntity;
@@ -83,11 +82,9 @@ public class MaterialColorController {
     }
 
     //http://localhost:8080/api/material/color/1
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT,
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
-            produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<MaterialColorDto> update(@PathVariable(value = "id") Long colorId,
-                                                   @ModelAttribute(value="color") MaterialColorDto color) {
+                                                   @RequestBody MaterialColorDto color) {
         Optional<UserEntity> user = userRepository.getByLogin(httpServletRequest.getRemoteUser());
         if (!user.isPresent()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
