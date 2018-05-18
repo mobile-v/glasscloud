@@ -1,6 +1,6 @@
 package ru.vmsystems.template.interfaces.dto;
 
-import java.util.List;
+import java.util.Set;
 
 public class ProcessDto {
     private Long id;
@@ -8,7 +8,7 @@ public class ProcessDto {
     private String price;
     private String desc;
     private ProcessTypeDto type;
-    private List<MaterialDto> material;
+    private Set<MaterialDto> material;
 
     public Long getId() {
         return id;
@@ -50,11 +50,11 @@ public class ProcessDto {
         this.type = type;
     }
 
-    public List<MaterialDto> getMaterial() {
+    public Set<MaterialDto> getMaterial() {
         return material;
     }
 
-    public void setMaterial(List<MaterialDto> material) {
+    public void setMaterial(Set<MaterialDto> material) {
         this.material = material;
     }
 }
