@@ -143,6 +143,11 @@ public class OrderService {
         return result;
     }
 
+    public OrderItemDto getOrderItem(Long itemId) {
+        OrderItemEntity item = orderItemRepository.findOne(itemId);
+        return mapper.map(item, OrderItemDto.class);
+    }
+
     public OrderDto saveOrderItem(Long orderId, OrderItemDto orderItem) {
         OrderEntity order = orderRepository.findOne(orderId);
 

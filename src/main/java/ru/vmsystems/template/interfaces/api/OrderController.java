@@ -162,6 +162,13 @@ public class OrderController {
     }
 
     //http://localhost:8080/api/order/items/1
+    @RequestMapping(value = "/order/items/{itemId}", method = RequestMethod.GET)
+    public ResponseEntity<OrderItemDto> getOrderItem(@PathVariable(value = "itemId") Long itemId) {
+        OrderItemDto result = orderService.getOrderItem(itemId);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    //http://localhost:8080/api/order/items/1
     @RequestMapping(value = "/order/items/{itemId}", method = RequestMethod.DELETE)
     public ResponseEntity<Result> deleteOrderItem(@PathVariable(value = "itemId") Long itemId) {
         orderService.deleteOrderItem(itemId);
