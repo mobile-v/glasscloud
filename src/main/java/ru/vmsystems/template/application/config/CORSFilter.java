@@ -3,6 +3,7 @@ package ru.vmsystems.template.application.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -20,14 +21,17 @@ import java.io.IOException;
 @Order(Integer.MIN_VALUE)
 public class CORSFilter extends OncePerRequestFilter {
 
+    @Value("${allowOrigin}")
+    private String allowOrigin;
     private static final String ORIGIN = "Origin";
 
     private static final Logger LOG = LoggerFactory.getLogger(CORSFilter.class);
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String allowOrigin = (request.getHeader(ORIGIN) == null) ? "*" : request.getHeader(ORIGIN);
-        LOG.info("allowOrigin: {}", allowOrigin);
+//        String allowOrigin = (request.getHeader(ORIGIN) == null) ? "*" : request.getHeader(ORIGIN);
+
+        LOG.info("remote Origin: {}. allowOrigin: {}", request.getHeader(ORIGIN), allowOrigin);
 
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Origin", allowOrigin);
