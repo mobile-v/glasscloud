@@ -108,7 +108,8 @@ public class MaterialController {
         entity.setLastUpdate(new Timestamp(new Date().getTime()));
         entity.setId(id);
         repository.save(entity);
-        type.setId(entity.getId());
+        entity = repository.save(entity);
+        type = mapper.map(entity, MaterialDto.class);
         return new ResponseEntity<>(type, HttpStatus.OK);
     }
 
