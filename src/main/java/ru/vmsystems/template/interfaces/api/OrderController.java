@@ -85,7 +85,7 @@ public class OrderController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    //http://localhost:8080/api/order/1
+    //http://localhost:8080/api/order/3
     @ApiOperation(value = "Получить заказ по id заказа")
     @NotNull
     @RequestMapping(value = "/order/{orderId}", method = RequestMethod.GET)

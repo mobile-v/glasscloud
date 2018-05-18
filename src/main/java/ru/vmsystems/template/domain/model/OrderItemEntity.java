@@ -2,6 +2,7 @@ package ru.vmsystems.template.domain.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "order_item", schema = "main")
@@ -18,6 +19,7 @@ public class OrderItemEntity {
     private String summa;
     private OrderEntity order;
     private MaterialEntity material;
+    private List<ProcessEntity> process;
     private Timestamp creationDate;
     private Timestamp updateDate;
 
@@ -138,6 +140,19 @@ public class OrderItemEntity {
 
     public void setMaterial(MaterialEntity material) {
         this.material = material;
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "ORDER_ITEMPROCESS",
+            joinColumns = @JoinColumn(name = "PROCESS_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "ID"))
+//    @OneToMany(mappedBy = "orderItem", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    public List<ProcessEntity> getProcess() {
+        return process;
+    }
+
+    public void setProcess(List<ProcessEntity> process) {
+        this.process = process;
     }
 
     @Basic

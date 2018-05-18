@@ -1,5 +1,7 @@
 package ru.vmsystems.template.interfaces.dto;
 
+import java.util.List;
+
 public class OrderItemDto {
     private Long id;
     private String desc;
@@ -12,6 +14,7 @@ public class OrderItemDto {
     private String processSum;
     private String summa;
     private MaterialDto material;
+    private List<ProcessDto> process;
 
     public Long getId() {
         return id;
@@ -99,5 +102,14 @@ public class OrderItemDto {
 
     public void setMaterial(MaterialDto material) {
         this.material = material;
+    }
+
+
+    public List<ProcessDto> getProcess() {
+        return process;
+    }
+
+    public void setProcess(List<ProcessDto> process) {
+        this.process = process;
     }
 }
