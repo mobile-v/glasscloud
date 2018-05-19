@@ -29,9 +29,7 @@ public class CORSFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-//        String allowOrigin = (request.getHeader(ORIGIN) == null) ? "*" : request.getHeader(ORIGIN);
-
-        LOG.info("remote Origin: {}. allowOrigin: {}", request.getHeader(ORIGIN), allowOrigin);
+        LOG.debug("remote Origin: {}. allowOrigin: {}", request.getHeader(ORIGIN), allowOrigin);
 
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Origin", allowOrigin);
@@ -42,7 +40,6 @@ public class CORSFilter extends OncePerRequestFilter {
         response.addHeader("Access-Control-Expose-Headers", "xsrf-token, X-XSRF-TOKEN, X-CSRF-TOKEN");
 
         if ("OPTIONS".equals(request.getMethod())) {
-            LOG.info("-- options filter --");
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             //для swagger добавить токен
