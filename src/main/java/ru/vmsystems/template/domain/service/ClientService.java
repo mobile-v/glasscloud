@@ -5,9 +5,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.vmsystems.template.domain.model.*;
-import ru.vmsystems.template.domain.shared.ClientTransformer;
-import ru.vmsystems.template.infrastructure.persistence.*;
+import ru.vmsystems.template.domain.model.ClientEntity;
+import ru.vmsystems.template.infrastructure.persistence.ClientRepository;
+import ru.vmsystems.template.infrastructure.persistence.ClientTypeRepository;
 import ru.vmsystems.template.interfaces.dto.ClientDto;
 
 import java.util.ArrayList;
@@ -35,17 +35,17 @@ public class ClientService {
     public List<ClientDto> get() {
         List<ClientDto> result = new ArrayList<>();
         clientRepository.findAll()
-                .forEach(client -> result.add(ClientTransformer.toDto(client)));
+                .forEach(client -> result.add(mapper.map(client, ClientDto.class)));
         return result;
     }
 
     public Optional<ClientDto> get(@NotNull Long orderId) {
-        ClientEntity order = clientRepository.findOne(orderId);
-        if (order == null) {
+        ClientEntity client = clientRepository.findOne(orderId);
+        if (client == null) {
             return Optional.empty();
         }
 
-        ClientDto result = ClientTransformer.toDto(order);
+        ClientDto result = mapper.map(client, ClientDto.class);
 
         return Optional.of(result);
     }
@@ -57,9 +57,9 @@ public class ClientService {
 
     public ClientDto update(@Nullable Long id, @NotNull ClientDto dto) {
         dto.setId(id);
-        ClientTypeEntity clientType = clientTypeRepository.findByName(dto.getType());
+//        ClientTypeEntity clientType = clientTypeRepository.findByName(dto.getType().getName());
 
-        ClientEntity entity = clientRepository.save(ClientTransformer.toEntity(dto, clientType));
+        ClientEntity entity = clientRepository.save(mapper.map(dto, ClientEntity.class));
         dto.setId(entity.getId());
 
         return mapper.map(entity, ClientDto.class);

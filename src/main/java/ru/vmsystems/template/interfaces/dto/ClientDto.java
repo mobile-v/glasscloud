@@ -9,7 +9,7 @@ public class ClientDto {
     private String email;
     private String desc;
     private String discount;
-    private String type;
+    private ClientTypeDto type;
 
     public Long getId() {
         return id;
@@ -75,11 +75,11 @@ public class ClientDto {
         this.discount = discount;
     }
 
-    public String getType() {
+    public ClientTypeDto getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(ClientTypeDto type) {
         this.type = type;
     }
 }
