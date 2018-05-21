@@ -169,6 +169,14 @@ public class OrderController {
     }
 
     //http://localhost:8080/api/order/items/1
+    @RequestMapping(value = "/order/items/{itemId}", method = RequestMethod.PUT)
+    public ResponseEntity<OrderItemDto> updateOrderItem(@PathVariable(value = "itemId") Long itemId,
+                                                  @RequestBody OrderItemDto orderItemDto) {
+        OrderItemDto result = orderService.updateOrderItem(itemId, orderItemDto);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    //http://localhost:8080/api/order/items/1
     @RequestMapping(value = "/order/items/{itemId}", method = RequestMethod.DELETE)
     public ResponseEntity<Result> deleteOrderItem(@PathVariable(value = "itemId") Long itemId) {
         orderService.deleteOrderItem(itemId);

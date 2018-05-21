@@ -29,7 +29,7 @@ public class CORSFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        LOG.debug("remote Origin: {}. allowOrigin: {}", request.getHeader(ORIGIN), allowOrigin);
+        LOG.info("remote Origin: {}. allowOrigin: {}", request.getHeader(ORIGIN), allowOrigin);
 
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Origin", allowOrigin);

@@ -30,6 +30,7 @@ public class OrderService {
     private final ClientRepository clientRepository;
     @NotNull
     private final MaterialRepository materialRepository;
+    private final ProcessRepository processRepository;
     @NotNull
     private final DozerBeanMapper mapper;
 
@@ -39,12 +40,14 @@ public class OrderService {
                         @NotNull ReceptionOfOrderRepository receptionOfOrderRepository,
                         @NotNull ClientRepository clientRepository,
                         @NotNull MaterialRepository materialRepository,
+                        ProcessRepository processRepository,
                         @NotNull DozerBeanMapper mapper) {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.receptionOfOrderRepository = receptionOfOrderRepository;
         this.clientRepository = clientRepository;
         this.materialRepository = materialRepository;
+        this.processRepository = processRepository;
         this.mapper = mapper;
     }
 
@@ -162,6 +165,24 @@ public class OrderService {
 
         OrderEntity entity = orderRepository.save(order);
         return getFullOrder(entity);
+    }
+
+    public OrderItemDto updateOrderItem(Long orderId, OrderItemDto orderItem) {
+        OrderItemEntity orderItemDb = orderItemRepository.findOne(orderId);
+
+        List<ProcessEntity> processes = orderItem.getProcess().stream()
+                .map(item -> processRepository.findOne(item.getId()))
+                .collect(Collectors.toList());
+
+        OrderItemEntity itemEntity = mapper.map(orderItem, OrderItemEntity.class);
+        itemEntity.setMaterial(itemEntity.getMaterial());
+        itemEntity.setProcess(processes);
+        itemEntity.setOrder(orderItemDb.getOrder());
+        itemEntity.setCreationDate(new Timestamp(new Date().getTime()));
+        itemEntity.setUpdateDate(new Timestamp(new Date().getTime()));
+
+        OrderItemEntity entity = orderItemRepository.save(itemEntity);
+        return mapper.map(entity, OrderItemDto.class);
     }
 
     public void deleteOrderItem(Long itemId) {
