@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.vmsystems.template.domain.service.ClientService;
 import ru.vmsystems.template.interfaces.dto.ClientDto;
+import ru.vmsystems.template.interfaces.dto.ClientTypeDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +27,15 @@ public class ClientController {
     @Autowired
     public ClientController(@NotNull ClientService clientService) {
         this.clientService = clientService;
+    }
+
+    //http://localhost:8080/api/client
+    @NotNull
+    @ApiOperation(value = "Получить список всех клиентов")
+    @RequestMapping(value = "type", method = RequestMethod.GET)
+    public ResponseEntity<List<ClientTypeDto>> getClientTypes() {
+
+        return new ResponseEntity<>(clientService.getClientTypes(), HttpStatus.OK);
     }
 
     //http://localhost:8080/api/client

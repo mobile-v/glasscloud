@@ -1,15 +1,19 @@
 package ru.vmsystems.template.interfaces.dto;
 
+import java.sql.Timestamp;
+
 public class ClientDto {
     private Long id;
     private String name;
-    private Short inn;
+    private String inn;
     private String account;
     private String phone;
     private String email;
     private String desc;
     private String discount;
     private ClientTypeDto type;
+    private Timestamp creationDate;
+    private Timestamp updateDate;
 
     public Long getId() {
         return id;
@@ -27,11 +31,11 @@ public class ClientDto {
         this.name = name;
     }
 
-    public Short getInn() {
+    public String getInn() {
         return inn;
     }
 
-    public void setInn(Short inn) {
+    public void setInn(String inn) {
         this.inn = inn;
     }
 
@@ -81,5 +85,21 @@ public class ClientDto {
 
     public void setType(ClientTypeDto type) {
         this.type = type;
+    }
+
+    public Timestamp getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Timestamp creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public Timestamp getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Timestamp updateDate) {
+        this.updateDate = updateDate;
     }
 }

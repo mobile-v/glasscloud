@@ -1,19 +1,23 @@
 package ru.vmsystems.template.domain.model;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "client_client", schema = "main", catalog = "")
 public class ClientEntity {
     private Long id;
     private String name;
-    private Short inn;
+    private String inn;
     private String account;
     private String phone;
     private String email;
     private String desc;
     private String discount;
     private ClientTypeEntity clientType;
+    private CompanyEntity company;
+    private Timestamp creationDate;
+    private Timestamp updateDate;
 
     @Id
     @Column(name = "id")
@@ -38,11 +42,11 @@ public class ClientEntity {
 
     @Basic
     @Column(name = "inn")
-    public Short getInn() {
+    public String getInn() {
         return inn;
     }
 
-    public void setInn(Short inn) {
+    public void setInn(String inn) {
         this.inn = inn;
     }
 
@@ -104,5 +108,34 @@ public class ClientEntity {
 
     public void setClientType(ClientTypeEntity clientType) {
         this.clientType = clientType;
+    }
+
+    @Basic
+    @Column(name = "creation_date")
+    public Timestamp getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Timestamp creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    @Basic
+    @Column(name = "last_updated")
+    public Timestamp getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Timestamp updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    @ManyToOne
+    public CompanyEntity getCompany() {
+        return company;
+    }
+
+    public void setCompany(CompanyEntity company) {
+        this.company = company;
     }
 }
