@@ -9,6 +9,7 @@ import ru.vmsystems.template.domain.model.*;
 import ru.vmsystems.template.infrastructure.persistence.*;
 import ru.vmsystems.template.interfaces.dto.OrderDto;
 import ru.vmsystems.template.interfaces.dto.OrderItemDto;
+import ru.vmsystems.template.interfaces.dto.ReceptionOfOrderDto;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -31,6 +32,7 @@ public class OrderService {
     @NotNull
     private final MaterialRepository materialRepository;
     private final ProcessRepository processRepository;
+    private final SessionService sessionService;
     @NotNull
     private final DozerBeanMapper mapper;
 
@@ -41,6 +43,7 @@ public class OrderService {
                         @NotNull ClientRepository clientRepository,
                         @NotNull MaterialRepository materialRepository,
                         ProcessRepository processRepository,
+                        SessionService sessionService,
                         @NotNull DozerBeanMapper mapper) {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
@@ -48,6 +51,7 @@ public class OrderService {
         this.clientRepository = clientRepository;
         this.materialRepository = materialRepository;
         this.processRepository = processRepository;
+        this.sessionService = sessionService;
         this.mapper = mapper;
     }
 
@@ -90,9 +94,15 @@ public class OrderService {
 
     @NotNull
     public OrderDto newOrder(@NotNull OrderDto order) {
-        ReceptionOfOrderEntity receptionOfOrder = receptionOfOrderRepository.findOne(order.getReceptionOfOrder().getId());
+
+        if (!sessionService.getCurrentReceptionOfOrder().isPresent()) {
+            return order;
+        }
+
+        ReceptionOfOrderEntity receptionOfOrder = sessionService.getCurrentReceptionOfOrder().get();
 
         //todo
+        order.setReceptionOfOrder(mapper.map(receptionOfOrder,ReceptionOfOrderDto.class));
         order.setNumber(receptionOfOrder.getOrderNumPrefix() + "1");
         if (order.getDiscount() == null) {
             order.setDiscount("0");
