@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.vmsystems.template.domain.service.ClientService;
 import ru.vmsystems.template.interfaces.dto.ClientDto;
 import ru.vmsystems.template.interfaces.dto.ClientTypeDto;
+import ru.vmsystems.template.interfaces.dto.Result;
 
 import java.util.List;
 import java.util.Optional;
@@ -64,15 +65,23 @@ public class ClientController {
     @ApiOperation(value = "Создать нового клиента")
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<ClientDto> save(@RequestBody ClientDto client) {
-        clientService.create(client);
+        client = clientService.create(client);
         return new ResponseEntity<>(client, HttpStatus.OK);
     }
 
-//    //http://localhost:8080/api/client/1/
-//    @ApiOperation(value = "Удалить клиента по id клиента")
-//    @RequestMapping(value = "/{clientId}", method = RequestMethod.DELETE)
-//    public ResponseEntity<Result> delete(@PathVariable(value = "clientId") Long clientId) {
-//        clientService.delete(clientId);
-//        return new ResponseEntity<>(new Result("OK"), HttpStatus.OK);
-//    }
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<ClientDto> update(@PathVariable(value = "id") Long clientId,
+                                                   @RequestBody ClientDto client) {
+
+        client = clientService.update(clientId, client);
+        return new ResponseEntity<>(client, HttpStatus.OK);
+    }
+
+    //http://localhost:8080/api/client/1/
+    @ApiOperation(value = "Удалить клиента по id клиента")
+    @RequestMapping(value = "/{clientId}", method = RequestMethod.DELETE)
+    public ResponseEntity<Result> delete(@PathVariable(value = "clientId") Long clientId) {
+        clientService.delete(clientId);
+        return new ResponseEntity<>(new Result("OK"), HttpStatus.OK);
+    }
 }
