@@ -20,15 +20,15 @@ create table material_type
 
 create table material
 (
-  id         uuid    not null constraint material_pkey primary key DEFAULT public.uuid_generate_v1(),
-  depth      REAL not null,
-  length     REAL    not null,
-  width      REAL    not null,
-  price      DECIMAL not null,
-  desc       varchar,
-  color_id   uuid    not null references material_color (id),
-  type_id    uuid    not null references material_type (id),
-  company_id uuid    not null references company (id),
-  deleted    boolean not null                                      default false
+  id          uuid    not null constraint material_pkey primary key DEFAULT public.uuid_generate_v1(),
+  depth       REAL    not null,
+  length      REAL    not null,
+  width       REAL    not null,
+  price       DECIMAL not null,
+  description varchar,
+  color_id    uuid    not null references material_color (id),
+  type_id     uuid    not null references material_type (id),
+  company_id  uuid    not null references company (id),
+  deleted     boolean not null                                      default false
 );
 

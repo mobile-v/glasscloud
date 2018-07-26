@@ -9,7 +9,8 @@ create table IF NOT EXISTS "user"
   PASSWORD   VARCHAR               not null,
   ROLE       VARCHAR               not null,
   ENABLED    BOOLEAN default FALSE not null,
-  deleted boolean not null default false
+  company_id uuid                  not null references company (id),
+  deleted    boolean               not null                                  default false
 );
 
 -- admin/admin

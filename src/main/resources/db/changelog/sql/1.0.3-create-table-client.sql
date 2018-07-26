@@ -10,13 +10,13 @@ create table client_type
 
 create table client
 (
-  id             uuid        not null constraint client_pkey primary key DEFAULT public.uuid_generate_v1(),
+  id             uuid        not null constraint client_pkey primary key      DEFAULT public.uuid_generate_v1(),
   name           varchar(64) not null,
   inn            integer,
   account        varchar(50),
   phone          varchar(18) not null unique,
   email          varchar(50),
-  desc           varchar,
+  description    varchar,
   discount       decimal     not null,
   client_type_id uuid        not null references client_type (id),
   company_id     uuid        not null references company (id),
