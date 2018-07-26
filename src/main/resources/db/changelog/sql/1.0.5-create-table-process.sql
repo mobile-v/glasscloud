@@ -29,4 +29,9 @@ create table process_material_type
   materialtype_id uuid not null references material_type (id)
 );
 
-
+INSERT INTO glass.process_type (id, name, description, company_id, deleted) VALUES ('c0690046-90fb-11e8-b6d5-0242ac110002', 'Шлифовка прямолинейная', '', 'da2e914c-9099-11e8-ba1b-0242ac110002', false);
+INSERT INTO glass.process_type (id, name, description, company_id, deleted) VALUES ('c0692ef4-90fb-11e8-b6d5-0242ac110002', 'Шлифовка криволинейная', '', 'da2e914c-9099-11e8-ba1b-0242ac110002', false);
+INSERT INTO glass.process_type (id, name, description, company_id, deleted) VALUES ('c0694a38-90fb-11e8-b6d5-0242ac110002', 'Полировка прямолинейная', '', 'da2e914c-9099-11e8-ba1b-0242ac110002', false);
+INSERT INTO glass.process_type (id, name, description, company_id, deleted) VALUES ('c06966da-90fb-11e8-b6d5-0242ac110002', 'Полировка криволинейная', '', 'da2e914c-9099-11e8-ba1b-0242ac110002', false);
+INSERT INTO glass.process_type (id, name, description, company_id, deleted) VALUES ('c069819c-90fb-11e8-b6d5-0242ac110002', 'Шлифовка кромки с изменением угла  45-89 градусов', '', 'da2e914c-9099-11e8-ba1b-0242ac110002', false);
+INSERT INTO glass.process_type (id, name, description, company_id, deleted) VALUES ('c0699b64-90fb-11e8-b6d5-0242ac110002', 'Полировка кромки с изменением угла  45-89 градусов', '', 'da2e914c-9099-11e8-ba1b-0242ac110002', false);
