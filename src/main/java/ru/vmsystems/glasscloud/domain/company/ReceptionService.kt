@@ -33,8 +33,11 @@ class ReceptionService(private val receptionRepository: ReceptionRepository,
         return entity.transform()
     }
 
-    fun delete(orderId: UUID) {
-        receptionRepository.deleteById(orderId)
+    fun delete(id: UUID) {
+        receptionRepository.getById(id)?.let {
+            val entity = it.copy(deleted = true)
+            receptionRepository.save(entity)
+        }
     }
 
     fun getByUserName(userName: String): List<ReceptionDto> {

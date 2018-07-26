@@ -4,7 +4,6 @@ import java.util.*
 import javax.persistence.Id
 
 data class ReceptionDto(
-        @Id
         var id: UUID? = null,
         val name: String,
         val deleted: Boolean,

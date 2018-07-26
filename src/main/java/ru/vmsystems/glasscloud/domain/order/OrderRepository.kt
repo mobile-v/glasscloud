@@ -8,4 +8,5 @@ interface OrderRepository : CrudRepository<OrderEntity, UUID>
 
 interface OrderItemRepository : CrudRepository<OrderItemEntity, UUID> {
     fun getByOrderId(orderId: UUID): List<OrderItemEntity>
+    fun getById(id: UUID): OrderItemEntity?
 }

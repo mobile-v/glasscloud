@@ -8,6 +8,9 @@ create table client_type
   deleted boolean     not null                                         default false
 );
 
+INSERT INTO client_type (id, name, deleted) VALUES ('f2f658fe-9111-11e8-a758-0242ac110002', 'Юридическое лицо', false);
+INSERT INTO client_type (id, name, deleted) VALUES ('fa43dc44-9111-11e8-a758-0242ac110002', 'Физическое лицо', false);
+
 create table client
 (
   id             uuid        not null constraint client_pkey primary key      DEFAULT public.uuid_generate_v1(),
