@@ -1,5 +1,7 @@
 package ru.vmsystems.template.domain.model;
 
+import ru.vmsystems.template.domain.model.user.UserEntity;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,6 +12,7 @@ public class UsersModuleEntity {
     private String desc;
     private String isTitle;
     private Short number;
+    private UserEntity user;
 
     @Id
     @Column(name = "id")
@@ -60,31 +63,5 @@ public class UsersModuleEntity {
 
     public void setNumber(Short number) {
         this.number = number;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        UsersModuleEntity that = (UsersModuleEntity) o;
-
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (desc != null ? !desc.equals(that.desc) : that.desc != null) return false;
-        if (isTitle != null ? !isTitle.equals(that.isTitle) : that.isTitle != null) return false;
-        if (number != null ? !number.equals(that.number) : that.number != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (desc != null ? desc.hashCode() : 0);
-        result = 31 * result + (isTitle != null ? isTitle.hashCode() : 0);
-        result = 31 * result + (number != null ? number.hashCode() : 0);
-        return result;
     }
 }
