@@ -1,0 +1,99 @@
+buildscript {
+    ext {
+        kotlinVersion = '1.2.51'
+        springBootVersion = '2.0.3.RELEASE'
+    }
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-noarg:${kotlinVersion}")
+        classpath("gradle.plugin.org.liquibase:liquibase-gradle-plugin:1.2.4")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-spring'
+apply plugin: 'kotlin-kapt'
+apply plugin: "kotlin-jpa"
+apply plugin: "kotlin-noarg"
+apply plugin: 'maven'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'liquibase'
+
+
+group = "ru.vmsystems.glass"
+version = "0.1.0-SNAPSHOT"
+sourceCompatibility = 1.8
+
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    compile("org.jetbrains.kotlin:kotlin-reflect")
+    compile("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile group: 'org.springframework', name: 'spring-oxm'
+
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.8.0'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.8.0'
+
+    compile('org.jetbrains:annotations:16.0.2')
+    compileOnly('org.springframework.boot:spring-boot-configuration-processor')
+
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+
+    compile('org.liquibase:liquibase-core')
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.2'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('io.projectreactor:reactor-test')
+    testCompile('org.springframework.security:spring-security-test')
+
+    testCompile("org.junit.jupiter:junit-jupiter-api")
+    testCompile("org.junit.jupiter:junit-jupiter-engine")
+    testCompile("org.mockito:mockito-core")
+    testCompile group: 'org.junit.vintage', name: 'junit-vintage-engine'
+}
+
+//test {
+//    useJUnitPlatform()
+//}
+
+noArg {
+    annotation("ru.vmsystems.glass.annotation")
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.8'
+}
