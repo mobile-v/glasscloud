@@ -31,7 +31,7 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'liquibase'
 
 
-group = "ru.vmsystems.glass"
+group = "ru.vmsystems.glasscloud"
 version = "0.1.0-SNAPSHOT"
 sourceCompatibility = 1.8
 
@@ -91,7 +91,7 @@ dependencies {
 //}
 
 noArg {
-    annotation("ru.vmsystems.glass.annotation")
+    annotation("ru.vmsystems.glasscloud.annotation")
 }
 
 task wrapper(type: Wrapper) {

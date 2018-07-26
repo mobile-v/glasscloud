@@ -12,3 +12,7 @@ create table reception
   phone            varchar(18)  not null,
   deleted          boolean      not null                                       default false
 );
+
+INSERT INTO glass.reception (id, name, order_num_prefix, description, address, company_id, phone, deleted) VALUES ('e94e077c-910a-11e8-a735-0242ac110002', 'Савеловская-1', 'САВА', 'Савеловская', 'м. Савеловская', 'da2e914c-9099-11e8-ba1b-0242ac110002', '911', false);
+INSERT INTO glass.reception (id, name, order_num_prefix, description, address, company_id, phone, deleted) VALUES ('e94e29d2-910a-11e8-a735-0242ac110002', 'Савеловская-2', 'САВА', 'Савеловская', 'м. Савеловская', 'da2e914c-9099-11e8-ba1b-0242ac110002', '911', false);
+INSERT INTO glass.reception (id, name, order_num_prefix, description, address, company_id, phone, deleted) VALUES ('e94e411a-910a-11e8-a735-0242ac110002', 'Марьино', 'М', '', 'м.Марьино', 'da2e914c-9099-11e8-ba1b-0242ac110002', '100', false);

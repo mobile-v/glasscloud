@@ -4,7 +4,7 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-@Table(name = "client_type")
+@Table(name = "client_type", schema = "glass")
 class ClientTypeEntity(
         @Id
         var id: UUID? = null,
@@ -18,7 +18,7 @@ class ClientTypeEntity(
 }
 
 @Entity
-@Table(name = "client")
+@Table(name = "client", schema = "glass")
 class ClientEntity(
         @Id
         var id: UUID? = null,

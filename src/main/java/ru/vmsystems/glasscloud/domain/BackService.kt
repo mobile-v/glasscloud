@@ -3,6 +3,7 @@ package ru.vmsystems.glasscloud.domain
 import org.springframework.beans.factory.annotation.Autowired
 import ru.vmsystems.glasscloud.domain.company.CompanyEntity
 import ru.vmsystems.glasscloud.domain.company.CompanyRepository
+import ru.vmsystems.glasscloud.domain.company.ReceptionService
 import ru.vmsystems.glasscloud.user.UserRepository
 import java.util.*
 import javax.servlet.http.HttpServletRequest

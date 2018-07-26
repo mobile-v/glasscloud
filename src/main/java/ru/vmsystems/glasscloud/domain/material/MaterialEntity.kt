@@ -5,7 +5,7 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-@Table(name = "material_color")
+@Table(name = "material_color", schema = "glass")
 data class MaterialColorEntity(
         @Id
         var id: UUID? = null,
@@ -20,7 +20,7 @@ data class MaterialColorEntity(
 }
 
 @Entity
-@Table(name = "material_type")
+@Table(name = "material_type", schema = "glass")
 data class MaterialTypeEntity(
         @Id
         var id: UUID? = null,
@@ -35,7 +35,7 @@ data class MaterialTypeEntity(
 }
 
 @Entity
-@Table(name = "material")
+@Table(name = "material", schema = "glass")
 data class MaterialEntity(
         @Id
         var id: UUID? = null,

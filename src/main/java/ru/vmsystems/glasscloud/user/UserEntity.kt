@@ -7,8 +7,8 @@ import javax.persistence.PrePersist
 import javax.persistence.Table
 
 @Entity
-@Table(name = "user")
-data class UserEntity(
+@Table(name = "user", schema = "glass")
+class UserEntity(
         @Id
         var id: UUID? = null,
         val name: String,

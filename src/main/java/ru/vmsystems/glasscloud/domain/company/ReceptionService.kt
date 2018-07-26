@@ -1,10 +1,7 @@
-package ru.vmsystems.glasscloud.domain
+package ru.vmsystems.glasscloud.domain.company
 
 import org.springframework.stereotype.Service
-import ru.vmsystems.glasscloud.domain.company.CompanyRepository
-import ru.vmsystems.glasscloud.domain.company.ReceptionDto
-import ru.vmsystems.glasscloud.domain.company.ReceptionEntity
-import ru.vmsystems.glasscloud.domain.company.ReceptionRepository
+import ru.vmsystems.glasscloud.domain.BackService
 import ru.vmsystems.glasscloud.user.UserRepository
 import java.util.*
 
@@ -48,7 +45,7 @@ class ReceptionService(private val receptionRepository: ReceptionRepository,
     }
 }
 
-private fun ReceptionDto.transform(id: UUID?): ReceptionEntity {
+fun ReceptionDto.transform(id: UUID? = null): ReceptionEntity {
     return ReceptionEntity(
             id = id,
             name = name,
@@ -61,7 +58,7 @@ private fun ReceptionDto.transform(id: UUID?): ReceptionEntity {
     )
 }
 
-private fun ReceptionEntity.transform(): ReceptionDto {
+fun ReceptionEntity.transform(): ReceptionDto {
     return ReceptionDto(
             id = id,
             name = name,

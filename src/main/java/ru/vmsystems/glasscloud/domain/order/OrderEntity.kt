@@ -8,7 +8,7 @@ import javax.persistence.PrePersist
 import javax.persistence.Table
 
 @Entity
-@Table(name = "order")
+@Table(name = "order", schema = "glass")
 data class OrderEntity(
         @Id
         var id: UUID? = null,
@@ -36,7 +36,7 @@ data class OrderEntity(
 }
 
 @Entity
-@Table(name = "order_item")
+@Table(name = "order_item", schema = "glass")
 data class OrderItemEntity(
         @Id
         var id: UUID? = null,

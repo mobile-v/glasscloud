@@ -7,7 +7,7 @@ import javax.persistence.PrePersist
 import javax.persistence.Table
 
 @Entity
-@Table(name = "company")
+@Table(name = "company", schema = "glass")
 data class CompanyEntity(
         @Id
         var id: UUID? = null,
