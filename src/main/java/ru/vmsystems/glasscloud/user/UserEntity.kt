@@ -8,14 +8,16 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "user")
-class UserEntity(
+data class UserEntity(
         @Id
         var id: UUID? = null,
         val name: String,
         val login: String,
         val password: String,
         val enabled: Boolean,
-        val role: String
+        val role: String,
+        val companyId: UUID,
+        val deleted: Boolean
 ) {
     @PrePersist
     private fun prePersist() {

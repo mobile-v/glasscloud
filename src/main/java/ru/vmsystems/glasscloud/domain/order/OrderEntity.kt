@@ -9,7 +9,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "order")
-class OrderEntity(
+data class OrderEntity(
         @Id
         var id: UUID? = null,
         val name: String,
@@ -37,7 +37,7 @@ class OrderEntity(
 
 @Entity
 @Table(name = "order_item")
-class OrderItemEntity(
+data class OrderItemEntity(
         @Id
         var id: UUID? = null,
         val name: String,

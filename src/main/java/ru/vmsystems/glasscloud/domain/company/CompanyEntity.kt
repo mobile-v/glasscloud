@@ -8,7 +8,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "company")
-class CompanyEntity(
+data class CompanyEntity(
         @Id
         var id: UUID? = null,
         val name: String,

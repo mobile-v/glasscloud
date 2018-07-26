@@ -7,7 +7,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "process_type")
-class ProcessTypeEntity(
+data class ProcessTypeEntity(
         @Id
         var id: UUID? = null,
         val name: String,
@@ -23,7 +23,7 @@ class ProcessTypeEntity(
 
 @Entity
 @Table(name = "process")
-class ProcessEntity(
+data class ProcessEntity(
         @Id
         var id: UUID? = null,
         val name: String,

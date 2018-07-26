@@ -2,21 +2,18 @@ package ru.vmsystems.glasscloud.domain.material
 
 
 import org.springframework.data.repository.CrudRepository
-import ru.vmsystems.glasscloud.domain.company.CompanyEntity
+import java.util.*
 
-interface MaterialRepository : CrudRepository<MaterialEntity, Long> {
-    fun getByCompanyId(companyId: Long?): List<MaterialEntity>
-    fun getByCompany(company: CompanyEntity): List<MaterialEntity>
+interface MaterialRepository : CrudRepository<MaterialEntity, UUID> {
+    fun getByCompanyId(companyId: UUID): List<MaterialEntity>
 }
 
 
-interface MaterialTypeRepository : CrudRepository<MaterialTypeEntity, Long> {
-    fun getByCompanyId(companyId: Long?): List<MaterialTypeEntity>
-    fun getByCompany(company: CompanyEntity): List<MaterialTypeEntity>
+interface MaterialTypeRepository : CrudRepository<MaterialTypeEntity, UUID> {
+    fun getByCompanyId(companyId: UUID): List<MaterialTypeEntity>
 }
 
 
-interface MaterialColorRepository : CrudRepository<MaterialColorEntity, Long> {
-    fun getByCompanyId(companyId: Long?): List<MaterialColorEntity>
-    fun getByCompany(company: CompanyEntity): List<MaterialColorEntity>
+interface MaterialColorRepository : CrudRepository<MaterialColorEntity, UUID> {
+    fun getByCompanyId(companyId: UUID): List<MaterialColorEntity>
 }

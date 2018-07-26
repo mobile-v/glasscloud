@@ -6,7 +6,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "material_color")
-class MaterialColorEntity(
+data class MaterialColorEntity(
         @Id
         var id: UUID? = null,
         val name: String,
@@ -21,7 +21,7 @@ class MaterialColorEntity(
 
 @Entity
 @Table(name = "material_type")
-class MaterialTypeEntity(
+data class MaterialTypeEntity(
         @Id
         var id: UUID? = null,
         val name: String,
@@ -36,7 +36,7 @@ class MaterialTypeEntity(
 
 @Entity
 @Table(name = "material")
-class MaterialEntity(
+data class MaterialEntity(
         @Id
         var id: UUID? = null,
         val name: String,
