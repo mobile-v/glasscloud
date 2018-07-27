@@ -26,11 +26,16 @@ class SessionService(
             return entity.name
         }
 
-    val currentReception: ReceptionEntity?
+    val currentReception: ReceptionEntity
         get() {
-            val id = receptions[httpRequest.session.id] ?: return null
+            val id = receptions[httpRequest.session.id] ?: throw RuntimeException("Не выбрана точка приема заказов")
 
-            return receptionRepository.getById(id)
+            return receptionRepository.getById(id) ?: throw RuntimeException("Не найдена точка приема заказов")
+        }
+
+    val currentReceptionId: UUID
+        get() {
+            return currentReception.id!!
         }
 
     fun setReceptionOfOrder(reception: UUID) {

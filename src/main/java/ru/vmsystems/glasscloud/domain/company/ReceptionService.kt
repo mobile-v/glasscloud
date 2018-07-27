@@ -7,7 +7,6 @@ import java.util.*
 
 @Service
 class ReceptionService(private val receptionRepository: ReceptionRepository,
-                       private val companyRepository: CompanyRepository,
                        private val userRepository: UserRepository) : BackService() {
 
     fun get(): List<ReceptionDto> {

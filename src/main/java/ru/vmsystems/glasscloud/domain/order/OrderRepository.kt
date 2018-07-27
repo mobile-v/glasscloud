@@ -6,6 +6,7 @@ import java.util.*
 
 interface OrderRepository : CrudRepository<OrderEntity, UUID> {
     fun getById(id: UUID): OrderEntity?
+    fun getByReceptionId(receptionId: UUID): List<OrderEntity>
 }
 
 interface OrderItemRepository : CrudRepository<OrderItemEntity, UUID> {

@@ -1,11 +1,9 @@
 package ru.vmsystems.glasscloud.domain.order
 
+import ru.vmsystems.glasscloud.Util.Companion.createCurrentTime
 import java.math.BigDecimal
 import java.util.*
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.PrePersist
-import javax.persistence.Table
+import javax.persistence.*
 
 @Entity
 @Table(name = "order", schema = "glass")
@@ -15,8 +13,8 @@ data class OrderEntity(
         val name: String,
         val deleted: Boolean,
 
-        val creationDate: Long,
-        val lastUpdated: Long,
+        var creationDate: Long,
+        var lastUpdated: Long,
         val number: String,
         val description: String = "",
         val accountNumber: String = "",
@@ -27,11 +25,17 @@ data class OrderEntity(
         val area: Float,
         val perimeter: Float,
         val clientId: UUID,
-        val receptionOfOrderId: UUID
+        val receptionId: UUID
 ) {
     @PrePersist
     private fun prePersist() {
         id = UUID.randomUUID()
+        creationDate = createCurrentTime()
+    }
+
+    @PreUpdate
+    private fun preUpdate() {
+        lastUpdated = createCurrentTime()
     }
 }
 
@@ -43,8 +47,8 @@ data class OrderItemEntity(
         val name: String,
         val deleted: Boolean,
 
-        val creationDate: Long,
-        val lastUpdated: Long,
+        var creationDate: Long,
+        var lastUpdated: Long,
         val number: String,
         val description: String = "",
 
@@ -61,5 +65,11 @@ data class OrderItemEntity(
     @PrePersist
     private fun prePersist() {
         id = UUID.randomUUID()
+        creationDate = createCurrentTime()
+    }
+
+    @PreUpdate
+    private fun preUpdate() {
+        lastUpdated = createCurrentTime()
     }
 }

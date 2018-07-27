@@ -1,156 +1,196 @@
 package ru.vmsystems.glasscloud.domain.order
 
-import com.google.common.collect.Lists
 import org.springframework.stereotype.Service
-import ru.vmsystems.glasscloud.domain.company.ReceptionRepository
-import java.sql.Timestamp
+import ru.vmsystems.glasscloud.domain.SessionService
 import java.util.*
-import java.util.stream.Collectors
-import java.util.stream.StreamSupport
 
 @Service
 class OrderService(private val orderRepository: OrderRepository,
                    private val orderItemRepository: OrderItemRepository,
-                   private val receptionOfOrderRepository: ReceptionRepository,
-                   private val clientRepository: ClientRepository,
-                   private val materialRepository: MaterialRepository,
-                   private val processRepository: ProcessRepository,
                    private val sessionService: SessionService) {
 
     //todo сделать проверку на принадлежность заказа пользователю
-    val orders: List<OrderDto>
-        get() = StreamSupport.stream(orderRepository.findAll().spliterator(), false)
-                .map { order -> mapper.map(order, OrderDto::class.java) }
-                .collect(Collectors.toList())
-
-    fun getOrdersByReceptionOfOrder(receptionOfOrder: Long?): List<OrderDto> {
-        return StreamSupport.stream(orderRepository.findAll().spliterator(), false)
-                .filter { order -> receptionOfOrder == order.receptionOfOrder.id }
-                .map { order -> mapper.map(order, OrderDto::class.java) }
-                .collect(Collectors.toList())
+    fun orders(): List<OrderDto> {
+        val currentReceptionId = sessionService.currentReceptionId
+        return orderRepository.getByReceptionId(currentReceptionId)
+                .map { it.transform() }
     }
 
-    fun getOrder(orderId: Long): Optional<OrderDto> {
-        val order = orderRepository.findOne(orderId) ?: return Optional.empty()
+    fun getOrdersByReception(receptionId: UUID): List<OrderDto> {
+        return orderRepository.getByReceptionId(receptionId)
+                .map { it.transform() }
+    }
 
-        val result = getFullOrder(order)
+    fun getOrder(orderId: UUID): OrderDto {
+        val order = orderRepository.getById(orderId) ?: throw RuntimeException("Заказ не найден")
 
-        return Optional.of(result)
+        return getFullOrder(order)
     }
 
     private fun getFullOrder(order: OrderEntity): OrderDto {
-        val result = mapper.map(order, OrderDto::class.java)
+        val items = orderItemRepository.getByOrderId(order.id!!)
+                .map { it.transform() }
 
-        val items = Lists.newArrayList<OrderItemDto>()
-        orderItemRepository.getByOrderId(order.id)
-                .forEach { item -> items.add(mapper.map(item, OrderItemDto::class.java)) }
-        result.items = items
+        val result = order.transform()
 
-        return result
+        return result.copy(items = items)
     }
 
     fun newOrder(order: OrderDto): OrderDto {
 
-        if (!sessionService.currentReceptionOfOrder.isPresent) {
-            return order
-        }
+        val reception = sessionService.currentReception
 
-        val receptionOfOrder = sessionService.currentReceptionOfOrder.get()
+        val newOrder = order.copy(
+                receptionId = reception.id!!,
+                //todo
+                number = reception.orderNumPrefix + "1"
+//        order . discountSum = "0"
+//        order.count = 0
+//        order.summa = "0"
+//        order.area = 0.0
+//        order.perimeter = 0.0
+        )
 
-        //todo
-        order.receptionOfOrder = mapper.map(receptionOfOrder, ReceptionOfOrderDto::class.java)
-        order.number = receptionOfOrder.orderNumPrefix + "1"
-        if (order.discount == null) {
-            order.discount = "0"
-        }
-        order.creationDate = Timestamp(Date().time).toString()
-        order.discountSum = "0"
-        order.count = 0
-        order.summa = "0"
-        order.area = 0.0
-        order.perimeter = 0.0
+
 
         return updateOrder(order)
     }
 
     fun updateOrder(order: OrderDto): OrderDto {
-        val client = clientRepository.findOne(order.client.id)
+        var entity = order.transform()
 
-        var entity = mapper.map(order, OrderEntity::class.java)
-        val receptionOfOrder = receptionOfOrderRepository.findOne(entity.receptionOfOrder.id)
-
-        entity.client = client
-        entity.receptionOfOrder = receptionOfOrder
-        if (entity.creationDate == null) {
-            entity.creationDate = Timestamp(Date().time)
-        }
-        entity.updateDate = Timestamp(Date().time)
-        if (entity.items != null) {
-            for (item in entity.items) {
-                if (item.creationDate == null) {
-                    item.creationDate = Timestamp(Date().time)
-                }
-                item.updateDate = Timestamp(Date().time)
-                item.order = entity
-            }
-        }
+//        if (entity.items != null) {
+//            for (item in entity.items) {
+//                item.order = entity
+//            }
+//        }
 
         entity = orderRepository.save(entity)
 
-        return mapper.map(entity, OrderDto::class.java)
+        return entity.transform()
     }
 
-    fun deleteOrder(orderId: Long?) {
-        orderRepository.delete(orderId)
+    fun deleteOrder(id: UUID) {
+        orderRepository.getById(id)?.let {
+            val entity = it.copy(deleted = true)
+            orderRepository.save(entity)
+        }
     }
 
-    fun getOrderItems(orderId: Long?): List<OrderItemDto> {
-        val result = Lists.newArrayList<OrderItemDto>()
-        orderItemRepository.getByOrderId(orderId)
-                .forEach { item -> result.add(mapper.map(item, OrderItemDto::class.java)) }
-        return result
+    fun getOrderItems(orderId: UUID): List<OrderItemDto> {
+        return orderItemRepository.getByOrderId(orderId)
+                .map { it.transform() }
     }
 
-    fun getOrderItem(itemId: Long?): OrderItemDto {
-        val item = orderItemRepository.findOne(itemId)
-        return mapper.map(item, OrderItemDto::class.java)
+    fun getOrderItem(itemId: UUID): OrderItemDto {
+        val item = orderItemRepository.getById(itemId) ?: throw RuntimeException("Элемент заказа не найден")
+        return item.transform()
     }
 
-    fun saveOrderItem(orderId: Long?, orderItem: OrderItemDto): OrderDto {
-        val order = orderRepository.findOne(orderId)
+    fun saveOrderItem(orderId: UUID, orderItem: OrderItemDto): OrderDto {
+        val order = orderRepository.getById(orderId) ?: throw RuntimeException("Заказ не найден")
 
-        val material = materialRepository.findOne(orderItem.material.id)
-        val itemEntity = mapper.map(orderItem, OrderItemEntity::class.java)
-        itemEntity.material = material
-        itemEntity.order = order
-        itemEntity.creationDate = Timestamp(Date().time)
-        itemEntity.updateDate = Timestamp(Date().time)
+        val itemEntity = orderItem.transform()
 
-        order.items.add(itemEntity)
-
-        val entity = orderRepository.save(order)
-        return getFullOrder(entity)
+        orderItemRepository.save(itemEntity)
+        return getFullOrder(order)
     }
 
-    fun updateOrderItem(orderId: Long?, orderItem: OrderItemDto): OrderItemDto {
-        val orderItemDb = orderItemRepository.findOne(orderId)
-
-        val processes = orderItem.process.stream()
-                .map { item -> processRepository.findOne(item.id) }
-                .collect<List<ProcessEntity>, Any>(Collectors.toList())
-
-        val itemEntity = mapper.map(orderItem, OrderItemEntity::class.java)
-        itemEntity.material = itemEntity.material
-        itemEntity.process = processes
-        itemEntity.order = orderItemDb.order
-        itemEntity.creationDate = Timestamp(Date().time)
-        itemEntity.updateDate = Timestamp(Date().time)
+    fun updateOrderItem(itemId: UUID, orderItem: OrderItemDto): OrderItemDto {
+        val itemEntity = orderItem.transform(itemId)
 
         val entity = orderItemRepository.save(itemEntity)
-        return mapper.map(entity, OrderItemDto::class.java)
+        return entity.transform()
     }
 
-    fun deleteOrderItem(itemId: Long?) {
-        orderItemRepository.delete(itemId)
+    fun deleteOrderItem(id: UUID) {
+        orderItemRepository.getById(id)?.let {
+            val entity = it.copy(deleted = true)
+            orderItemRepository.save(entity)
+        }
     }
+}
+
+private fun OrderItemDto.transform(itemId: UUID? = null): OrderItemEntity {
+    return OrderItemEntity(
+            id = itemId ?: id,
+            name = name,
+            deleted = deleted,
+            creationDate = creationDate,
+            lastUpdated = lastUpdated,
+            number = number,
+            description = description,
+            length = length,
+            width = width,
+            count = count,
+            area = area,
+            perimeter = perimeter,
+            processSum = processSum,
+            summa = summa,
+            orderId = orderId,
+            materialId = materialId
+    )
+}
+
+private fun OrderDto.transform(): OrderEntity {
+    return OrderEntity(
+            id = id,
+            name = name,
+            deleted = deleted,
+            creationDate = creationDate,
+            lastUpdated = lastUpdated,
+            number = number,
+            description = description,
+            accountNumber = accountNumber,
+            discount = discount,
+            discountSum = discountSum,
+            count = count,
+            summa = summa,
+            area = area,
+            perimeter = perimeter,
+            clientId = clientId,
+            receptionId = receptionId
+    )
+}
+
+private fun OrderItemEntity.transform(): OrderItemDto {
+    return OrderItemDto(
+            id = id,
+            name = name,
+            deleted = deleted,
+            creationDate = creationDate,
+            lastUpdated = lastUpdated,
+            number = number,
+            description = description,
+            length = length,
+            width = width,
+            count = count,
+            area = area,
+            perimeter = perimeter,
+            processSum = processSum,
+            summa = summa,
+            orderId = orderId,
+            materialId = materialId
+    )
+}
+
+private fun OrderEntity.transform(): OrderDto {
+    return OrderDto(
+            id = id,
+            name = name,
+            deleted = deleted,
+            creationDate = creationDate,
+            lastUpdated = lastUpdated,
+            number = number,
+            description = description,
+            accountNumber = accountNumber,
+            discount = discount,
+            discountSum = discountSum,
+            count = count,
+            summa = summa,
+            area = area,
+            perimeter = perimeter,
+            clientId = clientId,
+            receptionId = receptionId
+    )
 }

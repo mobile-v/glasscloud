@@ -2,14 +2,11 @@ package ru.vmsystems.glasscloud.domain.order
 
 import java.math.BigDecimal
 import java.util.*
-import javax.persistence.Id
 
 data class OrderDto(
-        @Id
         var id: UUID? = null,
         val name: String,
         val deleted: Boolean,
-
         val creationDate: Long,
         val lastUpdated: Long,
         val number: String,
@@ -22,19 +19,19 @@ data class OrderDto(
         val area: Float,
         val perimeter: Float,
         val clientId: UUID,
-        val receptionOfOrderId: UUID
+        val receptionId: UUID,
+
+        val items: List<OrderItemDto>? = null
 )
 
 data class OrderItemDto(
         var id: UUID? = null,
         val name: String,
         val deleted: Boolean,
-
         val creationDate: Long,
         val lastUpdated: Long,
         val number: String,
         val description: String,
-
         val length: Float,
         val width: Float,
         val count: Int,

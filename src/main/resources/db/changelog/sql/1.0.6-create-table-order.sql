@@ -4,21 +4,21 @@
 
 create table "order"
 (
-  id                  uuid        not null constraint order_pkey primary key DEFAULT public.uuid_generate_v1(),
-  creation_date       bigint      not null,
-  last_updated        bigint      not null,
-  number              varchar(64) not null,
-  description         varchar,
-  account_number      varchar,
-  discount            real        not null,
-  discount_sum        decimal     not null,
-  count               integer     not null,
-  summa               decimal     not null,
-  area                real        not null,
-  perimeter           real        not null,
-  client_id           uuid        not null references client (id),
-  receptionOfOrder_id uuid        not null references reception (id),
-  deleted             boolean     not null
+  id             uuid        not null constraint order_pkey primary key DEFAULT public.uuid_generate_v1(),
+  creation_date  bigint      not null,
+  last_updated   bigint      not null,
+  number         varchar(64) not null,
+  description    varchar,
+  account_number varchar,
+  discount       real        not null,
+  discount_sum   decimal     not null,
+  count          integer     not null,
+  summa          decimal     not null,
+  area           real        not null,
+  perimeter      real        not null,
+  client_id      uuid        not null references client (id),
+  reception_id   uuid        not null references reception (id),
+  deleted        boolean     not null
 );
 
 create table order_item
