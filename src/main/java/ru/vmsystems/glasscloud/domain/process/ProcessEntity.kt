@@ -26,7 +26,6 @@ data class ProcessTypeEntity(
 data class ProcessEntity(
         @Id
         var id: UUID? = null,
-        val name: String,
         val deleted: Boolean,
         val description: String = "",
         val depth: Float,

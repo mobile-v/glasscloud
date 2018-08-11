@@ -25,9 +25,10 @@ class MaterialService(
         return entity.transform()
     }
 
-    fun save(dto: MaterialDto) {
+    fun save(dto: MaterialDto): MaterialDto {
         val entity = dto.transform(sessionService.currentCompanyId)
-        repository.save(entity)
+        val result = repository.save(entity) ?: throw BusinessException("Ошибка сохранения")
+        return result.transform()
     }
 
     fun delete(orderId: UUID) {
@@ -35,7 +36,7 @@ class MaterialService(
     }
 }
 
-private fun MaterialDto.transform(currentCompanyId: UUID): MaterialEntity {
+fun MaterialDto.transform(currentCompanyId: UUID? = null): MaterialEntity {
     return MaterialEntity(
             id = id,
             deleted = deleted,
@@ -44,13 +45,13 @@ private fun MaterialDto.transform(currentCompanyId: UUID): MaterialEntity {
             width = width,
             price = price,
             description = description,
-            companyId = currentCompanyId,
+            companyId = currentCompanyId ?: companyId!!,
             type = type.transform(),
             color = color.transform()
     )
 }
 
-private fun MaterialEntity.transform(): MaterialDto {
+fun MaterialEntity.transform(): MaterialDto {
     return MaterialDto(
             id = id,
             deleted = deleted,

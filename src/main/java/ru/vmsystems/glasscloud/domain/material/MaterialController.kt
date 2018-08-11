@@ -22,15 +22,15 @@ constructor(private val materialColorService: MaterialService) {
     }
 
     @PostMapping
-    fun save(@RequestBody material: MaterialDto): JsonItemResponse<*> {
-        materialColorService.save(material)
-        return JsonItemBuilder.success()
+    fun save(@RequestBody material: MaterialDto): JsonItemResponse<MaterialDto> {
+        val res = materialColorService.save(material)
+        return JsonItemBuilder.success(res)
     }
 
     @PutMapping("/{id}")
-    fun update(@PathVariable(value = "id") colorId: UUID, @RequestBody dto: MaterialDto): JsonItemResponse<*> {
-        materialColorService.save(dto.copy(id = colorId))
-        return JsonItemBuilder.success()
+    fun update(@PathVariable(value = "id") colorId: UUID, @RequestBody dto: MaterialDto): JsonItemResponse<MaterialDto> {
+        val res = materialColorService.save(dto.copy(id = colorId))
+        return JsonItemBuilder.success(res)
     }
 
     @DeleteMapping("/{id}")
