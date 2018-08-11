@@ -43,17 +43,12 @@ class OrderController(
     @ApiOperation(value = "Создать новый заказ")
     @PostMapping(value = ["/order"])
     //    @PreAuthorize("@moduleSecurity.orderPermitted")
-    fun newOrder(@RequestBody order: OrderDto, principal: Principal): JsonItemResponse<OrderDto> {
-        var order = order
+    fun newOrder(@RequestBody order: OrderCreateDto, principal: Principal): JsonItemResponse<OrderDto> {
         userRepository.getByLogin(principal.name) ?: throw BusinessException("Пользователь не найден")
         LOG.info("-- save --")
 
-        if (order.id != null) {
-            throw BusinessException("id = null")
-        }
-
-        order = orderService.newOrder(order)
-        return JsonItemBuilder.success(order)
+        val res = orderService.newOrder(order)
+        return JsonItemBuilder.success(res)
     }
 
     @ApiOperation(value = "Обновить заказ")

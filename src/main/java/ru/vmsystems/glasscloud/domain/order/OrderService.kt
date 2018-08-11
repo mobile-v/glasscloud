@@ -2,23 +2,28 @@ package ru.vmsystems.glasscloud.domain.order
 
 import org.springframework.stereotype.Service
 import ru.vmsystems.glasscloud.domain.SessionService
+import ru.vmsystems.glasscloud.domain.client.ClientRepository
+import java.math.BigDecimal
 import java.util.*
 
 @Service
-class OrderService(private val orderRepository: OrderRepository,
-                   private val orderItemRepository: OrderItemRepository,
-                   private val sessionService: SessionService) {
+class OrderService(
+        private val orderRepository: OrderRepository,
+        private val orderItemRepository: OrderItemRepository,
+        private val sessionService: SessionService,
+        private val clientRepository: ClientRepository
+) {
 
     //todo сделать проверку на принадлежность заказа пользователю
     fun orders(): List<OrderDto> {
-        val currentReceptionId = sessionService.currentReceptionId
-        return orderRepository.getByReceptionId(currentReceptionId)
-                .map { it.transform() }
+        val currentReception = sessionService.currentReception
+        return orderRepository.getByReceptionId(currentReception.id!!)
+                .map { it.transform(reception = currentReception.name, clientName = clientRepository.getById(it.clientId)!!.name) }
     }
 
     fun getOrdersByReception(receptionId: UUID): List<OrderDto> {
         return orderRepository.getByReceptionId(receptionId)
-                .map { it.transform() }
+                .map { it.transform(reception = sessionService.currentReception.name, clientName = clientRepository.getById(it.clientId)!!.name) }
     }
 
     fun getOrder(orderId: UUID): OrderDto {
@@ -31,29 +36,20 @@ class OrderService(private val orderRepository: OrderRepository,
         val items = orderItemRepository.getByOrderId(order.id!!)
                 .map { it.transform() }
 
-        val result = order.transform()
+        val result = order.transform(reception = sessionService.currentReception.name, clientName = clientRepository.getById(order.clientId)!!.name)
 
         return result.copy(items = items)
     }
 
-    fun newOrder(order: OrderDto): OrderDto {
+    fun newOrder(order: OrderCreateDto): OrderDto {
 
         val reception = sessionService.currentReception
+        val entity = order.transform(sessionService.currentReceptionId,
+                reception.orderNumPrefix + "1")
 
-        val newOrder = order.copy(
-                receptionId = reception.id!!,
-                //todo
-                number = reception.orderNumPrefix + "1"
-//        order . discountSum = "0"
-//        order.count = 0
-//        order.summa = "0"
-//        order.area = 0.0
-//        order.perimeter = 0.0
-        )
+        val res = orderRepository.save(entity)
 
-
-
-        return updateOrder(order)
+        return updateOrder(res.transform(reception = sessionService.currentReception.name, clientName = clientRepository.getById(res.clientId)!!.name))
     }
 
     fun updateOrder(order: OrderDto): OrderDto {
@@ -67,7 +63,7 @@ class OrderService(private val orderRepository: OrderRepository,
 
         entity = orderRepository.save(entity)
 
-        return entity.transform()
+        return entity.transform(reception = sessionService.currentReception.name, clientName = clientRepository.getById(entity.clientId)!!.name)
     }
 
     fun deleteOrder(id: UUID) {
@@ -111,10 +107,19 @@ class OrderService(private val orderRepository: OrderRepository,
     }
 }
 
+private fun OrderCreateDto.transform(currentReceptionId: UUID, number: String): OrderEntity {
+    return OrderEntity(
+            clientId = clientId,
+            description = description,
+            discount = discount,
+            number = number,
+            receptionId = currentReceptionId
+    )
+}
+
 private fun OrderItemDto.transform(itemId: UUID? = null): OrderItemEntity {
     return OrderItemEntity(
             id = itemId ?: id,
-            name = name,
             deleted = deleted,
             creationDate = creationDate,
             lastUpdated = lastUpdated,
@@ -135,7 +140,6 @@ private fun OrderItemDto.transform(itemId: UUID? = null): OrderItemEntity {
 private fun OrderDto.transform(currentReceptionId: UUID? = null): OrderEntity {
     return OrderEntity(
             id = id,
-            name = name,
             deleted = deleted,
             creationDate = creationDate,
             lastUpdated = lastUpdated,
@@ -156,7 +160,6 @@ private fun OrderDto.transform(currentReceptionId: UUID? = null): OrderEntity {
 private fun OrderItemEntity.transform(): OrderItemDto {
     return OrderItemDto(
             id = id,
-            name = name,
             deleted = deleted,
             creationDate = creationDate,
             lastUpdated = lastUpdated,
@@ -174,23 +177,24 @@ private fun OrderItemEntity.transform(): OrderItemDto {
     )
 }
 
-private fun OrderEntity.transform(): OrderDto {
+private fun OrderEntity.transform(clientName: String, reception: String): OrderDto {
     return OrderDto(
             id = id,
-            name = name,
             deleted = deleted,
-            creationDate = creationDate,
-            lastUpdated = lastUpdated,
+            creationDate = creationDate ?: 0,
+            lastUpdated = lastUpdated ?: 0,
             number = number,
             description = description,
             accountNumber = accountNumber,
             discount = discount,
-            discountSum = discountSum,
-            count = count,
-            summa = summa,
-            area = area,
-            perimeter = perimeter,
+            discountSum = discountSum ?: BigDecimal.ZERO,
+            count = count ?: 0,
+            summa = summa ?: BigDecimal.ZERO,
+            area = area ?: 0f,
+            perimeter = perimeter ?: 0f,
             clientId = clientId,
-            receptionId = receptionId
+            clientName = clientName,
+            receptionId = receptionId,
+            reception = reception
     )
 }

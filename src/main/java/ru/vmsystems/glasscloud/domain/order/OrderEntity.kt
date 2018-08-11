@@ -10,27 +10,30 @@ import javax.persistence.*
 data class OrderEntity(
         @Id
         var id: UUID? = null,
-        val name: String,
-        val deleted: Boolean,
+        val deleted: Boolean = false,
 
-        var creationDate: Long,
-        var lastUpdated: Long,
+
         val number: String,
-        val description: String = "",
+        val description: String?,
         val accountNumber: String = "",
-        val discount: Float,
-        val discountSum: BigDecimal,
-        val count: Int,
-        val summa: BigDecimal,
-        val area: Float,
-        val perimeter: Float,
         val clientId: UUID,
-        val receptionId: UUID
+        val receptionId: UUID,
+        val discount: Float,
+
+        val discountSum: BigDecimal? = null,
+        val count: Int? = null,
+        val summa: BigDecimal? = null,
+        val area: Float? = null,
+        val perimeter: Float? = null,
+        var creationDate: Long? = null,
+        var lastUpdated: Long? = null
+
 ) {
     @PrePersist
     private fun prePersist() {
         id = UUID.randomUUID()
         creationDate = createCurrentTime()
+        lastUpdated = creationDate
     }
 
     @PreUpdate
@@ -44,8 +47,7 @@ data class OrderEntity(
 data class OrderItemEntity(
         @Id
         var id: UUID? = null,
-        val name: String,
-        val deleted: Boolean,
+        val deleted: Boolean = false,
 
         var creationDate: Long,
         var lastUpdated: Long,

@@ -3,14 +3,19 @@ package ru.vmsystems.glasscloud.domain.order
 import java.math.BigDecimal
 import java.util.*
 
+data class OrderCreateDto(
+        val clientId: UUID,
+        val discount: Float,
+        val description: String? = null
+)
+
 data class OrderDto(
         var id: UUID? = null,
-        val name: String,
         val deleted: Boolean = false,
         val creationDate: Long,
         val lastUpdated: Long,
         val number: String,
-        val description: String,
+        val description: String? = null,
         val accountNumber: String,
         val discount: Float,
         val discountSum: BigDecimal,
@@ -19,14 +24,15 @@ data class OrderDto(
         val area: Float,
         val perimeter: Float,
         val clientId: UUID,
+        val clientName: String? = null,
         val receptionId: UUID?,
+        val reception: String? = null,
 
         val items: List<OrderItemDto>? = null
 )
 
 data class OrderItemDto(
         var id: UUID? = null,
-        val name: String,
         val deleted: Boolean = false,
         val creationDate: Long,
         val lastUpdated: Long,

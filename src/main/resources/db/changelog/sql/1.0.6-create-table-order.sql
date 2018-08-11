@@ -11,11 +11,11 @@ create table "order"
   description    varchar,
   account_number varchar,
   discount       real        not null,
-  discount_sum   decimal     not null,
-  count          integer     not null,
-  summa          decimal     not null,
-  area           real        not null,
-  perimeter      real        not null,
+  discount_sum   decimal     ,
+  count          integer     ,
+  summa          decimal     ,
+  area           real        ,
+  perimeter      real        ,
   client_id      uuid        not null references client (id),
   reception_id   uuid        not null references reception (id),
   deleted        boolean     not null
@@ -36,7 +36,8 @@ create table order_item
   process_sum   decimal     not null,
   summa         decimal     not null,
   order_id      uuid        not null references "order" (id),
-  material_id   uuid        not null references material (id)
+  material_id   uuid        not null references material (id),
+  deleted       boolean     not null
 );
 
 create table order_item_process
