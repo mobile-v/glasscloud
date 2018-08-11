@@ -33,6 +33,11 @@ class SessionService(
             return receptionRepository.getById(id) ?: throw RuntimeException("Не найдена точка приема заказов")
         }
 
+    val currentCompanyId: UUID
+        get() {
+            return currentReception.companyId
+        }
+
     val currentReceptionId: UUID
         get() {
             return currentReception.id!!

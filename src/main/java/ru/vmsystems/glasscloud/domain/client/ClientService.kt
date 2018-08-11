@@ -29,7 +29,7 @@ class ClientService(private val clientRepository: ClientRepository,
     }
 
     fun update(id: UUID? = null, dto: ClientDto): ClientDto {
-        val currentReception = sessionService.currentReception ?: throw RuntimeException()
+        val currentReception = sessionService.currentReception
 
         val client = dto.transform(id, currentReception.companyId)
         val entity = clientRepository.save(client)

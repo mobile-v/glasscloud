@@ -10,8 +10,8 @@ data class MaterialColorEntity(
         @Id
         var id: UUID? = null,
         val name: String,
-        val deleted: Boolean,
-        val companyId: UUID
+        val deleted: Boolean = false,
+        val companyId: UUID?
 ) {
     @PrePersist
     private fun prePersist() {
@@ -25,8 +25,8 @@ data class MaterialTypeEntity(
         @Id
         var id: UUID? = null,
         val name: String,
-        val deleted: Boolean,
-        val companyId: UUID
+        val deleted: Boolean = false,
+        val companyId: UUID?
 ) {
     @PrePersist
     private fun prePersist() {
@@ -39,7 +39,6 @@ data class MaterialTypeEntity(
 data class MaterialEntity(
         @Id
         var id: UUID? = null,
-        val name: String,
         val deleted: Boolean,
         val depth: Float,
         val length: Float,
