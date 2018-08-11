@@ -42,7 +42,7 @@ fun ProcessTypeDto.transform(currentCompanyId: UUID? = null): ProcessTypeEntity 
             name = name,
             deleted = deleted,
             description = description,
-            companyId = currentCompanyId ?: companyId
+            companyId = currentCompanyId ?: companyId!!
     )
 }
 

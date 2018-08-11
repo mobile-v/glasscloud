@@ -9,7 +9,7 @@ data class ProcessTypeDto(
         val name: String,
         val deleted: Boolean,
         val description: String = "",
-        val companyId: UUID
+        val companyId: UUID?
 )
 
 data class ProcessDto(
@@ -19,7 +19,7 @@ data class ProcessDto(
         val depth: Float,
         val price: BigDecimal,
         val type: ProcessTypeDto,
-        val companyId: UUID,
+        val companyId: UUID?,
         val material: List<MaterialDto>
 )
 

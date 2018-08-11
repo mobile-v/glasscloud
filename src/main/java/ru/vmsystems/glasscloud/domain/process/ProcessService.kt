@@ -44,7 +44,7 @@ fun ProcessDto.transform(currentCompanyId: UUID? = null): ProcessEntity {
             price = price,
             type = type.transform(),
             material = material.map { it.transform() },
-            companyId = currentCompanyId ?: companyId
+            companyId = currentCompanyId ?: companyId!!
     )
 }
 

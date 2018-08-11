@@ -35,9 +35,9 @@ data class ProcessEntity(
         val companyId: UUID,
 
         @ManyToMany(fetch = FetchType.LAZY)
-        @JoinTable(name = "PROCESS_PROCESS_MATERIAL_TYPE",
+        @JoinTable(name = "PROCESS_MATERIAL",
                 joinColumns = (arrayOf(JoinColumn(name = "PROCESS_ID", referencedColumnName = "ID"))),
-                inverseJoinColumns = (arrayOf(JoinColumn(name = "MATERIALTYPE_ID", referencedColumnName = "ID"))))
+                inverseJoinColumns = (arrayOf(JoinColumn(name = "MATERIAL_ID", referencedColumnName = "ID"))))
         val material: List<MaterialEntity>
 ) {
     @PrePersist

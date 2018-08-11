@@ -22,11 +22,17 @@ create table process
 );
 
 
-create table process_material_type
+-- create table process_material_type
+-- (
+--   --   id              uuid not null constraint process_material_type_pkey primary key DEFAULT public.uuid_generate_v1(),
+--   process_id      uuid not null references process (id),
+--   materialtype_id uuid not null references material_type (id)
+-- );
+
+create table process_material
 (
-  --   id              uuid not null constraint process_material_type_pkey primary key DEFAULT public.uuid_generate_v1(),
-  process_id      uuid not null references process (id),
-  materialtype_id uuid not null references material_type (id)
+  process_id  uuid not null references process (id),
+  material_id uuid not null references material (id)
 );
 
 INSERT INTO glass.process_type (id, name, description, company_id, deleted) VALUES ('c0690046-90fb-11e8-b6d5-0242ac110002', 'Шлифовка прямолинейная', '', 'da2e914c-9099-11e8-ba1b-0242ac110002', false);
