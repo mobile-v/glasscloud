@@ -57,3 +57,6 @@ INSERT INTO glass.material_type (id, name, company_id, deleted) VALUES ('3de3aec
 INSERT INTO glass.material_type (id, name, company_id, deleted) VALUES ('3de3c3ae-90fb-11e8-a1cc-0242ac110002', 'ЗЕРКАЛО', 'da2e914c-9099-11e8-ba1b-0242ac110002', false);
 INSERT INTO glass.material_type (id, name, company_id, deleted) VALUES ('3de3d79a-90fb-11e8-a1cc-0242ac110002', 'ЗЕРКАЛО ДЕКОРАТИВНОЕ', 'da2e914c-9099-11e8-ba1b-0242ac110002', false);
 INSERT INTO glass.material_type (id, name, company_id, deleted) VALUES ('3de3e852-90fb-11e8-a1cc-0242ac110002', 'ТРИПЛЕКС', 'da2e914c-9099-11e8-ba1b-0242ac110002', false);
+
+INSERT INTO glass.material (id, depth, length, width, price, description, color_id, type_id, company_id, deleted) VALUES ('6f2cce06-6433-438a-af98-f7fff0a99efa', 3, 100, 100, 101, '', '3de3045a-90fb-11e8-a1cc-0242ac110002', '3de3c3ae-90fb-11e8-a1cc-0242ac110002', 'da2e914c-9099-11e8-ba1b-0242ac110002', false);
+INSERT INTO glass.material (id, depth, length, width, price, description, color_id, type_id, company_id, deleted) VALUES ('a4aee265-c048-425d-89f2-5efe9af69a36', 3, 200, 200, 200, '', '3de31ca6-90fb-11e8-a1cc-0242ac110002', '3de3c3ae-90fb-11e8-a1cc-0242ac110002', 'da2e914c-9099-11e8-ba1b-0242ac110002', false);

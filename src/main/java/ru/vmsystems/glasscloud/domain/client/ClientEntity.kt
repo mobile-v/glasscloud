@@ -24,12 +24,12 @@ data class ClientEntity(
         var id: UUID? = null,
         val name: String,
         val deleted: Boolean,
-        val inn: String,
+        val inn: Long,
         val account: String,
         val phone: String,
         val email: String,
         val description: String = "",
-        val discount: String,
+        val discount: Float,
         @ManyToOne
         val clientType: ClientTypeEntity,
         val companyId: UUID

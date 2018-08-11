@@ -6,7 +6,7 @@ import java.util.*
 data class OrderDto(
         var id: UUID? = null,
         val name: String,
-        val deleted: Boolean,
+        val deleted: Boolean = false,
         val creationDate: Long,
         val lastUpdated: Long,
         val number: String,
@@ -19,7 +19,7 @@ data class OrderDto(
         val area: Float,
         val perimeter: Float,
         val clientId: UUID,
-        val receptionId: UUID,
+        val receptionId: UUID?,
 
         val items: List<OrderItemDto>? = null
 )
@@ -27,7 +27,7 @@ data class OrderDto(
 data class OrderItemDto(
         var id: UUID? = null,
         val name: String,
-        val deleted: Boolean,
+        val deleted: Boolean = false,
         val creationDate: Long,
         val lastUpdated: Long,
         val number: String,

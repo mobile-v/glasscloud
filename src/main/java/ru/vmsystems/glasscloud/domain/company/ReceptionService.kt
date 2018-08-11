@@ -2,12 +2,15 @@ package ru.vmsystems.glasscloud.domain.company
 
 import org.springframework.stereotype.Service
 import ru.vmsystems.glasscloud.domain.BackService
+import ru.vmsystems.glasscloud.domain.SessionService
 import ru.vmsystems.glasscloud.user.UserRepository
 import java.util.*
 
 @Service
 class ReceptionService(private val receptionRepository: ReceptionRepository,
-                       private val userRepository: UserRepository) : BackService() {
+                       private val userRepository: UserRepository,
+                       private val sessionService: SessionService
+) : BackService() {
 
     fun get(): List<ReceptionDto> {
         val result = ArrayList<ReceptionDto>()
@@ -27,7 +30,7 @@ class ReceptionService(private val receptionRepository: ReceptionRepository,
     }
 
     fun update(id: UUID? = null, receptionDto: ReceptionDto): ReceptionDto {
-        val receptionEntity = receptionDto.transform(id)
+        val receptionEntity = receptionDto.transform(id, sessionService.currentCompanyId)
         val entity = receptionRepository.save(receptionEntity)
         return entity.transform()
     }
@@ -47,7 +50,7 @@ class ReceptionService(private val receptionRepository: ReceptionRepository,
     }
 }
 
-fun ReceptionDto.transform(id: UUID? = null): ReceptionEntity {
+fun ReceptionDto.transform(id: UUID? = null, currentCompanyId: UUID? = null): ReceptionEntity {
     return ReceptionEntity(
             id = id,
             name = name,
@@ -56,7 +59,7 @@ fun ReceptionDto.transform(id: UUID? = null): ReceptionEntity {
             description = description,
             address = address,
             phone = phone,
-            companyId = companyId
+            companyId = currentCompanyId ?: companyId!!
     )
 }
 

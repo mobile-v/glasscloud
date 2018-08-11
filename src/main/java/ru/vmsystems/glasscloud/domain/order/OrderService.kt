@@ -57,7 +57,7 @@ class OrderService(private val orderRepository: OrderRepository,
     }
 
     fun updateOrder(order: OrderDto): OrderDto {
-        var entity = order.transform()
+        var entity = order.transform(sessionService.currentReceptionId)
 
 //        if (entity.items != null) {
 //            for (item in entity.items) {
@@ -132,7 +132,7 @@ private fun OrderItemDto.transform(itemId: UUID? = null): OrderItemEntity {
     )
 }
 
-private fun OrderDto.transform(): OrderEntity {
+private fun OrderDto.transform(currentReceptionId: UUID? = null): OrderEntity {
     return OrderEntity(
             id = id,
             name = name,
@@ -149,7 +149,7 @@ private fun OrderDto.transform(): OrderEntity {
             area = area,
             perimeter = perimeter,
             clientId = clientId,
-            receptionId = receptionId
+            receptionId = currentReceptionId ?: receptionId!!
     )
 }
 

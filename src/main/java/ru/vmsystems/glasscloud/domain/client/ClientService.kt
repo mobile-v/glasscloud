@@ -57,7 +57,7 @@ private fun ClientDto.transform(id: UUID? = null, companyId: UUID): ClientEntity
             email = email,
             description = description,
             discount = discount,
-            clientType = clientType,
+            clientType = type.transform(),
             companyId = companyId
     )
 }
@@ -73,13 +73,21 @@ private fun ClientEntity.transform(): ClientDto {
             email = email,
             description = description,
             discount = discount,
-            clientType = clientType,
+            type = clientType.transform(),
             companyId = companyId
     )
 }
 
 private fun ClientTypeEntity.transform(): ClientTypeDto {
     return ClientTypeDto(
+            id = id,
+            name = name,
+            deleted = deleted
+    )
+}
+
+private fun ClientTypeDto.transform(): ClientTypeEntity {
+    return ClientTypeEntity(
             id = id,
             name = name,
             deleted = deleted

@@ -7,14 +7,14 @@ import java.util.*
 data class ProcessTypeDto(
         var id: UUID? = null,
         val name: String,
-        val deleted: Boolean,
+        val deleted: Boolean = false,
         val description: String = "",
         val companyId: UUID?
 )
 
 data class ProcessDto(
         var id: UUID? = null,
-        val deleted: Boolean,
+        val deleted: Boolean = false,
         val description: String = "",
         val depth: Float,
         val price: BigDecimal,

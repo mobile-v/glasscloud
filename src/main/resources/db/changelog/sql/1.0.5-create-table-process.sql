@@ -41,3 +41,5 @@ INSERT INTO glass.process_type (id, name, description, company_id, deleted) VALU
 INSERT INTO glass.process_type (id, name, description, company_id, deleted) VALUES ('c06966da-90fb-11e8-b6d5-0242ac110002', 'Полировка криволинейная', '', 'da2e914c-9099-11e8-ba1b-0242ac110002', false);
 INSERT INTO glass.process_type (id, name, description, company_id, deleted) VALUES ('c069819c-90fb-11e8-b6d5-0242ac110002', 'Шлифовка кромки с изменением угла  45-89 градусов', '', 'da2e914c-9099-11e8-ba1b-0242ac110002', false);
 INSERT INTO glass.process_type (id, name, description, company_id, deleted) VALUES ('c0699b64-90fb-11e8-b6d5-0242ac110002', 'Полировка кромки с изменением угла  45-89 градусов', '', 'da2e914c-9099-11e8-ba1b-0242ac110002', false);
+
+INSERT INTO glass.process (id, depth, price, description, type_id, company_id, deleted) VALUES ('63d04eae-d2fd-44ca-b918-a9c9969a24df', 3, 200, '', 'c0699b64-90fb-11e8-b6d5-0242ac110002', 'da2e914c-9099-11e8-ba1b-0242ac110002', false);

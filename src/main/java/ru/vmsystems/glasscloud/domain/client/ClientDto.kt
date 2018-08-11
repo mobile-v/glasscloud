@@ -5,19 +5,19 @@ import java.util.*
 class ClientTypeDto(
         var id: UUID? = null,
         val name: String,
-        val deleted: Boolean
+        val deleted: Boolean = false
 )
 
 class ClientDto(
         var id: UUID? = null,
         val name: String,
-        val deleted: Boolean,
-        val inn: String,
+        val deleted: Boolean = false,
+        val inn: Long,
         val account: String,
         val phone: String,
         val email: String,
         val description: String = "",
-        val discount: String,
-        val clientType: ClientTypeEntity,
-        val companyId: UUID
+        val discount: Float,
+        val type: ClientTypeDto,
+        val companyId: UUID?
 )
