@@ -47,7 +47,7 @@ class SessionService(
         val user = userRepository.getByLogin(httpRequest.remoteUser)
                 ?: throw RuntimeException("Пользователь не найден")
 
-        receptionRepository.getByCompanyId(user.companyId)
+        receptionRepository.getByCompanyId(user.companyId!!)
                 .find { it.id == reception } ?: RuntimeException("Точка приема не найдена")
 
         receptions[httpRequest.session.id] = reception

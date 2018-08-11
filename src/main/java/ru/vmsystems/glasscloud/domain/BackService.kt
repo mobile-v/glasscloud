@@ -30,8 +30,7 @@ abstract class BackService {
     val company: CompanyEntity
         get() {
             val user = userRepository.getByLogin(login) ?: throw RuntimeException("user not found $login")
-            val companyId = user.companyId
-            return companyRepository.getById(user.companyId) ?: throw RuntimeException("company not found $companyId")
+            return companyRepository.getById(user.companyId!!) ?: throw RuntimeException("company not found $companyId")
         }
 
     val companyId: UUID

@@ -18,9 +18,9 @@ data class UserEntity(
         val role: String,
         val email: String,
         val phone: String,
-        val comment: String,
-        val companyId: UUID,
-        val deleted: Boolean
+        val comment: String?,
+        val companyId: UUID?,
+        val deleted: Boolean = false
 ) {
     @PrePersist
     private fun prePersist() {

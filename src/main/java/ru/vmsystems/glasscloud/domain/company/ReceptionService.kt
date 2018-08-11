@@ -45,7 +45,7 @@ class ReceptionService(private val receptionRepository: ReceptionRepository,
     fun getByUserName(userName: String): List<ReceptionDto> {
         val user = userRepository.getByLogin(userName) ?: throw RuntimeException()
 
-        return receptionRepository.getByCompanyId(user.companyId)
+        return receptionRepository.getByCompanyId(user.companyId!!)
                 .map { it.transform() }
     }
 }
