@@ -1,51 +1,49 @@
 package ru.vmsystems.glasscloud.domain.client
 
 import io.swagger.annotations.ApiOperation
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import ru.vmsystems.glasscloud.json.JsonItemBuilder
+import ru.vmsystems.glasscloud.json.JsonItemResponse
 import java.util.*
 
-@RestController("ClientControllerApi")
+@RestController
 @RequestMapping("/api/client")
 class ClientController(private val clientService: ClientService) {
 
-    val clientTypes: ResponseEntity<List<ClientTypeDto>>
-        @ApiOperation(value = "Получить список всех клиентов")
-        @GetMapping(value = ["type"])
-        get() = ResponseEntity(clientService.clientTypes, HttpStatus.OK)
+    @ApiOperation(value = "Получить список всех клиентов")
+    @GetMapping(value = ["type"])
+    fun getAll() = JsonItemBuilder.success(clientService.clientTypes)
 
     @ApiOperation(value = "Получить список всех клиентов")
     @GetMapping(value = [""])
-    fun get(): ResponseEntity<List<ClientDto>> {
+    fun get(): JsonItemResponse<List<ClientDto>> {
         val result = clientService.get()
-        return ResponseEntity(result, HttpStatus.OK)
+        return JsonItemBuilder.success(result)
     }
 
     @ApiOperation(value = "Получить клиента по id клиента")
     @GetMapping(value = ["/{clientId}"])
-    operator fun get(@PathVariable(value = "clientId") clientId: UUID): ResponseEntity<ClientDto> {
-
+    operator fun get(@PathVariable(value = "clientId") clientId: UUID): JsonItemResponse<ClientDto> {
         val order = clientService[clientId]
-        return ResponseEntity(order, HttpStatus.OK)
+        return JsonItemBuilder.success(order)
     }
 
     @ApiOperation(value = "Создать нового клиента")
     @PostMapping(value = [""])
-    fun save(@RequestBody client: ClientDto): ResponseEntity<ClientDto> {
-        return ResponseEntity(clientService.create(client), HttpStatus.OK)
+    fun save(@RequestBody client: ClientDto): JsonItemResponse<ClientDto> {
+        return JsonItemBuilder.success(clientService.create(client))
     }
 
     @PutMapping(value = ["/{id}"])
     fun update(@PathVariable(value = "id") clientId: UUID,
-               @RequestBody client: ClientDto): ResponseEntity<ClientDto> {
-        return ResponseEntity(clientService.update(clientId, client), HttpStatus.OK)
+               @RequestBody client: ClientDto): JsonItemResponse<ClientDto> {
+        return JsonItemBuilder.success(clientService.update(clientId, client))
     }
 
     @ApiOperation(value = "Удалить клиента по id клиента")
     @DeleteMapping(value = ["/{clientId}"])
-    fun delete(@PathVariable(value = "clientId") clientId: UUID): ResponseEntity<*> {
+    fun delete(@PathVariable(value = "clientId") clientId: UUID): JsonItemResponse<*> {
         clientService.delete(clientId)
-        return ResponseEntity<Any>("OK", HttpStatus.OK)
+        return JsonItemBuilder.success("OK")
     }
 }

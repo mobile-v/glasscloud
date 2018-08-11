@@ -13,7 +13,8 @@ class Util {
     }
 }
 
-fun <C : Any> C.getLogger(): Logger = LoggerFactory.getLogger(this::class.java.name.substringBefore("\$Companion"))
+internal fun <C : Any> C.getLogger(): Logger =
+        LoggerFactory.getLogger(this::class.java.name.substringBefore("\$Companion"))
 
 fun ClosedRange<Int>.random() =
         Random().nextInt((endInclusive + 1) - start) +  start
