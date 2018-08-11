@@ -1,5 +1,6 @@
 package ru.vmsystems.glasscloud.domain.order
 
+import ru.vmsystems.glasscloud.domain.material.MaterialDto
 import java.math.BigDecimal
 import java.util.*
 
@@ -37,7 +38,7 @@ data class OrderItemDto(
         val creationDate: Long,
         val lastUpdated: Long,
         val number: String,
-        val description: String,
+        val description: String? = null,
         val length: Float,
         val width: Float,
         val count: Int,
@@ -46,5 +47,6 @@ data class OrderItemDto(
         val processSum: BigDecimal,
         val summa: BigDecimal,
         val orderId: UUID,
-        val materialId: UUID
+//        val materialId: UUID,
+        val material: MaterialDto
 )

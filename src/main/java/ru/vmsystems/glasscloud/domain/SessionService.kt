@@ -16,9 +16,6 @@ class SessionService(
 
     private val receptions = ConcurrentHashMap<String, UUID>()
 
-    val receptionOfOrder: UUID?
-        get() = receptions[httpRequest.session.id]
-
     val currentReceptionOfOrderName: String
         get() {
             val id = receptions[httpRequest.session.id] ?: return ""

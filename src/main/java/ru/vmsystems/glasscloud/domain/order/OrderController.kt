@@ -24,7 +24,7 @@ class OrderController(
     @GetMapping(value = ["/order"])
     fun getOrdersByReceptionOfOrder(
             principal: Principal): JsonItemResponse<List<OrderDto>> {
-        val user = userRepository.getByLogin(principal.name) ?: throw BusinessException("Пользователь не найден")
+        userRepository.getByLogin(principal.name) ?: throw BusinessException("Пользователь не найден")
 
         val receptionOfOrder = sessionService.currentReception
 
@@ -79,33 +79,33 @@ class OrderController(
         return JsonItemBuilder.success()
     }
 
-    @GetMapping(value = ["/order/{orderId}/items"])
+    @GetMapping(value = ["/order/items/{orderId}"])
     fun getOrderItems(@PathVariable(value = "orderId") orderId: UUID): JsonItemResponse<List<OrderItemDto>> {
         val result = orderService.getOrderItems(orderId)
         return JsonItemBuilder.success(result)
     }
 
-    @PostMapping(value = ["/order/{orderId}/items"])
+    @PostMapping(value = ["/order/items/{orderId}"])
     fun saveOrderItem(@PathVariable(value = "orderId") orderId: UUID,
                       @RequestBody orderItem: OrderItemDto): JsonItemResponse<OrderDto> {
         val result = orderService.saveOrderItem(orderId, orderItem)
         return JsonItemBuilder.success(result)
     }
 
-    @GetMapping(value = ["/order/items/{itemId}"])
+    @GetMapping(value = ["/order/item/{itemId}"])
     fun getOrderItem(@PathVariable(value = "itemId") itemId: UUID): JsonItemResponse<OrderItemDto> {
         val result = orderService.getOrderItem(itemId)
         return JsonItemBuilder.success(result)
     }
 
-    @PutMapping(value = ["/order/items/{itemId}"])
+    @PutMapping(value = ["/order/item/{itemId}"])
     fun updateOrderItem(@PathVariable(value = "itemId") itemId: UUID,
                         @RequestBody orderItemDto: OrderItemDto): JsonItemResponse<OrderItemDto> {
         val result = orderService.updateOrderItem(itemId, orderItemDto)
         return JsonItemBuilder.success(result)
     }
 
-    @DeleteMapping(value = ["/order/items/{itemId}"])
+    @DeleteMapping(value = ["/order/item/{itemId}"])
     fun deleteOrderItem(@PathVariable(value = "itemId") itemId: UUID): JsonItemResponse<*> {
         orderService.deleteOrderItem(itemId)
         return JsonItemBuilder.success()

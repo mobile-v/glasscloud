@@ -1,6 +1,7 @@
 package ru.vmsystems.glasscloud.domain.order
 
 import ru.vmsystems.glasscloud.Util.Companion.createCurrentTime
+import ru.vmsystems.glasscloud.domain.material.MaterialEntity
 import java.math.BigDecimal
 import java.util.*
 import javax.persistence.*
@@ -52,7 +53,7 @@ data class OrderItemEntity(
         var creationDate: Long,
         var lastUpdated: Long,
         val number: String,
-        val description: String = "",
+        val description: String?,
 
         val length: Float,
         val width: Float,
@@ -62,7 +63,9 @@ data class OrderItemEntity(
         val processSum: BigDecimal,
         val summa: BigDecimal,
         val orderId: UUID,
-        val materialId: UUID
+//        val materialId: UUID,
+        @ManyToOne
+        val material: MaterialEntity
 ) {
     @PrePersist
     private fun prePersist() {

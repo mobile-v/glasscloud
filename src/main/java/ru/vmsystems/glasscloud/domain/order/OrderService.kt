@@ -3,8 +3,10 @@ package ru.vmsystems.glasscloud.domain.order
 import org.springframework.stereotype.Service
 import ru.vmsystems.glasscloud.domain.SessionService
 import ru.vmsystems.glasscloud.domain.client.ClientRepository
+import ru.vmsystems.glasscloud.domain.material.transform
 import java.math.BigDecimal
 import java.util.*
+import javax.transaction.Transactional
 
 @Service
 class OrderService(
@@ -18,12 +20,14 @@ class OrderService(
     fun orders(): List<OrderDto> {
         val currentReception = sessionService.currentReception
         return orderRepository.getByReceptionId(currentReception.id!!)
-                .map { it.transform(reception = currentReception.name, clientName = clientRepository.getById(it.clientId)!!.name) }
+                .map { it.transform(reception = currentReception.name,
+                        clientName = clientRepository.getById(it.clientId)!!.name) }
     }
 
     fun getOrdersByReception(receptionId: UUID): List<OrderDto> {
         return orderRepository.getByReceptionId(receptionId)
-                .map { it.transform(reception = sessionService.currentReception.name, clientName = clientRepository.getById(it.clientId)!!.name) }
+                .map { it.transform(reception = sessionService.currentReception.name,
+                        clientName = clientRepository.getById(it.clientId)!!.name) }
     }
 
     fun getOrder(orderId: UUID): OrderDto {
@@ -36,11 +40,13 @@ class OrderService(
         val items = orderItemRepository.getByOrderId(order.id!!)
                 .map { it.transform() }
 
-        val result = order.transform(reception = sessionService.currentReception.name, clientName = clientRepository.getById(order.clientId)!!.name)
+        val result = order.transform(reception = sessionService.currentReception.name,
+                clientName = clientRepository.getById(order.clientId)!!.name)
 
         return result.copy(items = items)
     }
 
+    @Transactional
     fun newOrder(order: OrderCreateDto): OrderDto {
 
         val reception = sessionService.currentReception
@@ -49,21 +55,24 @@ class OrderService(
 
         val res = orderRepository.save(entity)
 
-        return updateOrder(res.transform(reception = sessionService.currentReception.name, clientName = clientRepository.getById(res.clientId)!!.name))
+        return updateOrder(res.transform(reception = sessionService.currentReception.name,
+                clientName = clientRepository.getById(res.clientId)!!.name))
     }
 
+    @Transactional
     fun updateOrder(order: OrderDto): OrderDto {
         var entity = order.transform(sessionService.currentReceptionId)
-
-//        if (entity.items != null) {
-//            for (item in entity.items) {
-//                item.order = entity
-//            }
-//        }
+        val items = order.items?.map { it.transform() }
 
         entity = orderRepository.save(entity)
+        val orderDb = entity.transform(reception = sessionService.currentReception.name,
+                clientName = clientRepository.getById(entity.clientId)!!.name)
+        if (items != null) {
+            val itemsDb = orderItemRepository.saveAll(items).map { it.transform() }
+            return orderDb.copy(items = itemsDb)
+        }
 
-        return entity.transform(reception = sessionService.currentReception.name, clientName = clientRepository.getById(entity.clientId)!!.name)
+        return orderDb
     }
 
     fun deleteOrder(id: UUID) {
@@ -79,7 +88,8 @@ class OrderService(
     }
 
     fun getOrderItem(itemId: UUID): OrderItemDto {
-        val item = orderItemRepository.getById(itemId) ?: throw RuntimeException("Элемент заказа не найден")
+        val item = orderItemRepository.getById(itemId)
+                ?: throw RuntimeException("Элемент заказа не найден")
         return item.transform()
     }
 
@@ -133,7 +143,8 @@ private fun OrderItemDto.transform(itemId: UUID? = null): OrderItemEntity {
             processSum = processSum,
             summa = summa,
             orderId = orderId,
-            materialId = materialId
+//            materialId = materialId,
+            material = material.transform()
     )
 }
 
@@ -173,7 +184,8 @@ private fun OrderItemEntity.transform(): OrderItemDto {
             processSum = processSum,
             summa = summa,
             orderId = orderId,
-            materialId = materialId
+//            materialId = materialId,
+            material = material.transform()
     )
 }
 
