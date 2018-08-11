@@ -8,7 +8,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "user", schema = "glass")
-class UserEntity(
+data class UserEntity(
         @Id
         var id: UUID? = null,
         val name: String,
@@ -16,6 +16,9 @@ class UserEntity(
         val password: String,
         val enabled: Boolean,
         val role: String,
+        val email: String,
+        val phone: String,
+        val comment: String,
         val companyId: UUID,
         val deleted: Boolean
 ) {

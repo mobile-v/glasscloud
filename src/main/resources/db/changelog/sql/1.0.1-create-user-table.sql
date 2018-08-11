@@ -8,6 +8,9 @@ create table IF NOT EXISTS "user"
   LOGIN      VARCHAR               not null,
   PASSWORD   VARCHAR               not null,
   ROLE       VARCHAR               not null,
+  EMAIL      VARCHAR               not null,
+  PHONE      VARCHAR               not null,
+  COMMENT    VARCHAR               not null,
   ENABLED    BOOLEAN default FALSE not null,
   company_id uuid                  not null references company (id),
   deleted    boolean               not null                                  default false
