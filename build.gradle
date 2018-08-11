@@ -2,6 +2,7 @@ buildscript {
     ext {
         kotlinVersion = '1.2.51'
         springBootVersion = '2.0.3.RELEASE'
+        springCloudVersion = "Finchley.RELEASE"
     }
     repositories {
         mavenLocal()
@@ -30,6 +31,11 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'liquibase'
 
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
 
 group = "ru.vmsystems.glasscloud"
 version = "0.1.0-SNAPSHOT"
@@ -85,10 +91,6 @@ dependencies {
     testCompile("org.mockito:mockito-core")
     testCompile group: 'org.junit.vintage', name: 'junit-vintage-engine'
 }
-
-//test {
-//    useJUnitPlatform()
-//}
 
 noArg {
     annotation("ru.vmsystems.glasscloud.annotation")
