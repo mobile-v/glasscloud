@@ -21,14 +21,18 @@ class OrderService(
     fun orders(): List<OrderDto> {
         val currentReception = sessionService.currentReception
         return orderRepository.getByReceptionId(currentReception.id!!)
-                .map { it.transform(reception = currentReception.name,
-                        clientName = clientRepository.getById(it.clientId)!!.name) }
+                .map {
+                    it.transform(reception = currentReception.name,
+                            clientName = clientRepository.getById(it.clientId)!!.name)
+                }
     }
 
     fun getOrdersByReception(receptionId: UUID): List<OrderDto> {
         return orderRepository.getByReceptionId(receptionId)
-                .map { it.transform(reception = sessionService.currentReception.name,
-                        clientName = clientRepository.getById(it.clientId)!!.name) }
+                .map {
+                    it.transform(reception = sessionService.currentReception.name,
+                            clientName = clientRepository.getById(it.clientId)!!.name)
+                }
     }
 
     fun getOrder(orderId: UUID): OrderDto {
@@ -116,6 +120,49 @@ class OrderService(
             orderItemRepository.save(entity)
         }
     }
+
+    fun calculateOrder(order: OrderDto): OrderDto {
+        return order.calculate()
+    }
+}
+
+private fun OrderDto.calculate(): OrderDto {
+    val orderItems = items
+            ?.map { it.calculate() }
+
+    val orderSum = orderItems
+            ?.map { it.summa }
+            ?.reduce { acc, bigDecimal -> acc.add(bigDecimal) }
+            ?: BigDecimal.ZERO
+
+    return copy(
+            summa = orderSum,
+            discountSum = orderSum - (orderSum * BigDecimal(discount / 100.0)),
+            items = orderItems
+    )
+}
+
+private fun OrderItemDto.calculate(): OrderItemDto {
+    val perimeter = (length * width) * 2 * (count / 1_000)
+    var area = (length * width) / 1_000_000.0
+
+    area = if (area < (0.0625 * count)) {
+        0.0625 * count
+    } else {
+        area * count
+    }
+
+    val processSum = process
+            ?.map { it.price.multiply(BigDecimal(perimeter.toDouble())) }
+            ?.reduce { acc, bigDecimal -> acc.add(bigDecimal) }
+            ?: BigDecimal.ZERO
+
+    return copy(
+            area = area.toFloat(),
+            perimeter = perimeter,
+            processSum = processSum,
+            summa = BigDecimal(area) * material.price
+    )
 }
 
 private fun OrderCreateDto.transform(currentReceptionId: UUID, number: String): OrderEntity {

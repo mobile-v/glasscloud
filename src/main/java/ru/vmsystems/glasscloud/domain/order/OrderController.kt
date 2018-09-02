@@ -20,6 +20,16 @@ class OrderController(
         private val userRepository: UserRepository
 ) {
 
+    @ApiOperation(value = "Рассчитать стоимость заказа")
+    @PostMapping(value = ["/order/calculate"])
+    fun calculateOrder(@RequestBody order: OrderDto, principal: Principal): JsonItemResponse<OrderDto> {
+        userRepository.getByLogin(principal.name) ?: throw BusinessException("Пользователь не найден")
+        LOG.info("-- calculate order --")
+
+        val result = orderService.calculateOrder(order)
+        return JsonItemBuilder.success(result)
+    }
+
     @ApiOperation(value = "Получить список всех заказов по точке выдачи")
     @GetMapping(value = ["/order"])
     fun getOrdersByReceptionOfOrder(
