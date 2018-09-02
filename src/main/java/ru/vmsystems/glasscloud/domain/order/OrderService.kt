@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service
 import ru.vmsystems.glasscloud.domain.SessionService
 import ru.vmsystems.glasscloud.domain.client.ClientRepository
 import ru.vmsystems.glasscloud.domain.material.transform
+import ru.vmsystems.glasscloud.domain.process.transform
 import java.math.BigDecimal
 import java.util.*
 import javax.transaction.Transactional
@@ -144,7 +145,8 @@ private fun OrderItemDto.transform(itemId: UUID? = null): OrderItemEntity {
             summa = summa,
             orderId = orderId,
 //            materialId = materialId,
-            material = material.transform()
+            material = material.transform(),
+            process = process?.map { it.transform() }
     )
 }
 
@@ -185,9 +187,24 @@ private fun OrderItemEntity.transform(): OrderItemDto {
             summa = summa,
             orderId = orderId,
 //            materialId = materialId,
-            material = material.transform()
+            material = material.transform(),
+            process = process
+                    ?.map { it.transform() }
     )
 }
+
+//private fun ProcessEntity.transform(): ProcessDto {
+//    return ProcessDto(
+//            id = id,
+//                    deleted = deleted,
+//                    description = description,
+//                    depth = depth,
+//                    price = price,
+//                    type = type.transform(),
+//                    companyId = companyId,
+//                    material = material.map { it.transform() }
+//    )
+//}
 
 private fun OrderEntity.transform(clientName: String, reception: String): OrderDto {
     return OrderDto(
