@@ -25,7 +25,7 @@ class UserService(
 
     fun save(dto: UserDto): UserDto {
         val entity = dto.transform(sessionService.currentCompanyId)
-        val result = repository.save(entity) ?: throw BusinessException("Ошибка сохранения")
+        val result = repository.save(entity)
         return result.transform()
     }
 

@@ -27,7 +27,7 @@ class MaterialService(
 
     fun save(dto: MaterialDto): MaterialDto {
         val entity = dto.transform(sessionService.currentCompanyId)
-        val result = repository.save(entity) ?: throw BusinessException("Ошибка сохранения")
+        val result = repository.save(entity)
         return result.transform()
     }
 
