@@ -5,6 +5,7 @@ import ru.vmsystems.glasscloud.domain.SessionService
 import ru.vmsystems.glasscloud.domain.client.ClientRepository
 import ru.vmsystems.glasscloud.domain.material.transform
 import ru.vmsystems.glasscloud.domain.process.transform
+import ru.vmsystems.glasscloud.handler.BusinessException
 import java.math.BigDecimal
 import java.util.*
 import javax.transaction.Transactional
@@ -45,8 +46,9 @@ class OrderService(
         val items = orderItemRepository.getByOrderId(order.id!!)
                 .map { it.transform() }
 
-        val result = order.transform(reception = sessionService.currentReception.name,
-                clientName = clientRepository.getById(order.clientId)!!.name)
+        val result = order
+                .transform(reception = sessionService.currentReception.name,
+                        clientName = clientRepository.getById(order.clientId)!!.name)
 
         return result.copy(items = items)
     }
@@ -55,8 +57,8 @@ class OrderService(
     fun newOrder(order: OrderCreateDto): OrderDto {
 
         val reception = sessionService.currentReception
-        val entity = order.transform(sessionService.currentReceptionId,
-                reception.orderNumPrefix + "1")
+        val entity = order
+                .transform(sessionService.currentReceptionId, reception.orderNumPrefix + "1")
 
         val res = orderRepository.save(entity)
 
@@ -66,14 +68,19 @@ class OrderService(
 
     @Transactional
     fun updateOrder(order: OrderDto): OrderDto {
-        var entity = order.transform(sessionService.currentReceptionId)
-        val items = order.items?.map { it.transform() }
+        val calculatedOrder = order
+                .calculate()
 
-        entity = orderRepository.save(entity)
-        val orderDb = entity.transform(reception = sessionService.currentReception.name,
-                clientName = clientRepository.getById(entity.clientId)!!.name)
+        val entity = calculatedOrder.transform(sessionService.currentReceptionId)
+        val items = calculatedOrder.items
+                ?.map { it.transform() }
+
+        val savedEntity = orderRepository.save(entity)
+        val orderDb = savedEntity.transform(reception = sessionService.currentReception.name,
+                clientName = clientRepository.getById(savedEntity.clientId)!!.name)
         if (items != null) {
-            val itemsDb = orderItemRepository.saveAll(items).map { it.transform() }
+            val itemsDb = orderItemRepository.saveAll(items)
+                    .map { it.transform() }
             return orderDb.copy(items = itemsDb)
         }
 
@@ -98,16 +105,22 @@ class OrderService(
         return item.transform()
     }
 
+    @Transactional
     fun saveOrderItem(orderId: UUID, orderItem: OrderItemDto): OrderDto {
         val order = orderRepository.getById(orderId) ?: throw RuntimeException("Заказ не найден")
 
-        val itemEntity = orderItem.transform()
+        val itemEntity = orderItem.calculate().transform()
 
         orderItemRepository.save(itemEntity)
-        return getFullOrder(order)
+        val o = calculateOrder(order.transform())
+
+        orderRepository.save(o.transform())
+
+        return o
     }
 
     fun updateOrderItem(itemId: UUID, orderItem: OrderItemDto): OrderItemDto {
+        calculateOrder(orderItem.orderId)
         val itemEntity = orderItem.transform(itemId)
 
         val entity = orderItemRepository.save(itemEntity)
@@ -118,11 +131,17 @@ class OrderService(
         orderItemRepository.getById(id)?.let {
             val entity = it.copy(deleted = true)
             orderItemRepository.save(entity)
+            calculateOrder(entity.orderId)
         }
     }
 
     fun calculateOrder(order: OrderDto): OrderDto {
         return order.calculate()
+    }
+
+    fun calculateOrder(orderId: UUID): OrderDto {
+        val order = orderRepository.getById(orderId) ?: throw BusinessException("Заказ не найден")
+        return calculateOrder(getFullOrder(order))
     }
 }
 
@@ -130,10 +149,13 @@ private fun OrderDto.calculate(): OrderDto {
     val orderItems = items
             ?.map { it.calculate() }
 
-    val orderSum = orderItems
-            ?.map { it.summa }
-            ?.reduce { acc, bigDecimal -> acc.add(bigDecimal) }
-            ?: BigDecimal.ZERO
+    val orderSum = if (orderItems == null || orderItems.isEmpty()) {
+        BigDecimal.ZERO
+    } else {
+        orderItems
+                .map { it.summa }
+                .reduce { acc, bigDecimal -> acc.add(bigDecimal) }
+    }
 
     return copy(
             summa = orderSum,
@@ -143,7 +165,7 @@ private fun OrderDto.calculate(): OrderDto {
 }
 
 private fun OrderItemDto.calculate(): OrderItemDto {
-    val perimeter = (length * width) * 2 * (count / 1_000)
+    val perimeter = (length * width) * 2.0 * (count / 1_000.0)
     var area = (length * width) / 1_000_000.0
 
     area = if (area < (0.0625 * count)) {
@@ -152,16 +174,21 @@ private fun OrderItemDto.calculate(): OrderItemDto {
         area * count
     }
 
-    val processSum = process
-            ?.map { it.price.multiply(BigDecimal(perimeter.toDouble())) }
-            ?.reduce { acc, bigDecimal -> acc.add(bigDecimal) }
-            ?: BigDecimal.ZERO
+    val processSum = if (process == null || process.isEmpty()) {
+        BigDecimal.ZERO
+    } else {
+        process
+                .map { it.price.multiply(BigDecimal(perimeter)) }
+                .reduce { acc, bigDecimal -> acc.add(bigDecimal) }
+    }
+
+    val sum = BigDecimal(area) * material.price + processSum
 
     return copy(
             area = area.toFloat(),
-            perimeter = perimeter,
+            perimeter = perimeter.toFloat(),
             processSum = processSum,
-            summa = BigDecimal(area) * material.price
+            summa = sum
     )
 }
 
@@ -253,7 +280,7 @@ private fun OrderItemEntity.transform(): OrderItemDto {
 //    )
 //}
 
-private fun OrderEntity.transform(clientName: String, reception: String): OrderDto {
+private fun OrderEntity.transform(clientName: String? = null, reception: String? = null): OrderDto {
     return OrderDto(
             id = id,
             deleted = deleted,

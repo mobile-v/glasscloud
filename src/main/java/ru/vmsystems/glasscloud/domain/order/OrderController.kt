@@ -27,6 +27,7 @@ class OrderController(
         LOG.info("-- calculate order --")
 
         val result = orderService.calculateOrder(order)
+        LOG.info("{}", result)
         return JsonItemBuilder.success(result)
     }
 
