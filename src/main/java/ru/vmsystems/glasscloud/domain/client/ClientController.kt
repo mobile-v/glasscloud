@@ -24,8 +24,8 @@ class ClientController(private val clientService: ClientService) {
     @ApiOperation(value = "Получить клиента по id клиента")
     @GetMapping(value = ["/{clientId}"])
     operator fun get(@PathVariable(value = "clientId") clientId: UUID): JsonItemResponse<ClientDto> {
-        val order = clientService[clientId]
-        return JsonItemBuilder.success(order)
+        val client = clientService[clientId]
+        return JsonItemBuilder.success(client)
     }
 
     @ApiOperation(value = "Создать нового клиента")
