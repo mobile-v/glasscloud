@@ -16,7 +16,7 @@ class ClientDto(
         val account: String,
         val phone: String,
         val email: String,
-        val description: String = "",
+        val description: String?,
         val discount: Float,
         val type: ClientTypeDto,
         val companyId: UUID?

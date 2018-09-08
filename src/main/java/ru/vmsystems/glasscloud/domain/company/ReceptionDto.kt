@@ -7,7 +7,7 @@ data class ReceptionDto(
         val name: String,
         val deleted: Boolean = false,
         val orderNumPrefix: String,
-        val description: String,
+        val description: String?,
         val address: String,
         val phone: String,
         val companyId: UUID?

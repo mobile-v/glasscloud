@@ -14,7 +14,7 @@ data class ReceptionEntity(
         val name: String,
         val deleted: Boolean,
         val orderNumPrefix: String,
-        val description: String = "",
+        val description: String?,
         val address: String,
         val phone: String,
         val companyId: UUID

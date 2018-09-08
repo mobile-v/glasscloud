@@ -1,8 +1,6 @@
 package ru.vmsystems.glasscloud.domain.order
 
 import ru.vmsystems.glasscloud.Util.Companion.createCurrentTime
-import ru.vmsystems.glasscloud.domain.material.MaterialEntity
-import ru.vmsystems.glasscloud.domain.process.ProcessEntity
 import java.math.BigDecimal
 import java.util.*
 import javax.persistence.*
@@ -64,15 +62,15 @@ data class OrderItemEntity(
         val processSum: BigDecimal,
         val summa: BigDecimal,
         val orderId: UUID,
-//        val materialId: UUID,
-        @ManyToOne
-        val material: MaterialEntity,
-
-        @ManyToMany(fetch = FetchType.LAZY)
-        @JoinTable(name = "order_item_process",
-                joinColumns = (arrayOf(JoinColumn(name = "item_id", referencedColumnName = "ID"))),
-                inverseJoinColumns = (arrayOf(JoinColumn(name = "process_id", referencedColumnName = "ID"))))
-        val process: List<ProcessEntity>?
+//        @ManyToOne
+//        val material: MaterialEntity,
+        val material: String,
+//
+//        @ManyToMany(fetch = FetchType.LAZY)
+//        @JoinTable(name = "order_item_process",
+//                joinColumns = (arrayOf(JoinColumn(name = "item_id", referencedColumnName = "ID"))),
+//                inverseJoinColumns = (arrayOf(JoinColumn(name = "process_id", referencedColumnName = "ID"))))
+        val processes: String?
 ) {
     @PrePersist
     private fun prePersist() {

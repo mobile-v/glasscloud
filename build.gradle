@@ -57,6 +57,7 @@ compileTestKotlin {
 repositories {
     mavenLocal()
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -77,6 +78,9 @@ dependencies {
     compileOnly('org.springframework.boot:spring-boot-configuration-processor')
 
     compile('org.springframework.boot:spring-boot-starter-actuator')
+
+    implementation 'com.beust:klaxon:3.0.5'
+    implementation 'com.google.code.gson:gson:2.8.5'
 
     compile('org.liquibase:liquibase-core')
     compile group: 'org.postgresql', name: 'postgresql', version: '42.2.2'

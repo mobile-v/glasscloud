@@ -11,11 +11,11 @@ create table "order"
   description    varchar,
   account_number varchar,
   discount       real        not null,
-  discount_sum   decimal     ,
-  count          integer     ,
-  summa          decimal     ,
-  area           real        ,
-  perimeter      real        ,
+  discount_sum   decimal,
+  count          integer,
+  summa          decimal,
+  area           real,
+  perimeter      real,
   client_id      uuid        not null references client (id),
   reception_id   uuid        not null references reception (id),
   deleted        boolean     not null
@@ -36,14 +36,16 @@ create table order_item
   process_sum   decimal     not null,
   summa         decimal     not null,
   order_id      uuid        not null references "order" (id),
-  material_id   uuid        not null references material (id),
-  deleted       boolean     not null
+--   material_id   uuid        not null references material (id),
+  deleted       boolean     not null,
+  material      text        not null,
+  processes     text
 );
 
-create table order_item_process
-(
-  --   id         uuid not null constraint order_item_process_pkey primary key DEFAULT public.uuid_generate_v1(),
-  item_id    uuid not null references order_item (id),
-  process_id uuid not null references process (id)
-);
+-- create table order_item_process
+-- (
+--   --   id         uuid not null constraint order_item_process_pkey primary key DEFAULT public.uuid_generate_v1(),
+--   item_id    uuid not null references order_item (id),
+--   process_id uuid not null references process (id)
+-- );
 

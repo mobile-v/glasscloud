@@ -12,7 +12,7 @@ data class ProcessTypeEntity(
         var id: UUID? = null,
         val name: String,
         val deleted: Boolean,
-        val description: String = "",
+        val description: String?,
         val companyId: UUID
 ) {
     @PrePersist
@@ -27,7 +27,7 @@ data class ProcessEntity(
         @Id
         var id: UUID? = null,
         val deleted: Boolean,
-        val description: String = "",
+        val description: String?,
         val depth: Float,
         val price: BigDecimal,
         @ManyToOne
@@ -38,7 +38,7 @@ data class ProcessEntity(
         @JoinTable(name = "PROCESS_MATERIAL",
                 joinColumns = (arrayOf(JoinColumn(name = "PROCESS_ID", referencedColumnName = "ID"))),
                 inverseJoinColumns = (arrayOf(JoinColumn(name = "MATERIAL_ID", referencedColumnName = "ID"))))
-        val material: List<MaterialEntity>
+        val material: List<MaterialEntity>?
 ) {
     @PrePersist
     private fun prePersist() {

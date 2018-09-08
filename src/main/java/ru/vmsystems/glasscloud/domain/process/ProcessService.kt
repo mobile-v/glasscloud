@@ -43,7 +43,7 @@ fun ProcessDto.transform(currentCompanyId: UUID? = null): ProcessEntity {
             depth = depth,
             price = price,
             type = type.transform(),
-            material = material.map { it.transform() },
+            material = material?.map { it.transform() },
             companyId = currentCompanyId ?: companyId!!
     )
 }
@@ -55,7 +55,7 @@ fun ProcessEntity.transform(): ProcessDto {
             description = description,
             depth = depth,
             price = price,
-            material = material.map { it.transform() },
+            material = material?.map { it.transform() },
             type = type.transform(),
             companyId = companyId
     )

@@ -8,18 +8,18 @@ data class ProcessTypeDto(
         var id: UUID? = null,
         val name: String,
         val deleted: Boolean = false,
-        val description: String = "",
+        val description: String?,
         val companyId: UUID?
 )
 
 data class ProcessDto(
         var id: UUID? = null,
         val deleted: Boolean = false,
-        val description: String = "",
+        val description: String?,
         val depth: Float,
         val price: BigDecimal,
         val type: ProcessTypeDto,
         val companyId: UUID?,
-        val material: List<MaterialDto>
+        val material: List<MaterialDto>?
 )
 

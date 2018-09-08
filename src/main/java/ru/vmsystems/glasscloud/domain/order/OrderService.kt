@@ -1,9 +1,12 @@
 package ru.vmsystems.glasscloud.domain.order
 
+import com.google.gson.GsonBuilder
+import org.springframework.core.ParameterizedTypeReference
 import org.springframework.stereotype.Service
 import ru.vmsystems.glasscloud.domain.SessionService
 import ru.vmsystems.glasscloud.domain.client.ClientRepository
-import ru.vmsystems.glasscloud.domain.material.transform
+import ru.vmsystems.glasscloud.domain.material.MaterialDto
+import ru.vmsystems.glasscloud.domain.process.ProcessDto
 import ru.vmsystems.glasscloud.domain.process.transform
 import ru.vmsystems.glasscloud.handler.BusinessException
 import java.math.BigDecimal
@@ -79,7 +82,8 @@ class OrderService(
         val orderDb = savedEntity.transform(reception = sessionService.currentReception.name,
                 clientName = clientRepository.getById(savedEntity.clientId)!!.name)
         if (items != null) {
-            val itemsDb = orderItemRepository.saveAll(items)
+            val _items = orderItemRepository.saveAll(items)
+            val itemsDb = _items
                     .map { it.transform() }
             return orderDb.copy(items = itemsDb)
         }
@@ -127,11 +131,13 @@ class OrderService(
         return entity.transform()
     }
 
+    @Transactional
     fun deleteOrderItem(id: UUID) {
         orderItemRepository.getById(id)?.let {
             val entity = it.copy(deleted = true)
             orderItemRepository.save(entity)
-            calculateOrder(entity.orderId)
+            val order = calculateOrder(entity.orderId)
+            orderRepository.save(order.transform())
         }
     }
 
@@ -219,8 +225,9 @@ private fun OrderItemDto.transform(itemId: UUID? = null): OrderItemEntity {
             summa = summa,
             orderId = orderId,
 //            materialId = materialId,
-            material = material.transform(),
-            process = process?.map { it.transform() }
+//            material = Klaxon().toJsonString(material.transform()),
+            material = GsonBuilder().setPrettyPrinting().create().toJson(material),
+            processes = process?.map { it.transform() }.let { list -> list?.let { GsonBuilder().setPrettyPrinting().create().toJson(process) } }
     )
 }
 
@@ -244,6 +251,8 @@ private fun OrderDto.transform(currentReceptionId: UUID? = null): OrderEntity {
     )
 }
 
+private val LIST_TYPE_REFERENCE = object : ParameterizedTypeReference<List<ProcessDto>>() {}
+
 private fun OrderItemEntity.transform(): OrderItemDto {
     return OrderItemDto(
             id = id,
@@ -261,9 +270,9 @@ private fun OrderItemEntity.transform(): OrderItemDto {
             summa = summa,
             orderId = orderId,
 //            materialId = materialId,
-            material = material.transform(),
-            process = process
-                    ?.map { it.transform() }
+            material = GsonBuilder().setPrettyPrinting().create().fromJson(material, MaterialDto::class.java),
+            process = processes
+                    ?.let { GsonBuilder().setPrettyPrinting().create().fromJson<List<ProcessDto>>(it, LIST_TYPE_REFERENCE.type) }
     )
 }
 

@@ -44,7 +44,7 @@ data class MaterialEntity(
         val length: Float,
         val width: Float,
         val price: BigDecimal,
-        val description: String = "",
+        val description: String?,
         @ManyToOne
         val color: MaterialColorEntity,
         @ManyToOne
